@@ -1,4 +1,4 @@
-package de.upb.spl;
+package de.upb.spl.benchmarks;
 
 import java.util.Optional;
 

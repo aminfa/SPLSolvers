@@ -1,5 +1,6 @@
-package de.upb.spl;
+package de.upb.spl.benchmarks;
 
+import de.upb.spl.FeatureSelection;
 import fm.FeatureModel;
 
 import java.util.List;

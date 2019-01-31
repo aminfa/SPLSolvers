@@ -1,0 +1,78 @@
+<feature_model name="video encoder">
+<feature_tree>
+:r Root
+	:m Compile
+		:g [1,1]
+			: bit_depth_8
+			: bit_depth_10
+		:g [1,1]
+			: format_420
+			: format_422
+			: format_444
+		:o interlaced
+		:o asm
+		:o strip
+		:o lto
+		:o pic
+	:m Runtime
+		:g [1,1]
+			: preset_veryfast
+			: preset_medium
+			: preset_slower
+		:g [1,1]
+			: tune_film
+			: tune_animation
+			: tune_grain
+			: tune_stillimage
+			: tune_psnr
+			: tune_ssim
+		:g [1,1]
+			: qp
+				:g [1,1]
+					: q_26
+					: q_32
+					: q_38
+				:g [1,1]
+					: qpstep_4
+					: qpstep_8
+					: qpstep_12
+			: abr
+				:g [1,1]
+					: bitrate_800
+					: bitrate_1200
+					: bitrate_1600
+					: bitrate_2000
+			: crf
+				:g [1,1]
+					: crf_20
+					: crf_23
+					: crf_26
+					: crf_29
+					: crf_32
+					: crf_35
+		:g [1,1]
+			:lookahead_20
+			:lookahead_50
+			:lookahead_80
+		:g [1,1]
+			:aq_mode_1
+			:aq_mode_2
+			:aq_mode_3
+		:g [1,1]
+			:aq_strength_1
+			:aq_strength_2
+			:aq_strength_3
+		:g [1,1]
+			:ipratio_1_4
+			:ipratio_1_8
+			:ipratio_2_2
+		:g [1,1]
+			:pbratio_1_3
+			:pbratio_1_8
+			:pbratio_2_3
+		:o two_pass
+</feature_tree>
+<constraints>
+	c1: ~crf or ~two_pass
+</constraints>
+</feature_model>

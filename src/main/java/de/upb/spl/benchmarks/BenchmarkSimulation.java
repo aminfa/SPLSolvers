@@ -1,17 +1,13 @@
-package de.upb.spl;
+package de.upb.spl.benchmarks;
 
-import fm.FeatureModel;
+import de.upb.spl.FeatureSelection;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public abstract class BenchmarkSimulation implements BenchmarkEnvironment {
 	private final BiFunction<FeatureSelection, String, Double> simulation;

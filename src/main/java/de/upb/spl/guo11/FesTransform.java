@@ -109,8 +109,12 @@ public class FesTransform {
 		} else {
 			logger.trace("excludeFeature:: Feature " + feature.toString() + " can't be added to Se as "
 					+ (Sv.contains(feature) ? " it is already included." : " it is already excluded."));
+//			return;
 		}
 		for(FeatureTreeNode childFeature : FMUtil.children(feature)) {
+			if(Se.contains(childFeature)) {
+				continue;
+			}
 			excludeFeature(childFeature);
 		}
 		if(!FMUtil.isOptionalFeature(feature)) {

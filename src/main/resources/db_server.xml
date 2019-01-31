@@ -1,0 +1,9 @@
+<feature_model name="kernel">
+<feature_tree>
+:r Root
+    :m Compile
+        :g [1,1]
+</feature_tree>
+    <constraints>
+    </constraints>
+</feature_model>

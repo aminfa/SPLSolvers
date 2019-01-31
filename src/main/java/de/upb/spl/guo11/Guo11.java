@@ -1,24 +1,13 @@
 package de.upb.spl.guo11;
 
-import de.upb.spl.BenchmarkEnvironment;
-import de.upb.spl.FMUtil;
-import de.upb.spl.FeatureSelection;
-import fm.FeatureTreeNode;
-import fm.SolitaireFeature;
+import de.upb.spl.benchmarks.BenchmarkEnvironment;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.problem.AbstractProblem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class Guo11 {
 

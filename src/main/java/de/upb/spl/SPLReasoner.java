@@ -1,6 +1,6 @@
 package de.upb.spl;
 
-import fm.FeatureModel;
+import de.upb.spl.benchmarks.BenchmarkEnvironment;
 
 import java.util.List;
 

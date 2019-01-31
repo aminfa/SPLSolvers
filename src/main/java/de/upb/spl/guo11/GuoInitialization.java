@@ -1,6 +1,6 @@
 package de.upb.spl.guo11;
 
-import de.upb.spl.BenchmarkEnvironment;
+import de.upb.spl.benchmarks.BenchmarkEnvironment;
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
 import fm.FeatureTreeNode;

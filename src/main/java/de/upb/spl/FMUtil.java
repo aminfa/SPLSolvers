@@ -5,14 +5,33 @@ import com.google.common.collect.Streams;
 import constraints.BooleanVariable;
 import constraints.PropositionalFormula;
 import fm.*;
+import util.DefaultMap;
+import util.FilteredIterator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FMUtil {
+
+	private final static DefaultMap<FeatureModel, FeatureModelCache> cache = new DefaultMap<FeatureModel, FeatureModelCache>(FeatureModelCache::new);
+
+	private static class FeatureModelCache {
+		final List<FeatureTreeNode> nodes;
+		final List<FeatureTreeNode> optionalNodes;
+		FeatureModelCache(FeatureModel fm) {
+			nodes = new ArrayList<>();
+			new FeatureModelIterable(fm).forEachRemaining(nodes::add);
+			optionalNodes = new ArrayList<>();
+			new FilteredIterator<FeatureTreeNode>(new FeatureModelIterable(fm), feature -> FMUtil.isImpliedFeature(fm, feature)).forEachRemaining(optionalNodes::add);
+		}
+	}
+
 	private static class FeatureModelIterable implements Iterator<FeatureTreeNode> {
 		FeatureTreeNode current;
 
@@ -113,27 +132,27 @@ public class FMUtil {
 
 
 	public static Iterable<FeatureTreeNode> featureIterable(FeatureModel model){
-		return () -> new FeatureModelIterable(model);
+		return cache.get(model).nodes;
 	}
 
 	public static Iterable<FeatureTreeNode> optFeatureIterable(FeatureModel model){
-		return Iterables.filter(featureIterable(model), feature -> FMUtil.isImpliedFeature(model, feature));
+		return cache.get(model).optionalNodes;
 	}
 
 	public static Stream<FeatureTreeNode> featureStream(FeatureModel model){
-		return Streams.stream(new FeatureModelIterable(model));
+		return cache.get(model).nodes.stream();
 	}
 
 	public static Stream<FeatureTreeNode> optFeatureStream(FeatureModel model){
-		return Streams.stream(new FeatureModelIterable(model)).filter(feature -> FMUtil.isImpliedFeature(model, feature));
+		return cache.get(model).optionalNodes.stream();
 	}
 
 	public static int countFeatures(FeatureModel model){
-		return (int) featureStream(model).count();
+		return cache.get(model).nodes.size();
 	}
 
 	public static int countVariantFeatures(FeatureModel model){
-		return (int) optFeatureStream(model).count();
+		return cache.get(model).optionalNodes.size();
 	}
 
 	public static boolean isRoot(FeatureTreeNode feature) {

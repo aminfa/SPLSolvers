@@ -1,6 +1,6 @@
 package de.upb.spl.guo11;
 
-import de.upb.spl.BenchmarkEnvironment;
+import de.upb.spl.benchmarks.BenchmarkEnvironment;
 import de.upb.spl.FeatureSelection;
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.*;
@@ -9,7 +9,6 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Random;
 
