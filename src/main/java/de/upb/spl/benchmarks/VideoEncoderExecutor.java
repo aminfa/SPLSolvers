@@ -1,6 +1,5 @@
 package de.upb.spl.benchmarks;
 
-import com.sun.org.apache.xml.internal.resolver.readers.ExtendedXMLCatalogReader;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -21,6 +20,8 @@ public class VideoEncoderExecutor implements Runnable{
 
 	private final static String BENCHMARK_DIR;
 
+	private final String scriptsHome;
+
 	static {
 		String benchmarkHome = System.getenv("X264_BENCH_HOME");
 		if(benchmarkHome == null) {
@@ -34,7 +35,8 @@ public class VideoEncoderExecutor implements Runnable{
 	private final String id;
 	private final BenchmarkAgent agent;
 
-	public VideoEncoderExecutor(BenchmarkAgent agent) {
+	public VideoEncoderExecutor(BenchmarkAgent agent, String scriptsHome) {
+		this.scriptsHome = scriptsHome;
 		id = String.format("video-encoder-executor-%02d", GLOBAL_ID_COUNT.getAndIncrement());
 		this.agent = agent;
 		executor = new Thread(this);
@@ -90,7 +92,7 @@ public class VideoEncoderExecutor implements Runnable{
 		Map configuration = report.getConfiguration();
 		byte[] configurationBytes = JSONObject.toJSONString(configuration).getBytes();
 		String base64Config = Base64.getEncoder().encodeToString(configurationBytes);
-		String benchmark_script_path = Paths.get(BENCHMARK_DIR, "benchmark.py").toAbsolutePath().toString();
+		String benchmark_script_path = Paths.get(scriptsHome, "benchmark.py").toAbsolutePath().toString();
 		String jobId = report.getJobId();
 //		String shell_command = "python %s %s %s";
 //		shell_command = String.format(shell_command, BENCHMARK_DIR, benchmark_script_path, jobId, base64Config);

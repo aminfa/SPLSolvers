@@ -18,7 +18,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -31,11 +30,11 @@ public class GuoTest {
 
 	@BeforeClass
 	public static void setEnvironment() throws FeatureModelException, IOException {
-		final Random random = new Random(2);;
+		final Random random = new Random();;
 		final String featureModelFile = FesTransformTest.class.getClassLoader().getResource("video_encoder.xml").getPath();
 		final FeatureModel video_encoder = new XMLFeatureModel(featureModelFile, XMLFeatureModel.USE_VARIABLE_NAME_AS_ID);
 		agent = new BenchmarkAgent(10000);
-		VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent);
+		VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent, "/Users/aminfaez/Documents/BA/x264_1");
 
 		// Load the XML file and creates the feature model
 		video_encoder.loadModel();
@@ -54,6 +53,7 @@ public class GuoTest {
 			System.out.println("Configuration: " + gson.toJson(report.getFinalReport().getConfiguration()));
 			System.out.println("File size: " + report.readResult(VideoEncoderEnv.objectives.get(0)));
 			System.out.println("Subjective quality: " + report.readResult(VideoEncoderEnv.objectives.get(1)));
+			System.out.println("Runtime: " + report.readResult(VideoEncoderEnv.objectives.get(2)));
 		}
 		JFrame frame = new Plot().add("GUO", population).show();
 		EventQueue.invokeAndWait(()->frame.setVisible(true));

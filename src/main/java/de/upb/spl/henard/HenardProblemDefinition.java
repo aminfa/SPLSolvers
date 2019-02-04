@@ -1,9 +1,9 @@
-package de.upb.spl.guo11;
+package de.upb.spl.henard;
 
-import de.upb.spl.benchmarks.BenchmarkEnvironment;
-import de.upb.spl.benchmarks.BenchmarkReport;
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
+import de.upb.spl.benchmarks.BenchmarkEnvironment;
+import de.upb.spl.benchmarks.BenchmarkReport;
 import fm.FeatureTreeNode;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
@@ -18,12 +18,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class GuoProblemDefinition extends AbstractProblem {
-	private final static Logger logger = LoggerFactory.getLogger("GUO_11");
+public class HenardProblemDefinition extends AbstractProblem {
+	private final static Logger logger = LoggerFactory.getLogger("Henard");
 	final private BenchmarkEnvironment env;
 	private final List<FeatureTreeNode> featureOrder;
 
-	GuoProblemDefinition(BenchmarkEnvironment env) {
+	HenardProblemDefinition(BenchmarkEnvironment env) {
 		super(0, env.objectives().size());
 		this.env = env;
 		featureOrder = FMUtil.featureStream(env.model()).collect(Collectors.toList());

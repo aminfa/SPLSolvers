@@ -1,5 +1,6 @@
 package de.upb.spl.benchmarks;
 
+import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.guo11.Guo11;
 import fm.FeatureModel;
@@ -24,14 +25,12 @@ public class VideoEncoderEnv implements  BenchmarkEnvironment {
 	final static String testVideo = "flower_garden";
 
 
-	final Random generator = new Random(12);
+	final Random generator = new Random();
 
 	ExecutorService executorService = Executors.newFixedThreadPool(4);
 
 
 	static {
-		final Random random = new Random(2);
-		;
 		final String featureModelFile = VideoEncoderEnv.class.getClassLoader().getResource("video_encoder_x264.xml").getPath();
 		video_encoder_fm = new XMLFeatureModel(featureModelFile, XMLFeatureModel.USE_VARIABLE_NAME_AS_ID);
 		// Load the XML file and creates the feature model
@@ -60,8 +59,14 @@ public class VideoEncoderEnv implements  BenchmarkEnvironment {
 
 	@Override
 	public Future<BenchmarkReport> run(FeatureSelection selection) {
-		JobReport report = toReport(selection);
-		return executorService.submit(new SubmitVideoEncoding(agent, report));
+		try {
+			JobReport report = toReport(selection);
+			return executorService.submit(new SubmitVideoEncoding(agent, report));
+		} catch(Exception ex) {
+			logger.warn("Couldnt run benchmark for selection {}. Exception message: {}", selection, ex.getMessage());
+			logger.trace("Exception: ", ex);
+			return null;
+		}
 	}
 
 	private static class SubmitVideoEncoding implements Callable<BenchmarkReport> {
@@ -89,6 +94,9 @@ public class VideoEncoderEnv implements  BenchmarkEnvironment {
 	}
 
 	public JSONObject toConfiguration(FeatureSelection selection) {
+		if(! FMUtil.isValidSelection(model(), selection)) {
+			throw new IllegalArgumentException("Selection is not valid: " + selection);
+		}
 		JSONObject rootConfiguration = new JSONObject();
 		JSONObject config = new JSONObject();
 		config.put("interlaced", selection.isSelected("interlaced"));
@@ -254,11 +262,11 @@ public class VideoEncoderEnv implements  BenchmarkEnvironment {
 		Objects.requireNonNull(parameterName);
 		switch (parameterName) {
 			case Guo11.INIT_D:
-				return (T) Double.valueOf(0.3);
+				return (T) Double.valueOf(0.5);
 			case Guo11.INIT_POPULATION_SIZE:
-				return (T) Integer.valueOf(20);
+				return (T) Integer.valueOf(30);
 			case Guo11.GA_GENERATIONS:
-				return (T) Integer.valueOf(50);
+				return (T) Integer.valueOf(1000);
 			default:
 				throw new IllegalArgumentException("Parameter " + parameterName + " is not defined.");
 		}

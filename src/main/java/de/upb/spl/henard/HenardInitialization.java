@@ -1,9 +1,10 @@
-package de.upb.spl.guo11;
+package de.upb.spl.henard;
 
-import de.upb.spl.benchmarks.BenchmarkEnvironment;
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
+import de.upb.spl.benchmarks.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.BenchmarkReport;
+import de.upb.spl.guo11.FesTransform;
 import fm.FeatureTreeNode;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Solution;
@@ -20,20 +21,18 @@ import java.util.concurrent.Future;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class GuoInitialization implements Initialization {
+public class HenardInitialization implements Initialization {
 
-	private final static Logger logger = LoggerFactory.getLogger(GuoInitialization.class);
+	private final static Logger logger = LoggerFactory.getLogger("Henard");
 
 	final private BenchmarkEnvironment env;
-	final private Double d;  // [0, 1] parameter d determines expected number of selected features in every generated chromosome.
 	final private Integer	 p,  // population size
 					     n ; // number of features
 
-	GuoInitialization(BenchmarkEnvironment environment) {
+	HenardInitialization(BenchmarkEnvironment environment) {
 		this.env = environment;
 		this.n = FMUtil.countVariantFeatures(env.model());
-		this.d = environment.readParameter(Guo11.INIT_D);
-		this.p = environment.readParameter(Guo11.INIT_POPULATION_SIZE);
+		this.p = environment.readParameter(Henard.INIT_POPULATION_SIZE);
 	}
 
 
@@ -51,9 +50,6 @@ public class GuoInitialization implements Initialization {
 			for (int j = 0; j < n; j++) {
 				double rand = generator.nextDouble();
 				boolean gene = false;
-				if(rand < d) {
-					gene = true;
-				}
 				binaryString.set(j, gene);
 			}
 			FeatureSelection selection = FMUtil.selectFromPredicate(featureOrder, binaryString::get);

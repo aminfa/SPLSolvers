@@ -1,5 +1,6 @@
+package de.upb.spl;
+
 import constraints.PropositionalFormula;
-import de.upb.spl.FMUtil;
 import fm.*;
 import org.junit.BeforeClass;
 import org.junit.Test;

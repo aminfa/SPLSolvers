@@ -24,11 +24,77 @@ public class FMUtil {
 	private static class FeatureModelCache {
 		final List<FeatureTreeNode> nodes;
 		final List<FeatureTreeNode> optionalNodes;
+		final List<CrossTreeConstraint> ctcs;
+		final DefaultMap<FeatureTreeNode, List<FeatureTreeNode>> premisses;
+		final DefaultMap<FeatureTreeNode, List<FeatureTreeNode>> exclusions;
+		final DefaultMap<FeatureTreeNode, List<FeatureTreeNode>> conclusions;
 		FeatureModelCache(FeatureModel fm) {
+			{
+				ctcs = new ArrayList<>();
+				for(PropositionalFormula formula : fm.getConstraints()) {
+					CrossTreeConstraint interpretation = ctc(fm, formula);
+					ctcs.add(interpretation);
+				}
+				/*
+				 * CROSS TREE CONSTRAINTS
+				 */
+				premisses = new DefaultMap<FeatureTreeNode, List<FeatureTreeNode>>(feature-> {
+					List<FeatureTreeNode> impliedByFeatures = new ArrayList<>();
+
+					for(CrossTreeConstraint interpretation : ctcs){
+						if(interpretation.isConclusion(feature)) {
+							// implication:
+							impliedByFeatures.add(interpretation.feature1);
+						}
+					}
+					return impliedByFeatures;
+				});
+
+				exclusions = new DefaultMap<FeatureTreeNode, List<FeatureTreeNode>>(feature-> {
+					List<FeatureTreeNode> excludedFeatures = new ArrayList<>();
+					for(CrossTreeConstraint interpretation : ctcs){
+						if(interpretation.isExclusion(feature)) {
+							// exclusion:
+							excludedFeatures.add(interpretation.other(feature));
+						}
+					}
+					return excludedFeatures;
+				});
+				conclusions = new DefaultMap<FeatureTreeNode, List<FeatureTreeNode>>(feature-> {
+					List<FeatureTreeNode> impliedFeatures = new ArrayList<>();
+					for (CrossTreeConstraint interpretation : ctcs) {
+						if (interpretation.isPremiss(feature)) {
+							// implication:
+							impliedFeatures.add(interpretation.feature2);
+						}
+					}
+					return impliedFeatures;
+				});
+			}
 			nodes = new ArrayList<>();
 			new FeatureModelIterable(fm).forEachRemaining(nodes::add);
+
 			optionalNodes = new ArrayList<>();
-			new FilteredIterator<FeatureTreeNode>(new FeatureModelIterable(fm), feature -> FMUtil.isImpliedFeature(fm, feature)).forEachRemaining(optionalNodes::add);
+			new FilteredIterator<FeatureTreeNode>(new FeatureModelIterable(fm), this::isImpliedFeature).forEachRemaining(optionalNodes::add);
+		}
+
+		boolean isImpliedFeature(FeatureTreeNode feature) {
+			/*
+			 * If there is a cross tree constraint `a->b` with b==feature and a is NOT optional then b is also not optional:
+			 * (if there is another contraint `b->a`, the recursion will loop endlessly. To shield against that it is checked if 'b->a' exists.)
+			 *
+			 */
+			List<FeatureTreeNode> impliedFeatures = conclusions.get(feature);
+			List<FeatureTreeNode> impliedByFeatures = premisses.get(feature);
+			for(FeatureTreeNode premiss : impliedByFeatures) {
+				if(!impliedFeatures.contains(premiss) && !isImpliedFeature(premiss)) {
+					return true;
+				}
+			}
+			/*
+			 * If feature is optional or in a alternative/or-group it is not implied.
+			 */
+			return isOptionalFeature(feature);
 		}
 	}
 
@@ -82,7 +148,7 @@ public class FMUtil {
 	 *
 	 *
 	 */
-	static class CrossTreeConstraint {
+	public static class CrossTreeConstraint {
 		public final FeatureTreeNode feature1, feature2;
 		public final boolean implication;
 
@@ -147,6 +213,10 @@ public class FMUtil {
 		return cache.get(model).optionalNodes.stream();
 	}
 
+	public static List<CrossTreeConstraint> crossTreeConstraints(FeatureModel model) {
+		return  cache.get(model).ctcs;
+	}
+
 	public static int countFeatures(FeatureModel model){
 		return cache.get(model).nodes.size();
 	}
@@ -159,13 +229,24 @@ public class FMUtil {
 		return feature.getParent() == null;
 	}
 
+	public static boolean isAlternativeGroup(FeatureTreeNode feature) {
+		if(feature instanceof FeatureGroup) {
+			return ((FeatureGroup) feature).getMin() == 1 && ((FeatureGroup)feature).getMax() == 1;
+		} else {
+			return false;
+		}
+	}
+
 	public static boolean isInAlternativeGroup(FeatureTreeNode feature) {
 		if(isRoot(feature)) {
 			return false;
 		}
-		FeatureTreeNode parent = (FeatureTreeNode) feature.getParent();
-		if(parent instanceof FeatureGroup) {
-			return ((FeatureGroup) parent).getMin() == 1 && ((FeatureGroup)parent).getMax() == 1;
+		return isAlternativeGroup((FeatureTreeNode) feature.getParent());
+	}
+
+	public static boolean isOrGroup(FeatureTreeNode feature) {
+		if(feature instanceof FeatureGroup) {
+			return ((FeatureGroup) feature).getMin() == 1 && ((FeatureGroup)feature).getMax() == -1;
 		} else {
 			return false;
 		}
@@ -176,30 +257,11 @@ public class FMUtil {
 			return false;
 		}
 		FeatureTreeNode parent = (FeatureTreeNode) feature.getParent();
-		if(parent instanceof FeatureGroup) {
-			return ((FeatureGroup) parent).getMin() == 1 && ((FeatureGroup)parent).getMax() == -1;
-		} else {
-			return false;
-		}
+		return isOrGroup(parent);
 	}
 
 	public static boolean isImpliedFeature(FeatureModel fm, FeatureTreeNode feature){
-		/*
-		 * If there is a cross tree constraint `a->b` with b==feature and a is NOT optional then b is also not optional:
-		 * (if there is another contraint `b->a`, the recursion will loop endlessly. To shield against that it is checked if 'b->a' exists.)
-		 *
-		 */
-		List<FeatureTreeNode> impliedFeatures = crosstreeConclusions(fm, feature);
-		List<FeatureTreeNode> impliedByFeatures = crosstreePremises(fm, feature);
-		for(FeatureTreeNode premiss : impliedByFeatures) {
-			if(!impliedFeatures.contains(premiss) && !isImpliedFeature(fm, premiss)) {
-				return true;
-			}
-		}
-		/*
-		 * If feature is optional or in a alternative/or-group it is not implied.
-		 */
-		return isOptionalFeature(feature);
+		return !cache.get(fm).optionalNodes.contains(feature);
 	}
 
 	public static boolean isOptionalFeature(FeatureTreeNode feature) {
@@ -265,43 +327,16 @@ public class FMUtil {
 
 
 	public static List<FeatureTreeNode> crosstreeConclusions(FeatureModel model, FeatureTreeNode feature) {
-		List<FeatureTreeNode> impliedFeatures = new ArrayList<>();
-		for(PropositionalFormula formula : model.getConstraints()) {
-			CrossTreeConstraint interpretation = ctc(model, formula);
-			if(interpretation.isPremiss(feature)) {
-				// implication:
-				impliedFeatures.add(interpretation.feature2);
-			}
-		}
-		return impliedFeatures;
+		return cache.get(model).conclusions.get(feature);
 	}
 
 	public static List<FeatureTreeNode> crosstreePremises(FeatureModel model, FeatureTreeNode feature) {
-		List<FeatureTreeNode> impliedByFeatures = new ArrayList<>();
-
-		for(PropositionalFormula formula : model.getConstraints()) {
-			CrossTreeConstraint interpretation = ctc(model, formula);
-			if(interpretation.isConclusion(feature)) {
-				// implication:
-				impliedByFeatures.add(interpretation.feature1);
-			}
-		}
-		return impliedByFeatures;
+		return cache.get(model).premisses.get(feature);
 	}
 
 	public static List<FeatureTreeNode> crosstreeExclusion(FeatureModel model, FeatureTreeNode feature) {
-		List<FeatureTreeNode> excludedFeatures = new ArrayList<>();
-		for(PropositionalFormula formula : model.getConstraints()) {
-			CrossTreeConstraint interpretation = ctc(model, formula);
-			if(interpretation.isExclusion(feature)) {
-				// exclusion:
-				excludedFeatures.add(interpretation.other(feature));
-			}
-		}
-		return excludedFeatures;
+		return cache.get(model).exclusions.get(feature);
 	}
-
-
 
 	public static Iterable<FeatureTreeNode> children(FeatureTreeNode feature) {
 		final int childCount = feature.getChildCount();
@@ -321,8 +356,7 @@ public class FMUtil {
 	}
 
 	public static void addImpliedFeatures(FeatureModel fm, FeatureSelection selection) {
-		for(PropositionalFormula formula : fm.getConstraints()) {
-			CrossTreeConstraint interpretation = ctc(fm, formula);
+		for(CrossTreeConstraint interpretation : crossTreeConstraints(fm)){
 			/*
 			 * if implication is true:
 			 *  	feature1 implies feature2
@@ -366,8 +400,8 @@ public class FMUtil {
 	}
 
 	public static boolean isValidSelection(FeatureModel fm, FeatureSelection selection) {
-		for(PropositionalFormula formula : fm.getConstraints()) {
-			CrossTreeConstraint interpretation = ctc(fm, formula);
+
+		for(CrossTreeConstraint interpretation : crossTreeConstraints(fm)){
 
 			if(interpretation.implication && selection.isSelected(interpretation.feature1) && !selection.isSelected(interpretation.feature2)) {
 				return false; // implication violated
