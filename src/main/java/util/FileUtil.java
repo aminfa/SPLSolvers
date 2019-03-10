@@ -74,6 +74,20 @@ public class FileUtil {
 		}
 	}
 
+	public static String nextFreeFile(String path, String ending) {
+		if(ending == null) {
+			ending = "";
+		}
+		String filePath = path + "_%02d" + ending;
+		int i = 0;
+		File file;
+		do {
+			file = new File(String.format(filePath, i));
+			i++;
+		} while(file.exists());
+		return String.format(filePath, i);
+	}
+
 	/**
 	 * Write the given content to the given file. Creates the directory and the file
 	 * if it doesn't exist. Deletes (overwrites) the old content if the file already

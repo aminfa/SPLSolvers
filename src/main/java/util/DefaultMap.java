@@ -1,5 +1,8 @@
 package util;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -10,8 +13,7 @@ import java.util.function.Supplier;
 public class DefaultMap<K, V> {
 
 	private transient Function<K, V> defaultValueSupplier;
-
-	private final Map<K, V> innerMap = new ConcurrentHashMap<>();
+	private final Object2ObjectMap<K, V> innerMap = new Object2ObjectOpenHashMap<>();
 
 	public DefaultMap(Supplier<V> defaultValueSupplier) {
 		this(l -> defaultValueSupplier.get());

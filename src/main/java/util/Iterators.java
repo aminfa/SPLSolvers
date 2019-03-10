@@ -25,20 +25,21 @@ public class Iterators {
 
 		}
 	}
-	public static <T> Iterator<Integer> map(final Iterator<T> iterator, final Function<T, Integer> function) {
-		return new Iterator<Integer>() {
+    public static <T> Iterator<Integer> map(final Iterator<T> iterator, final Function<T, Integer> function) {
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
 
-			@Override
-			public boolean hasNext() {
-				return iterator.hasNext();
-			}
+            @Override
+            public Integer next() {
+                return function.apply(iterator.next());
+            }
+        };
+    }
 
-			@Override
-			public Integer next() {
-				return function.apply(iterator.next());
-			}
-		};
-	}
+
 
 
 }

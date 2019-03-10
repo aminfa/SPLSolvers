@@ -1,0 +1,25 @@
+<feature_model name="video encoder">
+<feature_tree>
+:r Root
+	:m Compile
+		:o opt1
+		:o opt2
+		:o opt3
+	:g [1,1] Preset
+		: fast
+		: small
+	:g [1, -1]
+		: a1
+		: a2
+		: a3
+	:m Runtime
+		:o compress
+		:o encrypt
+</feature_tree>
+<constraints>
+	c1: ~compress or opt1
+	c2: ~compress or opt2
+	c3: ~encrypt or ~fast
+	c4: ~opt3 or encrypt
+</constraints>
+</feature_model>

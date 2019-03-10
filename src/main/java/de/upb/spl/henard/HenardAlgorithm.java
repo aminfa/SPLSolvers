@@ -1,7 +1,7 @@
 package de.upb.spl.henard;
 
 import de.upb.spl.FeatureSelection;
-import de.upb.spl.benchmarks.BenchmarkEnvironment;
+import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.guo11.FesTransform;
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.*;
@@ -70,7 +70,7 @@ public class HenardAlgorithm extends AbstractEvolutionaryAlgorithm {
 		newChr.set(flipGeneIndex, ! newChr.get(flipGeneIndex));
 
 		FeatureSelection newSelection = problem.selection(newChr);
-		FesTransform transform = new FesTransform(env().model(), newSelection);
+		FesTransform transform = new FesTransform(env().model(), newSelection, env().generator());
 		newChr = problem.binarize(transform.getValidSelection());
 		/*
 		 * If the generated offspring is superior to both parents, it replaces the similar parent;

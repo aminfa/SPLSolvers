@@ -1,6 +1,7 @@
 package de.upb.spl.benchmarks;
 
 import de.upb.spl.FeatureSelection;
+import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -13,11 +14,11 @@ public abstract class BenchmarkSimulation implements BenchmarkEnvironment {
 	private final BiFunction<FeatureSelection, String, Double> simulation;
 
 	public BenchmarkSimulation(BiFunction<FeatureSelection, String, Double> simulation) {
-		this.simulation = simulation;
+	    this.simulation = simulation;
 	}
 
 	@Override
-	public final Future<BenchmarkReport> run(FeatureSelection selection) {
+	public final Future<BenchmarkReport> run(FeatureSelection selection, String clientName) {
 		return new Future<BenchmarkReport>() {
 			@Override
 			public boolean cancel(boolean mayInterruptIfRunning) {
@@ -36,22 +37,8 @@ public abstract class BenchmarkSimulation implements BenchmarkEnvironment {
 
 			@Override
 			public BenchmarkReport get() throws InterruptedException, ExecutionException {
-				return new BenchmarkReport() {
-					@Override
-					public Optional<Double> readResult(String objective) {
-						return Optional.ofNullable(simulation.apply(selection, objective));
-					}
-
-					@Override
-					public boolean constraintsViolated() {
-						return false;
-					}
-
-					@Override
-					public double resourceSum() {
-						return 1;
-					}
-				};
+			    bill(clientName).logEvaluation();
+				return objective -> Optional.ofNullable(simulation.apply(selection, objective));
 			}
 
 			@Override

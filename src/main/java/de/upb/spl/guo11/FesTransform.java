@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -16,18 +17,20 @@ import java.util.Set;
  */
 public class FesTransform {
 
-	private final static Logger logger = LoggerFactory.getLogger("GUO_11");
+	private final static Logger logger = LoggerFactory.getLogger(FesTransform.class);
 
 	private final FeatureModel fm;
 	private final Set<FeatureTreeNode>
-			Sv,	// output, a valid feature combination
+			Sv,	// output, a valid listFeatures combination
 			Se, // contains all the features that should be excluded
 			Sg; //
 
 	private final FeatureSet validFeatureSelection;
+	private final Random random;
 
-	public FesTransform(FeatureModel fm, FeatureSelection featureSelection) {
+	public FesTransform(FeatureModel fm, FeatureSelection featureSelection, Random random) {
 		this.fm = fm;
+		this.random = random;
 		Sv = new HashSet<>();
 		Se = new HashSet<>();
 		Sg = new HashSet<>();
@@ -41,11 +44,11 @@ public class FesTransform {
 		 * Collect features whose children are not contained in Sv:
 		 */
 		for(FeatureTreeNode feature : Sv) {
-			boolean childIncluded = false;
+			boolean childIncluded = true;
 			for(int i = 0; i < feature.getChildCount(); i++) {
 				FeatureTreeNode child = (FeatureTreeNode) feature.getChildAt(i);
-				if(Sv.contains(child)) {
-					childIncluded = true;
+				if(!Sv.contains(child)) {
+					childIncluded = false;
 					break;
 				}
 			}
@@ -60,7 +63,7 @@ public class FesTransform {
 			int childCount = feature.getChildCount();
 			if(feature.getChildCount() > 0) {
 				// include a random child
-				int randomChildIndex = (int) (Math.random() * childCount);
+				int randomChildIndex = random.nextInt(childCount);
 				FeatureTreeNode child = (FeatureTreeNode) feature.getChildAt(randomChildIndex);
 				includeFeature(child);
 			}
@@ -76,16 +79,24 @@ public class FesTransform {
 		} else {
 			logger.trace("includeFeature:: Feature " + feature.toString() + " can't be added to Sv as "
 					+ (Sv.contains(feature)?" it is already included." : " it is already excluded."));
+			return;
 		}
 		if(!FMUtil.isRoot(feature)) {
 			includeFeature((FeatureTreeNode) feature.getParent());
 		}
 		if(FMUtil.isInAlternativeGroup(feature)) {
 			FeatureTreeNode parent = (FeatureTreeNode) feature.getParent();
-			for(int i = 0, siblingcount = parent.getChildCount(); i < siblingcount; i++) {
-				FeatureTreeNode sibling = (FeatureTreeNode) parent.getChildAt(i);
+			for(FeatureTreeNode sibling : FMUtil.children(parent)) {
 				if(sibling != feature) {
 					excludeFeature(sibling);
+				}
+			}
+		}
+
+		if(! FMUtil.isAlternativeGroup(feature)){
+			for(FeatureTreeNode child : FMUtil.children(feature)) {
+				if(!FMUtil.isOptionalFeature(child)) {
+					includeFeature(child);
 				}
 			}
 		}
@@ -107,7 +118,7 @@ public class FesTransform {
 		if(!Sv.contains(feature) && !Se.contains(feature)){
 			Se.add(feature);
 		} else {
-			logger.trace("excludeFeature:: Feature " + feature.toString() + " can't be added to Se as "
+			if(logger.isTraceEnabled()) logger.trace("excludeFeature:: Feature " + feature.toString() + " can't be added to Se as "
 					+ (Sv.contains(feature) ? " it is already included." : " it is already excluded."));
 //			return;
 		}

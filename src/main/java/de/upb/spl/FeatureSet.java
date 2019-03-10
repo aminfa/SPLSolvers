@@ -1,13 +1,12 @@
 package de.upb.spl;
 
-import de.upb.spl.FMUtil;
-import de.upb.spl.FeatureSelection;
 import fm.FeatureModel;
 import fm.FeatureTreeNode;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 import java.util.*;
 
-public class FeatureSet extends HashSet<FeatureTreeNode> implements FeatureSelection {
+public class FeatureSet extends ObjectOpenHashSet<FeatureTreeNode> implements FeatureSelection {
 
 	public FeatureSet(FeatureTreeNode... features) {
 		this.addAll(Arrays.asList(features));
@@ -17,7 +16,7 @@ public class FeatureSet extends HashSet<FeatureTreeNode> implements FeatureSelec
 		for(String featureId : featuresIds) {
 			FeatureTreeNode feature = fm.getNodeByID(featureId);
 			if(feature == null) {
-				throw new IllegalArgumentException("Cannot find feature with id " + featureId);
+				throw new IllegalArgumentException("Cannot find listFeatures with id " + featureId);
 			}
 			this.add(feature);
 		}
@@ -29,7 +28,7 @@ public class FeatureSet extends HashSet<FeatureTreeNode> implements FeatureSelec
 	 * @param fm
 	 */
 	public FeatureSet(FeatureModel fm) {
-		for(FeatureTreeNode featureTreeNode : FMUtil.featureIterable(fm)) {
+		for(FeatureTreeNode featureTreeNode : FMUtil.listFeatures(fm)) {
 			this.add(featureTreeNode);
 		}
 	}

@@ -15,7 +15,9 @@ public interface FeatureSelection extends Predicate<FeatureTreeNode>, Iterable<F
 		return isSelected(featureTreeNode);
 	}
 
-	boolean isSelectionEqual(Iterator<FeatureTreeNode> nodes, FeatureSelection featureSelection);
+	default boolean isSelectionEqual(Iterator<FeatureTreeNode> nodes, FeatureSelection featureSelection){
+	    throw new UnsupportedOperationException();
+    }
 
 	boolean isSelected(String featureId);
 

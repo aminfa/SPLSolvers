@@ -1,7 +1,5 @@
 package de.upb.spl;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Streams;
 import constraints.BooleanVariable;
 import constraints.PropositionalFormula;
 import fm.*;
@@ -11,10 +9,7 @@ import util.FilteredIterator;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FMUtil {
@@ -22,14 +17,16 @@ public class FMUtil {
 	private final static DefaultMap<FeatureModel, FeatureModelCache> cache = new DefaultMap<FeatureModel, FeatureModelCache>(FeatureModelCache::new);
 
 	private static class FeatureModelCache {
+
 		final List<FeatureTreeNode> nodes;
+		final List<FeatureTreeNode> sayyadUnfixedFeatures;
 		final List<FeatureTreeNode> optionalNodes;
 		final List<CrossTreeConstraint> ctcs;
 		final DefaultMap<FeatureTreeNode, List<FeatureTreeNode>> premisses;
 		final DefaultMap<FeatureTreeNode, List<FeatureTreeNode>> exclusions;
 		final DefaultMap<FeatureTreeNode, List<FeatureTreeNode>> conclusions;
 		FeatureModelCache(FeatureModel fm) {
-			{
+		    {
 				ctcs = new ArrayList<>();
 				for(PropositionalFormula formula : fm.getConstraints()) {
 					CrossTreeConstraint interpretation = ctc(fm, formula);
@@ -74,13 +71,34 @@ public class FMUtil {
 			nodes = new ArrayList<>();
 			new FeatureModelIterable(fm).forEachRemaining(nodes::add);
 
+            sayyadUnfixedFeatures = new ArrayList<>();
+            new FilteredIterator<FeatureTreeNode>(nodes.iterator(), this::isSayyadUnfixed).forEachRemaining(sayyadUnfixedFeatures::add);
+
+
 			optionalNodes = new ArrayList<>();
-			new FilteredIterator<FeatureTreeNode>(new FeatureModelIterable(fm), this::isImpliedFeature).forEachRemaining(optionalNodes::add);
+			new FilteredIterator<FeatureTreeNode>(nodes.iterator(), this::isImpliedFeature).forEachRemaining(optionalNodes::add);
 		}
+
+		boolean isSayyadUnfixed(FeatureTreeNode feature) {
+		    if(feature.isRoot()) {
+		        return false;
+            }
+		    if(!FMUtil.isOptionalFeature(feature) && !isSayyadUnfixed((FeatureTreeNode) feature.getParent())) {
+		        return false;
+            }
+            List<FeatureTreeNode> impliedFeatures = conclusions.get(feature);
+            List<FeatureTreeNode> impliedByFeatures = premisses.get(feature);
+		    for(FeatureTreeNode premiss : impliedByFeatures) {
+                if(!impliedFeatures.contains(premiss) && !isSayyadUnfixed(premiss)) {
+                    return false;
+                }
+            }
+		    return true;
+        }
 
 		boolean isImpliedFeature(FeatureTreeNode feature) {
 			/*
-			 * If there is a cross tree constraint `a->b` with b==feature and a is NOT optional then b is also not optional:
+			 * If there is a cross tree constraint `a->b` with b==listFeatures and a is NOT optional then b is also not optional:
 			 * (if there is another contraint `b->a`, the recursion will loop endlessly. To shield against that it is checked if 'b->a' exists.)
 			 *
 			 */
@@ -92,15 +110,15 @@ public class FMUtil {
 				}
 			}
 			/*
-			 * If feature is optional or in a alternative/or-group it is not implied.
+			 * If listFeatures is optional or in a alternative/or-group it is not implied.
 			 */
 			return isOptionalFeature(feature);
 		}
+
 	}
-
 	private static class FeatureModelIterable implements Iterator<FeatureTreeNode> {
-		FeatureTreeNode current;
 
+		FeatureTreeNode current;
 
 		FeatureModelIterable(FeatureModel model) {
 			this.current = model.getRoot();
@@ -139,6 +157,7 @@ public class FMUtil {
 			}
 			return toBeReturned;
 		}
+
 	}
 	/**
 	 * if implication is true:
@@ -151,7 +170,6 @@ public class FMUtil {
 	public static class CrossTreeConstraint {
 		public final FeatureTreeNode feature1, feature2;
 		public final boolean implication;
-
 		CrossTreeConstraint(FeatureTreeNode feature1, FeatureTreeNode feature2, boolean implication) {
 			this.feature1 = feature1;
 			this.feature2 = feature2;
@@ -164,13 +182,14 @@ public class FMUtil {
 			} else if(feature2 == feature) {
 				return feature1;
 			} else {
-				throw new IllegalArgumentException("The supplied feature isn't contained in this constraint.");
+				throw new IllegalArgumentException("The supplied listFeatures isn't contained in this constraint.");
 			}
 		}
 
 		boolean isPremiss(FeatureTreeNode feature) {
 			return implication && feature == feature1;
 		}
+
 		boolean isConclusion(FeatureTreeNode feature) {
 			return implication && feature == feature2;
 		}
@@ -178,7 +197,6 @@ public class FMUtil {
 			return implication && (feature == feature1 || feature == feature2);
 		}
 	}
-
 	public static FeatureSelection selectFromPredicate(List<FeatureTreeNode> features, Predicate<Integer> selection) {
 		FeatureSet set = new FeatureSet();
 		for (int i = 0, size = features.size(); i < size; i++) {
@@ -191,26 +209,25 @@ public class FMUtil {
 	}
 
 	public static Predicate<Integer> predicateFromSelection(List<FeatureTreeNode> features, FeatureSelection selection) {
-		return i -> {
-			return selection.isSelected(features.get(i));
-		};
+		return i -> selection.isSelected(features.get(i));
 	}
 
 
-	public static Iterable<FeatureTreeNode> featureIterable(FeatureModel model){
+	public static List<FeatureTreeNode> listFeatures(FeatureModel model){
 		return cache.get(model).nodes;
 	}
 
-	public static Iterable<FeatureTreeNode> optFeatureIterable(FeatureModel model){
-		return cache.get(model).optionalNodes;
-	}
+
+	public static List<FeatureTreeNode> listUnfixedFeatures(FeatureModel model) {
+        return cache.get(model).sayyadUnfixedFeatures;
+    }
 
 	public static Stream<FeatureTreeNode> featureStream(FeatureModel model){
 		return cache.get(model).nodes.stream();
 	}
 
-	public static Stream<FeatureTreeNode> optFeatureStream(FeatureModel model){
-		return cache.get(model).optionalNodes.stream();
+	public static Stream<FeatureTreeNode> unfixedFeatureStream(FeatureModel model){
+		return cache.get(model).sayyadUnfixedFeatures.stream();
 	}
 
 	public static List<CrossTreeConstraint> crossTreeConstraints(FeatureModel model) {
@@ -266,7 +283,7 @@ public class FMUtil {
 
 	public static boolean isOptionalFeature(FeatureTreeNode feature) {
 		/*
-		 * If feature is optional or in a alternative/or-group it is optional.
+		 * If listFeatures is optional or in a alternative/or-group it is optional.
 		 */
 		if(feature instanceof SolitaireFeature && ((SolitaireFeature)feature).isOptional()) {
 			return true;
@@ -311,7 +328,7 @@ public class FMUtil {
 						"at least one variable needs to be negative in each constraint: " + formula.toString());
 			}
 		}
-		for(FeatureTreeNode feature : featureIterable(model)) {
+		for(FeatureTreeNode feature : listFeatures(model)) {
 			if(feature instanceof FeatureGroup) {
 				RuntimeException illegalGroupCardinality = new IllegalArgumentException("ILLEGAL GROUP CARDINALITY, " +
 						"only alternative and or groups are allowed: " + feature.toString());
@@ -337,6 +354,8 @@ public class FMUtil {
 	public static List<FeatureTreeNode> crosstreeExclusion(FeatureModel model, FeatureTreeNode feature) {
 		return cache.get(model).exclusions.get(feature);
 	}
+
+
 
 	public static Iterable<FeatureTreeNode> children(FeatureTreeNode feature) {
 		final int childCount = feature.getChildCount();
@@ -373,7 +392,7 @@ public class FMUtil {
 		boolean newFeatureSelected = true;
 		while(newFeatureSelected) {
 			newFeatureSelected = false;
-			for(FeatureTreeNode feature : featureIterable(fm)) { // the iterator guarantees that parents are visited before their children
+			for(FeatureTreeNode feature : listFeatures(fm)) { // the iterator guarantees that parents are visited before their children
 				if(selection.isSelected(feature)) {
 					{
 						/*
@@ -389,7 +408,7 @@ public class FMUtil {
 						 * Add non optional children:
 						 */
 						for(FeatureTreeNode child : FMUtil.children(feature)) {
-							if(!isImpliedFeature(fm, child)) {
+							if(!isOptionalFeature(child)) {
 								newFeatureSelected = selection.add(child);
 							}
 						}
@@ -405,14 +424,14 @@ public class FMUtil {
 
 			if(interpretation.implication && selection.isSelected(interpretation.feature1) && !selection.isSelected(interpretation.feature2)) {
 				return false; // implication violated
-			} else if(interpretation.implication && selection.isSelected(interpretation.feature1) && !selection.isSelected(interpretation.feature2)) {
+			} else if(!interpretation.implication && (selection.isSelected(interpretation.feature1) && selection.isSelected(interpretation.feature2))) {
 				return false; // exclusion violated
 			}
 		}
 		if(!selection.isSelected(fm.getRoot())) {
 			return false;
 		}
-		for(FeatureTreeNode feature : featureIterable(fm)) { // the iterator guarantees that parents are visited before their children
+		for(FeatureTreeNode feature : listFeatures(fm)) { // the iterator guarantees that parents are visited before their children
 			if(selection.isSelected(feature)) {
 				if(!isRoot(feature) && !selection.isSelected((FeatureTreeNode) feature.getParent())) {
 					return false;
@@ -437,6 +456,18 @@ public class FMUtil {
 			}
 		}
 		return true;
+	}
+
+	/*
+	 * CNF methods:
+	 */
+
+	public static String id(FeatureTreeNode feature) {
+		return feature.getID();
+	}
+
+	public static FeatureTreeNode find(FeatureModel fm, String name) {
+		return fm.getNodeByID(name);
 	}
 
 

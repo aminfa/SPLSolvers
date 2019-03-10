@@ -6,7 +6,8 @@ public interface BenchmarkReport {
 
 	Optional<Double> readResult(String objective);
 
-	boolean constraintsViolated();
+	default Optional<Double> rawResult(String objective) {
+	    return readResult(objective);
+    }
 
-	double resourceSum();
 }

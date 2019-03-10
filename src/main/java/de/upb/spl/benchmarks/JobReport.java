@@ -8,8 +8,6 @@ import java.util.*;
 
 public class JobReport {
 
-
-
 	private final Map report = new HashMap<>();
 
 	private final static Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -53,7 +51,7 @@ public class JobReport {
 		report.put("workerId", workerId);
 	}
 
-	public void setConfiguration(Map configuration, String... hashEntries) {
+	public void setConfiguration(Object configuration, String... hashEntries) {
 		report.put("configuration", configuration);
 		setConfigHashRoots(hashEntries);
 	}
@@ -112,4 +110,20 @@ public class JobReport {
 	public List<String> getConfigHashes() {
 		return (List<String>) report.get("hash");
 	}
+
+	public List<String> getObjectives() {
+		return (List<String>) report.get("objectives");
+	}
+
+	public void setObjectives(List<String> objectives) {
+		report.put("objectives", objectives);
+	}
+
+    public void setClient(String clientName) {
+	    report.put("client", clientName);
+    }
+
+    public String getClientName() {
+	    return (String) report.get("client");
+    }
 }

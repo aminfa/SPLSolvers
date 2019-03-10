@@ -13,9 +13,9 @@ public class FMTest {
 
 	@BeforeClass
 	public static void load() throws FeatureModelException {
-		String featureModelFile = FMTest.class.getClassLoader().getResource("video_encoder.xml").getPath();
+		String featureModelFile = FMTest.class.getClassLoader().getResource("video_encoder_simple.xml").getPath();
 		featureModel = new XMLFeatureModel(featureModelFile, XMLFeatureModel.USE_VARIABLE_NAME_AS_ID);
-		// Load the XML file and creates the feature model
+		// Load the XML file and creates the listFeatures model
 		featureModel.loadModel();
 	}
 
@@ -23,8 +23,8 @@ public class FMTest {
 	public void print() {
 		
 
-		// A feature model object contains a feature tree and a set of contraints
-		// Let's traverse the feature tree first. We start at the root feature in depth first search.
+		// A listFeatures model object contains a listFeatures tree and a set of contraints
+		// Let's traverse the listFeatures tree first. We start at the root listFeatures in depth first search.
 		System.out.println("FEATURE TREE --------------------------------");
 		traverseDFS(featureModel.getRoot(), 0);
 
@@ -32,7 +32,7 @@ public class FMTest {
 		System.out.println("EXTRA CONSTRAINTS ---------------------------");
 		traverseConstraints(featureModel);
 
-		// Now, let's print some statistics about the feature model
+		// Now, let's print some statistics about the listFeatures model
 		FeatureModelStatistics stats = new FeatureModelStatistics(featureModel);
 		stats.update();
 
@@ -71,7 +71,7 @@ public class FMTest {
 			int maxCardinality = ((FeatureGroup)node).getMax();
 			System.out.print("Feature Group[" + minCardinality + "," + maxCardinality + "]"); 
 		}
-		// Grouped feature
+		// Grouped listFeatures
 		else {
 			System.out.print("Grouped");
 		}
