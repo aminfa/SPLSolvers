@@ -170,17 +170,16 @@ public class FMSAT {
 	}
 
 
-	public VecInt violatedFeatures(VecInt selection) {
+	public VecInt violatingFeatures(FeatureSelection selection) {
 		VecInt vialotedFeatures = new VecInt((selection.size()/2));
 		Set<Integer> blacklistedFeatures = new HashSet<>();
 		for (VecInt clause : clauses) {
-			if (satisfiesClause(clause, selection.toArray())) {
+			if (satisfiesClause(clause, selection)) {
 				continue;
 			}
 			IteratorInt it = clause.iterator();
 			while(it.hasNext()) {
 				blacklistedFeatures.add(LiteralUtil.global.positiv(it.next()));
-
 			}
 		}
 		blacklistedFeatures.forEach(vialotedFeatures::push);
@@ -245,7 +244,7 @@ public class FMSAT {
 			int i = it.next();
 			int abs = (i < 0) ? -i : i;
 			boolean sign = i > 0;
-			if ( (model[(abs - 1)] > 0) == sign) {
+			if((model[(abs - 1)] > 0) == sign){
 				sat = true;
 				break;
 			}

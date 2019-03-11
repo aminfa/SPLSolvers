@@ -40,7 +40,7 @@ public class FesTransformTest {
 
 	@Test
 	public void testAll() {
-		int optionalFeatures = FMUtil.countVariantFeatures(featureModel);
+		int optionalFeatures = FMUtil.countFeatures(featureModel);
 		final Function<Integer, String> binarize = i -> String.format("%" + optionalFeatures +  "s", Integer.toBinaryString(i)).replace(' ', '0');
 		final Function<String, FeatureSelection> selectioner = binaryString -> FMUtil.selectFromPredicate(FMUtil.featureStream(featureModel).collect(Collectors.toList()),
 				binaryString.chars().mapToObj(ch -> (char)ch).map(ch -> ch.equals('1')).collect(Collectors.toList())::get);

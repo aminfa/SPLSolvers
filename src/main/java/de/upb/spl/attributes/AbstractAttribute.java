@@ -9,15 +9,21 @@ import java.util.Objects;
 public abstract class AbstractAttribute {
 	private final String attributeName;
 	private final String aggregationMethod;
+	private final boolean toBeMinimized;
 
-	public AbstractAttribute(String attributeName, String aggregationMethod) {
+	public AbstractAttribute(String attributeName, String aggregationMethod, boolean toBeMinimized) {
 		this.attributeName = Objects.requireNonNull(attributeName);
         this.aggregationMethod = aggregationMethod;
+        this.toBeMinimized = toBeMinimized;
     }
 
 	public String name() {
 		return attributeName;
 	}
+
+	public boolean isToBeMinimized() {
+	    return toBeMinimized;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -51,12 +57,13 @@ public abstract class AbstractAttribute {
 
     public static AbstractAttribute createFromConfig(AttributeConfiguration configuration, String attributeName) {
 	    String aggregationMethod = configuration.getAggregationMethod();
+	    boolean toBeMinimized = configuration.toBeMinimized();
 	    if(configuration.getDistributionType().equals("Gaussian")) {
-            return new GaussianDistAttribute(attributeName, aggregationMethod, configuration.getMean(), configuration.getDeviation());
+            return new GaussianDistAttribute(attributeName, aggregationMethod, toBeMinimized, configuration.getMean(), configuration.getDeviation());
         } else if(configuration.getDistributionType().equals("Uniform")) {
-            return new UniformAttribute(attributeName, aggregationMethod, configuration.getRangeStart(), configuration.getRangeEnd());
+            return new UniformAttribute(attributeName, aggregationMethod, toBeMinimized, configuration.getRangeStart(), configuration.getRangeEnd());
         } else if(configuration.getDistributionType().equals("Bernoulli")) {
-            return new BernoulliAttribute(attributeName, aggregationMethod, configuration.getBernoulliP());
+            return new BernoulliAttribute(attributeName, aggregationMethod, toBeMinimized, configuration.getBernoulliP());
         } else {
 	        throw new IllegalArgumentException("Distribution type is not known: " + configuration.getDistributionType());
         }
@@ -68,8 +75,8 @@ public abstract class AbstractAttribute {
 
     static class SimpleAttribute extends AbstractAttribute{
 
-		public SimpleAttribute(String attributeName, String aggregationMethod) {
-			super(attributeName, aggregationMethod);
+		public SimpleAttribute(String attributeName, String aggregationMethod, boolean toBeMinimized) {
+			super(attributeName, aggregationMethod, toBeMinimized);
 		}
 
 		@Override
@@ -81,8 +88,8 @@ public abstract class AbstractAttribute {
 	static class UniformAttribute extends AbstractAttribute{
 
 	    private final double start, end, size;
-        public UniformAttribute(String attributeName, String aggregationMethod, double start, double end) {
-            super(attributeName, aggregationMethod);
+        public UniformAttribute(String attributeName, String aggregationMethod, boolean toBeMinimized, double start, double end) {
+            super(attributeName, aggregationMethod, toBeMinimized);
             if(end >= start) {
                 this.start = start;
                 this.end = end;
@@ -104,8 +111,8 @@ public abstract class AbstractAttribute {
         private final double mean, dev;
         private final NormalDistribution distribution;
 
-        public GaussianDistAttribute(String attributeName, String aggregationMethod, double mean, double dev) {
-            super(attributeName, aggregationMethod);
+        public GaussianDistAttribute(String attributeName, String aggregationMethod, boolean toBeMinimized, double mean, double dev) {
+            super(attributeName, aggregationMethod, toBeMinimized);
             this.mean = mean;
             this.dev = dev;
             this.distribution = new NormalDistribution();
@@ -123,8 +130,8 @@ public abstract class AbstractAttribute {
 
 	    private final double p;
 
-        public BernoulliAttribute(String attributeName, String aggregationMethod, double p) {
-            super(attributeName, aggregationMethod);
+        public BernoulliAttribute(String attributeName, String aggregationMethod, boolean toBeMinimized, double p) {
+            super(attributeName, aggregationMethod, toBeMinimized);
             this.p = p;
         }
 

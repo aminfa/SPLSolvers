@@ -6,6 +6,7 @@ import de.upb.spl.benchmarks.BenchmarkAgent;
 import de.upb.spl.benchmarks.BenchmarkReport;
 import de.upb.spl.benchmarks.JobReport;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.concurrent.ConcurrentUtils;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,23 +37,33 @@ public class VideoEncoderEnv extends AbstractBenchmarkEnv implements BenchmarkEn
 
 	@Override
 	public Future<BenchmarkReport> run(FeatureSelection selection, String clientName) {
-		try {
-			JobReport report = toReport(selection, clientName);
-			return executorService.submit(new SubmitVideoEncoding(agent, report));
-		} catch(Exception ex) {
-			logger.warn("Couldnt run benchmark for assemble {}. Exception message: {}", selection, ex.getMessage());
-			logger.trace("Exception: ", ex);
-			return null;
-		}
+        BenchmarkBill bill = bill(clientName);
+        Optional<BenchmarkReport> loggedReport = bill.checkLog(selection);
+        if(loggedReport.isPresent()) {
+            BenchmarkReport report;
+            report = loggedReport.get();
+            return ConcurrentUtils.constantFuture(report);
+        } else {
+            try {
+                JobReport report = toReport(selection, clientName);
+                return executorService.submit(new SubmitVideoEncoding(agent, report, selection));
+            } catch(Exception ex) {
+                logger.warn("Couldnt run benchmark for assemble {}. Exception message: {}", selection, ex.getMessage());
+                logger.trace("Exception: ", ex);
+                return null;
+            }
+        }
 	}
 
 	private class SubmitVideoEncoding implements Callable<BenchmarkReport> {
 
 		final JobReport report;
 		final BenchmarkAgent agent;
-		SubmitVideoEncoding(BenchmarkAgent agent, JobReport report) {
+		final FeatureSelection selection;
+		SubmitVideoEncoding(BenchmarkAgent agent, JobReport report, FeatureSelection selection) {
 			this.report = report;
 			this.agent = agent;
+			this.selection = selection;
 		}
 
 		@Override
@@ -61,7 +72,7 @@ public class VideoEncoderEnv extends AbstractBenchmarkEnv implements BenchmarkEn
 			agent.jobs().waitForResults(report);
 			BenchmarkReport summary = new VideoEncoderReport(report);
             if(checkResults(summary)) {
-                bill(report.getClientName()).logEvaluation();
+                bill(report.getClientName()).logEvaluation(selection, summary);
             }
             return summary;
 		}

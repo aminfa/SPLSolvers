@@ -39,4 +39,8 @@ public interface AttributeConfiguration extends Mutable {
     @DefaultValue("sum")
     String getAggregationMethod();
 
+    @Key("de.upb.spl.AttributeConfiguration.minimized")
+    @DefaultValue("true")
+    Boolean toBeMinimized();
+
 }

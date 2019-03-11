@@ -1,21 +1,17 @@
 package de.upb.spl.benchmarks;
 
-import com.google.gson.JsonParser;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.FileUtil;
-import util.ShellUtil;
 import util.Streams;
 
-import java.io.UncheckedIOException;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Function;
 
 public class VideoEncoderExecutor implements Runnable{
 
@@ -133,9 +129,9 @@ public class VideoEncoderExecutor implements Runnable{
 		return application;
 	}
 
-	private Map getJobResult(String jobId) throws ParseException {
+	private Map getJobResult(String hash) throws ParseException {
 		JSONParser parser = new JSONParser();
-		JSONObject obj = (JSONObject) parser.parse(FileUtil.readFileAsString(Paths.get(BENCHMARK_DIR, "reports", jobId, "result.json").toString()));
+		JSONObject obj = (JSONObject) parser.parse(FileUtil.readFileAsString(Paths.get(BENCHMARK_DIR, "out_cache", hash, "report.json").toString()));
 		if(obj.containsKey("vmaf")) {
 			Map vmaf = (Map) obj.get("vmaf");
 			if (vmaf.containsKey("VMAF_score")) {
@@ -171,7 +167,7 @@ public class VideoEncoderExecutor implements Runnable{
         logger.info("Executing job {}.", report.getJobId());
 //		String shell_command = String.join(" ", shell_cmd);
         Process child = Runtime.getRuntime().exec(shell_cmd);
-        boolean exited = child.waitFor(5, TimeUnit.MINUTES);
+        boolean exited = child.waitFor(3, TimeUnit.MINUTES);
         if(!exited) {
             child.destroyForcibly();
             throw new RuntimeException("Execution timeout for job: " + report.getJobId());
@@ -185,7 +181,8 @@ public class VideoEncoderExecutor implements Runnable{
 		if(logger.isDebugEnabled()) {
 			FileUtil.writeStringToFile(String.format("x264-logs/%s-shellout-%s.log", getExecutorId(), report.getJobId()), shellOutput);
 		}
-		report.setResults(getJobResult(report.getJobId()));
+		String lastHash = report.getConfigHashes().get(report.getConfigHashes().size()-1);
+		report.setResults(getJobResult(lastHash));
 	}
 
 }

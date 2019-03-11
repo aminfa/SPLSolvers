@@ -29,7 +29,7 @@ public interface SPLReasonerConfiguration extends Mutable {
      * Universal
      */
     @Key("de.upb.spl.SPLReasoner.evaluations")
-    @DefaultValue("300")
+    @DefaultValue("50")
     Integer getEvaluationPermits();
 
     /*
@@ -40,10 +40,33 @@ public interface SPLReasonerConfiguration extends Mutable {
     Integer getBasicIbeaPopulationSize();
 
     @Key("de.upb.spl.SPLReasoner.ibea.indicator")
-    @DefaultValue("hypervolume")
+    @DefaultValue("epsilon")
     String getBasicIbeaIndicator();
 
+    @Key("de.upb.spl.SPLReasoner.ibea.p.bitflip")
+    @DefaultValue("0.001")
+    Double getBasicIbeaBitFlipProbability();
+
+    @Key("de.upb.spl.SPLReasoner.ibea.p.singlePointCO")
+    @DefaultValue("0.01")
+    Double getBasicIbeaSinglePointCrossoverProbability();
+
+
+    /*
+     * Sayyad
+     */
     @Key("de.upb.spl.SPLReasoner.sayyad.populationSize")
     @DefaultValue("30")
     Integer getSayyadPopulationSize();
+
+    /*
+     * Henard
+     */
+    @Key("de.upb.spl.SPLReasoner.henard.p.smartMutation")
+    @DefaultValue("0.01")
+    Double getHenardSmartMutationProbability();
+
+    @Key("de.upb.spl.SPLReasoner.henard.p.smartReplacement")
+    @DefaultValue("0.003")
+    Double getHenardSmartReplacementProbability();
 }

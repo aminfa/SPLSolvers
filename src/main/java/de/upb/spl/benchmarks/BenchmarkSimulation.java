@@ -37,8 +37,9 @@ public abstract class BenchmarkSimulation implements BenchmarkEnvironment {
 
 			@Override
 			public BenchmarkReport get() throws InterruptedException, ExecutionException {
-			    bill(clientName).logEvaluation();
-				return objective -> Optional.ofNullable(simulation.apply(selection, objective));
+                BenchmarkReport report = objective -> Optional.ofNullable(simulation.apply(selection, objective));;
+			    bill(clientName).logEvaluation(selection, report);
+			    return report;
 			}
 
 			@Override

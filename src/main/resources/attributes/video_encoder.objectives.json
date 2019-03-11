@@ -1,6 +1,4 @@
 [
   "subjective_quality",
-  "file_size",
-  "run_time",
-  "used_before"
+  "file_size"
 ]

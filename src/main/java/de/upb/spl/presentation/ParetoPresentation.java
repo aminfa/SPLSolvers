@@ -48,7 +48,11 @@ public class ParetoPresentation {
             solutionObj.put("objectives", objectives);
             int objIndex = 0;
             for(String objectiveName : environment.objectives()) {
-                objectives.put(objectiveName, solution.getObjective(objIndex++));
+                Double objectiveValue = solution.getObjective(objIndex++);
+                if(objectiveValue.isNaN()){
+                    return;
+                }
+                objectives.put(objectiveName, objectiveValue);
             }
             solutions.add(solutionObj);
         });

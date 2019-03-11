@@ -359,7 +359,7 @@ c17:~wish_list_content or wish_list
 c2b:~registered_checkout or register_to_buy
 c2a:~registered_checkout or registration_enforcement
 c16:~shipping_options or shipping
-c18:~previously_visited_pages or locally_visited_pages or external_referring_pages
+c18:~previously_visited_pages or locally_visited_pages
 c1:~special_offers or discounts
 c11:~availability or inventory_tracking
 c10:~physical_goods or weight

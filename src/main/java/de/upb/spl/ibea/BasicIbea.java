@@ -6,22 +6,24 @@ import de.upb.spl.reasoner.BinaryStringProblem;
 import de.upb.spl.reasoner.EAReasoner;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.reasoner.SPLEvaluator;
+import org.moeaframework.Analyzer;
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.algorithm.IBEA;
 import org.moeaframework.core.Initialization;
+import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
+import org.moeaframework.core.operator.OnePointCrossover;
 import org.moeaframework.core.operator.RandomInitialization;
-import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.core.operator.binary.BitFlip;
+import org.moeaframework.core.operator.binary.HUX;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.Properties;
 
 public class BasicIbea extends EAReasoner {
 
@@ -40,12 +42,17 @@ public class BasicIbea extends EAReasoner {
 
     @Override
     public AbstractEvolutionaryAlgorithm createAlgorithm(BenchmarkEnvironment env) {
+
         Problem problem = new Problem(env);
+
         int populationSize = env.configuration().getBasicIbeaPopulationSize();
         String indicator = env.configuration().getBasicIbeaIndicator();
         IndicatorFitnessEvaluator fitnessEvaluator = null;
         Initialization initialization = new RandomInitialization(problem, populationSize);
-        Variation variation = OperatorFactory.getInstance().getVariation((String)null, new Properties(), problem);
+//        Variation variation = OperatorFactory.getInstance().getVariation((String)null, new Properties(), problem);
+        CompoundVariation variation = new CompoundVariation();
+        variation.appendOperator(new HUX(env.configuration().getBasicIbeaSinglePointCrossoverProbability()));
+        variation.appendOperator(new BitFlip(env.configuration().getBasicIbeaBitFlipProbability()));
         if ("hypervolume".equals(indicator)) {
             fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
         } else {
@@ -54,9 +61,11 @@ public class BasicIbea extends EAReasoner {
             }
             fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem);
         }
-
+        Population population = new Population();
         return new IBEA(problem, null, initialization, variation, fitnessEvaluator);
     }
+
+
 
     private static class Problem extends BinaryStringProblem {
 

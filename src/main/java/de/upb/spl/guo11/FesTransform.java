@@ -8,9 +8,7 @@ import fm.FeatureTreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Fe ature s election Transform
@@ -115,12 +113,15 @@ public class FesTransform {
 		if(FMUtil.isRoot(feature)) {
 			throw new IllegalArgumentException("Cannot exclude root!");
 		}
+		if(Se.contains(feature)) {
+		    return;
+        }
 		if(!Sv.contains(feature) && !Se.contains(feature)){
 			Se.add(feature);
 		} else {
 			if(logger.isTraceEnabled()) logger.trace("excludeFeature:: Feature " + feature.toString() + " can't be added to Se as "
 					+ (Sv.contains(feature) ? " it is already included." : " it is already excluded."));
-//			return;
+			return;
 		}
 		for(FeatureTreeNode childFeature : FMUtil.children(feature)) {
 			if(Se.contains(childFeature)) {

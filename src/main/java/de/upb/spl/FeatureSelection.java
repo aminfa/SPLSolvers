@@ -21,4 +21,8 @@ public interface FeatureSelection extends Predicate<FeatureTreeNode>, Iterable<F
 
 	boolean isSelected(String featureId);
 
+	boolean equals(Object o);
+
+	int hashCode();
+
 }

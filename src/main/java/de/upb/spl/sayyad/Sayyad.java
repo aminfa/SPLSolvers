@@ -3,6 +3,7 @@ package de.upb.spl.sayyad;
 import de.upb.spl.FMSatUtil;
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
+import de.upb.spl.ibea.CompoundVariation;
 import de.upb.spl.reasoner.EAReasoner;
 import de.upb.spl.reasoner.SPLEvaluator;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
@@ -12,7 +13,9 @@ import org.moeaframework.core.*;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
-import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.core.operator.OnePointCrossover;
+import org.moeaframework.core.operator.binary.BitFlip;
+import org.moeaframework.core.operator.binary.HUX;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.sat4j.core.VecInt;
@@ -20,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.Properties;
 
 public class Sayyad  extends EAReasoner {
 
@@ -44,7 +46,11 @@ public class Sayyad  extends EAReasoner {
         String indicator = env.configuration().getBasicIbeaIndicator();
         IndicatorFitnessEvaluator fitnessEvaluator = null;
         Initialization initialization = new SayyadInit(env, problem, populationSize);
-        Variation variation = OperatorFactory.getInstance().getVariation((String)null, new Properties(), problem);
+
+        CompoundVariation variation = new CompoundVariation();
+        variation.appendOperator(new HUX(env.configuration().getBasicIbeaSinglePointCrossoverProbability()));
+        variation.appendOperator(new BitFlip(env.configuration().getBasicIbeaBitFlipProbability()));
+
         if ("hypervolume".equals(indicator)) {
             fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
         } else if ("epsilon".equals(indicator)) {
@@ -72,15 +78,15 @@ public class Sayyad  extends EAReasoner {
 
             for(int i = 0; i < this.populationSize; ++i) {
                 Solution solution = this.problem.newSolution();
-                if(i==0) {
-                    VecInt seed = env.richSeeds().get(0);
+                if(i<env.richSeeds().size() && i == 0) {
+                    VecInt seed = env.richSeeds().get(i);
                     VecInt literalOrder = problem.literalsOrder;
                     BinaryVariable variable = (BinaryVariable) solution.getVariable(0);
                     for (int j = 0; j < literalOrder.size(); j++) {
                         int literal = literalOrder.get(j);
                         variable.set(j, seed.get(literal-1) > 0);
                     }
-                    logger.info("Injecting seed: {}\n into initial population: {}", seed.toString(), variable.toString());
+//                    logger.info("Injecting seed: {}\n into initial population: {}", seed.toString(), variable.toString());
                 } else {
                     for (int j = 0; j < solution.getNumberOfVariables(); ++j) {
                         solution.getVariable(j).randomize();

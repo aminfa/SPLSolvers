@@ -519,7 +519,7 @@ C60:~_r277 or _r425
 C59:~_r386 or _r415
 C58:~_r237 or _r426
 C57:~_r268 or _r426
-C56:~_r434 or _r245 or _r272
+C56:~_r434 or _r245
 C55:~_r253 or _r437
 C54:~_r285 or _r433
 C53:~_r300 or _r430
@@ -527,37 +527,37 @@ C52:~_r354 or _r427
 C50:~_r181 or _r420
 C51:~_r369 or _r425
 C46:~_r409 or _r412
-C45:~_r421 or _r108 or _r243 or _r287 or _r297 or _r303
+C45:~_r421 or _r108
 C48:~_r296 or _r419
 C47:~_r370 or _r444
-C42:~_r441 or _r298 or _r293
+C42:~_r441 or _r298
 C41:~_r407 or _r420
-C44:~_r417 or _r153 or _r132 or _r177
+C44:~_r417 or _r153
 C43:~_r153 or _r417
 C49:~_r225 or _r418
 C110:~_r287 or _r421
 C80:~_r37 or _r414
 C112:~_r271 or _r431
-C111:~_r422 or _r247 or _r273
+C111:~_r422 or _r247
 C83:~_r408 or _r450
 C84:~_r286 or _r419
 C81:~_r34 or _r413
-C82:~_r416 or _r188 or _r346
+C82:~_r416 or _r188
 C77:~_r365 or _r424
-C117:~_r437 or _r253 or _r280
+C117:~_r437 or _r253
 C76:~_r292 or _r442
 C118:~_r188 or _r416
 C75:~_r265 or _r444
 C119:~_r242 or _r419
-C74:~_r418 or _r49 or _r213 or _r225 or _r266 or _r371 or _r383 or _r402 or _r411
+C74:~_r418 or _r49
 C113:~_r48 or _r412
 C114:~_r247 or _r422
 C79:~_r366 or _r425
-C115:_r429 or _r239 or _r270
+C115:_r429 or _r239
 C78:~_r297 or _r421
-C116:~_r415 or _r4 or _r68 or _r386
-C101:~_r432 or _r252 or _r279 or _r343
-C100:~_r419 or _r107 or _r242 or _r286 or _r296 or _r302
+C116:~_r415 or _r4
+C101:~_r432 or _r252
+C100:~_r419 or _r107
 C70:~_r49 or _r418
 C71:~_r270 or _r429
 C72:~_r293 or _r441
@@ -571,12 +571,12 @@ C66:~_r368 or _r450
 C107:~_r243 or _r421
 C65:~_r284 or _r430
 C104:~_r4 or _r415
-C68:~_r438 or _r256 or _r283
+C68:~_r438 or _r256
 C105:~_r391 or _r448
 C67:~_r411 or _r418
 C102:~_r107 or _r419
 C103:~_r275 or _r435
-C69:~_r412 or _r48 or _r211 or _r224 or _r260 or _r356 or _r381 or _r400 or _r409
+C69:~_r412 or _r48
 C137:~_r245 or _r434
 C136:~_r218 or _r449
 C135:~_r381 or _r412
@@ -585,29 +585,29 @@ C133:~_r272 or _r434
 C134:~_r108 or _r421
 C131:~_r240 or _r430
 C132:~_r278 or _r436
-C98:~_r442 or _r292 or _r299
-C99:~_r435 or _r248 or _r275
+C98:~_r442 or _r292
+C99:~_r435 or _r248
 C96:~_r299 or _r442
 C97:~_r294 or _r430
-C16:~_r425 or _r15 or _r249 or _r277 or _r366 or _r369
+C16:~_r425 or _r15
 C93:~_r41 or _r448
 C17:~_r269 or _r428
 C92:~_r257 or _r427
-C18:~_r426 or _r237 or _r268
-C95:~_r444 or _r265 or _r370
-C19:~_r450 or _r368 or _r408
-C94:~_r428 or _r238 or _r269
+C18:~_r426 or _r237
+C95:~_r444 or _r265
+C19:~_r450 or _r368
+C94:~_r428 or _r238
 C91:~_r252 or _r432
-C90:~_r446 or _r39 or _r389
+C90:~_r446 or _r39
 C125:~_r260 or _r412
-C124:~_r443 or _r259 or _r355 or _r399
+C124:~_r443 or _r259
 C127:~_r356 or _r412
 C10:~_r211 or _r412
 C126:~_r383 or _r418
 C11:~_r132 or _r417
 C129:~_r355 or _r443
-C12:~_r424 or _r16 or _r250 or _r276 or _r365
-C128:~_r423 or _r246 or _r274
+C12:~_r424 or _r16
+C128:~_r423 or _r246
 C13:~_r298 or _r441
 C14:~_r213 or _r418
 C15:~_r274 or _r423
@@ -619,37 +619,29 @@ C89:~_r244 or _r431
 C85:~_r371 or _r418
 C86:~_r259 or _r443
 C87:~_r401 or _r449
-C88:~_r436 or _r251 or _r278
+C88:~_r436 or _r251
 C8:~_r238 or _r428
 C7:~_r54 or _r413
-C9:~_r447 or _r99 or _r387
+C9:~_r447 or _r99
 C4:~_r39 or _r446
 C29:~_r241 or _r433
 C3:~_r283 or _r438
 C6:~_r398 or _r427
 C27:~_r399 or _r443
 C5:~_r256 or _r438
-C28:~_r413 or _r34 or _r54
+C28:~_r413 or _r34
 C25:~_r387 or _r447
 C26:~_r15 or _r425
 C23:~_r251 or _r436
-C24:~_r420 or _r181 or _r407
-C21:~_r433 or _r241 or _r285
-C22:~_r449 or _r218 or _r401
 C20:~_r16 or _r424
 C0:~_r177 or _r417
 C1:~_r246 or _r423
 C2:~_r224 or _r412
 C38:~_r239 or _r429
-C39:~_r431 or _r244 or _r271
-C34:~_r414 or _r37 or _r18
 C35:~_r276 or _r424
 C36:~_r346 or _r416
 C37:~_r343 or _r432
-C30:~_r427 or _r257 or _r354 or _r398
 C31:~_r280 or _r437
-C32:~_r448 or _r41 or _r391
 C33:~_r400 or _r412
-C40:~_r430 or _r240 or _r284 or _r294 or _r300
 </constraints>
 </feature_model>

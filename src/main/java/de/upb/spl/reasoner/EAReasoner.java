@@ -31,7 +31,12 @@ public abstract class EAReasoner implements SPLReasoner {
         int currentEvaluations = env.bill(name()).getEvaluationsCount();
         while (currentEvaluations <= evals) {
             logger.debug("{} performing evaluation {}/{}.", name(), currentEvaluations, evals);
-            algorithm.step();
+            try{
+                algorithm.step();
+            } catch (Exception ex) {
+                logger.error("Error in {}: ", name(), ex);
+                break;
+            }
             currentEvaluations = env.bill(name()).getEvaluationsCount();
         }
         logger.info("Finished {}.", name());

@@ -26,14 +26,23 @@ public class AttributedFeatureModelEnv extends AbstractBenchmarkEnv implements B
 
     @Override
     public Future<BenchmarkReport> run(FeatureSelection selection, String clientName) {
-        JobReport job = toReport(selection);
-        try {
-            executor.executeJob(job);
-            bill(clientName).logEvaluation();
-        } catch (Exception e) {
-            logger.warn("Couldn't create attribute values for assemble={}.", selection, e);
+        BenchmarkBill bill = bill(clientName);
+        Optional<BenchmarkReport> loggedReport = bill.checkLog(selection);
+        BenchmarkReport report;
+        JobReport job;
+        if(loggedReport.isPresent()) {
+            report = loggedReport.get();
+        } else {
+            job = job = toReport(selection);
+            report = new AttributeValueReport(job);
+            try {
+                executor.executeJob(job);
+                bill(clientName).logEvaluation(selection, report);
+            } catch (Exception e) {
+                logger.warn("Couldn't create attribute values for assemble={}.", selection, e);
+            }
         }
-        return ConcurrentUtils.constantFuture(new AttributeValueReport(job));
+        return ConcurrentUtils.constantFuture(report);
     }
 
     public JobReport toReport(FeatureSelection selection) {
@@ -49,7 +58,7 @@ public class AttributedFeatureModelEnv extends AbstractBenchmarkEnv implements B
         return Collections.singletonMap("features", selectedFeatures);
     }
 
-    static class AttributeValueReport implements BenchmarkReport {
+    class AttributeValueReport implements BenchmarkReport {
 
         private final JobReport report;
 
@@ -59,6 +68,21 @@ public class AttributedFeatureModelEnv extends AbstractBenchmarkEnv implements B
 
         @Override
         public Optional<Double> readResult(String objective) {
+            Optional<Double> rawResult = rawResult(objective);
+            if(!rawResult.isPresent()){
+                return rawResult;
+            }
+            Map<String, Boolean> attr = (Map<String, Boolean>) attributes().get(objective);
+            if(attr!=null) {
+                boolean toBeMinimized = attr.getOrDefault("minimized", true);
+                if(!toBeMinimized){
+                    return Optional.of(rawResult.get()*-1);
+                }
+            }
+            return rawResult;
+        }
+
+        public Optional<Double> rawResult(String objective) {
             if(!report.getResults().isPresent()) {
                 return Optional.empty();
             } else {

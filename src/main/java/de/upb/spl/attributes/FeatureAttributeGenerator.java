@@ -92,6 +92,7 @@ public class FeatureAttributeGenerator {
             attributeValueCollection.put(attribute.name(), attributeObj);
             attributeObj.put("values", attributeValues);
             attributeObj.put("aggregation", attribute.getAggregationMethod());
+            attributeObj.put("minimized", attribute.isToBeMinimized());
         }
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String attributeValuesJSON = gson.toJson(attributeValueCollection);

@@ -322,7 +322,8 @@
       "Searching": 89.10531102264105,
       "Custom fields": 19.266876922208244
     },
-    "aggregation": "20-percentile"
+    "aggregation": "20-percentile",
+    "minimized": false
   },
   "used_before": {
     "values": {
@@ -647,7 +648,8 @@
       "Searching": 0.0,
       "Custom fields": 0.0
     },
-    "aggregation": "sum"
+    "aggregation": "sum",
+    "minimized": false
   },
   "cost": {
     "values": {
@@ -972,7 +974,8 @@
       "Searching": 7.670059555868582,
       "Custom fields": 8.466334566204916
     },
-    "aggregation": "sum"
+    "aggregation": "sum",
+    "minimized": true
   },
   "run_time": {
     "values": {
@@ -1297,7 +1300,8 @@
       "Searching": 12.625290462610561,
       "Custom fields": 25.921317150050918
     },
-    "aggregation": "20-perc"
+    "aggregation": "20-perc",
+    "minimized": true
   },
   "file_size": {
     "values": {
@@ -1622,6 +1626,7 @@
       "Searching": 500.08224877089197,
       "Custom fields": 533.9570617633251
     },
-    "aggregation": "20-percentile"
+    "aggregation": "20-percentile",
+    "minimized": true
   }
 }
