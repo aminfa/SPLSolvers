@@ -1,6 +1,8 @@
 package de.upb.spl;
 
 
+import fm.FeatureModel;
+import fm.FeatureTreeNode;
 import org.sat4j.core.VecInt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,12 @@ import util.DefaultMap;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Spliterator;
+import java.util.function.IntConsumer;
+import java.util.function.IntPredicate;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class FMSatUtil {
 
@@ -18,12 +26,16 @@ public class FMSatUtil {
 
     private static class SATCache {
 
+        private VecInt allLiteralOrder;
         private VecInt sayyadFixedLiterals;
         private VecInt sayyadLiteralOrder;
         private VecInt unitLiterals;
         private VecInt nonUnitLiteralOrder;
 
         SATCache(FMSAT fmsat) {
+            allLiteralOrder = new VecInt(fmsat.highestLiteral());
+            IntStream.rangeClosed(1, fmsat.highestLiteral()).forEachOrdered(allLiteralOrder::push);
+
             unitPropagation(fmsat);
             calculateSayyadFixedLiterals(fmsat);
             sayyadLiteralOrder = new VecInt();
@@ -154,6 +166,69 @@ public class FMSatUtil {
             }
         }
 
+
+
+    }
+    public static class ModelSpliterator implements Spliterator.OfInt {
+
+
+        private final VecInt literals;
+
+        private int origin; // current index, advanced on split or traversal
+
+        private final int fence; // one past the greatest index
+
+        public ModelSpliterator(VecInt literals, int origin, int fence) {
+            this.literals = literals;
+            this.origin = origin;
+            this.fence = fence;
+        }
+
+        public ModelSpliterator(VecInt literals) {
+            this(literals, 0, literals.size());
+        }
+
+        @Override
+        public OfInt trySplit() {
+            int lo = origin; // divide range in half
+            int mid = ((lo + fence) >>> 1) & ~1; // force midpoint to be even
+            if (lo < mid) { // split out left half
+                origin = mid; // reset this Spliterator's origin
+                return new ModelSpliterator(literals, lo, mid);
+            }
+            else       // too small to split
+                return null;
+        }
+
+        @Override
+        public long estimateSize() {
+            return (fence - origin);
+        }
+
+        @Override
+        public long getExactSizeIfKnown() {
+            return (fence - origin);
+        }
+
+        @Override
+        public int characteristics() {
+            return SIZED | IMMUTABLE | SUBSIZED;
+        }
+        @Override
+        public boolean tryAdvance(IntConsumer action) {
+            if (origin < fence) {
+                action.accept(literals.get(origin));
+                origin += 1;
+                return true;
+            }
+            else // cannot advance
+                return false;
+        }
+
+    }
+
+    public static IntStream streamLiterals(VecInt literals) {
+        return StreamSupport.intStream(new ModelSpliterator(literals), false);
     }
 
     public static VecInt unitLiterals(FMSAT fmsat) {
@@ -163,5 +238,18 @@ public class FMSatUtil {
     public static VecInt nonUnitLiteralOrder(FMSAT fmsat) {
         return cache.get(fmsat).nonUnitLiteralOrder;
     }
+
+    public static VecInt literals(FMSAT fmsat) {
+        return cache.get(fmsat).allLiteralOrder;
+    }
+
+    public static Stream<String> toName(FMSAT fmsat, VecInt literals) {
+        return streamLiterals(literals).mapToObj(fmsat::getLiteralFeatureName);
+    }
+
+    public static Stream<FeatureTreeNode> toFeature(FeatureModel fm, FMSAT fmsat, VecInt literals) {
+        return toName(fmsat, literals).map(name -> FMUtil.find(fm, name));
+    }
+
 
 }

@@ -5,6 +5,7 @@ import fm.FeatureModel;
 import fm.FeatureModelException;
 import fm.FeatureTreeNode;
 import it.unimi.dsi.fastutil.objects.Object2IntRBTreeMap;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
@@ -58,7 +59,7 @@ public class FMSAT {
 			for(FeatureTreeNode child : FMUtil.children(parent)) {
 				// add child -> parent constraint:
 				clauses.add(new VecInt(util.imply(child, parent)));
-				if(!FMUtil.isOptionalFeature(child)) {
+				if(FMUtil.isMandatoryFeature(child)) {
 					clauses.add(new VecInt(util.imply(parent, child)));
 				}
 			}
@@ -289,29 +290,29 @@ public class FMSAT {
 		}
 	}
 
-	public int[] toModel(FeatureModel fm, FeatureSelection selection) {
-	    int[] model = new int[featureNames.size()];
-	    int index = 0;
-	    for(String featureName : featureNames) {
+	public FeatureSelection toSelection(FeatureModel fm, int[] model) {
+	    return new LiteralSelection(fm, model);
+//		FeatureSet set = new FeatureSet();
+//		for(int literal : model) {
+//			if(LiteralUtil.global.isPositive(literal)){
+//				String name = getLiteralFeatureName(literal);
+//				FeatureTreeNode feature = FMUtil.find(fm, name);
+//				set.add(feature);
+//			}
+//		}
+//		return set;
+	}
+
+    public int[] toModel(FeatureModel fm, FeatureSelection selection) {
+        int[] model = new int[featureNames.size()];
+        int index = 0;
+        for(String featureName : featureNames) {
             index++;
             FeatureTreeNode feature = FMUtil.find(fm, featureName);
             model[index-1] = (selection.isSelected(feature) ? index : -index);
         }
-	    return model;
+        return model;
     }
-
-	public FeatureSelection toSelection(FeatureModel fm, int[] model) {
-		FeatureSet set = new FeatureSet();
-		for(int literal : model) {
-			if(LiteralUtil.global.isPositive(literal)){
-				String name = getLiteralFeatureName(literal);
-				FeatureTreeNode feature = FMUtil.find(fm, name);
-				set.add(feature);
-			}
-		}
-		return set;
-	}
-
 
     @Deprecated
 	public FeatureModel toModel() {
@@ -325,6 +326,48 @@ public class FMSAT {
 		model.countNodes();
 		return model;
 	}
+
+    public int[] toModel(int[] unorderedPartialModel, boolean positiveMissingLiterals) {
+        if(isModel(unorderedPartialModel)) {
+            return unorderedPartialModel;
+        }
+        int featureCount = featureNames.size();
+        int[] model = new int[featureCount];
+        if(positiveMissingLiterals) {
+            for (int i = 1; i <= featureCount; i++) {
+                model[i-1] = i;
+            }
+        } else {
+            for (int i = 1; i <= featureCount; i++) {
+                model[i-1] = -i;
+            }
+        }
+        for (int literal : unorderedPartialModel) {
+            if(literal == 0) {
+                continue;
+            }
+            int literalIndex = LiteralUtil.global.positiv(literal) - 1;
+            if (model[literalIndex] != literal) {
+                model[literalIndex] = literal;
+            }
+        }
+        return model;
+    }
+
+    public boolean isModel(int[] model) {
+        int featureCount = featureNames.size();
+        if(model.length != featureCount) {
+            return false;
+        }
+        for (int i = 0; i < featureCount; i++) {
+            int literal = i + 1;
+            int negativeLiteral = - literal;
+            if (model[i] != literal && model[i] != negativeLiteral) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 	public String toString(VecInt clause) {
 		StringBuilder clauseText = new StringBuilder("{ ");
@@ -345,6 +388,10 @@ public class FMSAT {
 	public String getLiteralFeatureName(int literal) {
 		return featureNames.get(LiteralUtil.global.positiv(literal)-1);
 	}
+
+	public int toLiteral(FeatureTreeNode feature) {
+	    return indexer.getInt(FMUtil.id(feature));
+    }
 
 	public List<VecInt> getClauses() {
 		return  clauses;
@@ -372,20 +419,22 @@ public class FMSAT {
 	    return featureNames.size() + 1;
     }
 
-    private class LiteralSelection implements FeatureSelection {
+    public class LiteralSelection implements FeatureSelection {
 	    private final FeatureModel fm;
-	    private final int[] model;
+	    private int[] model;
 
-        private LiteralSelection(FeatureModel fm, int[] model) {
+        private LiteralSelection(FeatureModel fm, int[] m) {
             this.fm = fm;
-            this.model = Objects.requireNonNull(model);
-            if(model.length != featureNames.size()) {
-                throw new IllegalArgumentException("Model is incomplete. " +
-                        "Expected size: " + featureNames.size() + ". " +
-                        "Actual model size: " + model.length + ".");
-            }
+            this.model = toModel(m, false);
         }
 
+        public void setModel(int[] newModel) {
+            this.model = toModel(newModel, false);
+        }
+
+        public int[] getModel() {
+            return model;
+        }
 
         @Override
         public boolean isSelected(FeatureTreeNode feature) {
@@ -471,7 +520,11 @@ public class FMSAT {
 
         @Override
         public boolean addAll(Collection<? extends FeatureTreeNode> c) {
-            throw new UnsupportedOperationException();
+            boolean added = false;
+            for(FeatureTreeNode feature : c) {
+                added = add(feature) || added;
+            }
+            return added;
         }
 
         @Override
@@ -516,6 +569,52 @@ public class FMSAT {
                     return feature;
                 }
             };
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+
+            if (!(o instanceof FeatureSelection)) return false;
+
+            FeatureSelection otherSelection = (FeatureSelection) o;
+
+            if(otherSelection.size() != this.size())
+                return false;
+
+            if(otherSelection instanceof  LiteralSelection) {
+                int[] lhs = model,
+                        rhs = ((LiteralSelection) otherSelection).model;
+                if (lhs == rhs) {
+                    return true;
+                }
+                if (lhs == null || rhs == null) {
+                    return false;
+                }
+                if (lhs.length != rhs.length) {
+                    return false;
+                }
+                for (int i = 0; i < lhs.length; ++i) {
+                    if(lhs[i] != rhs[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            } else {
+                for(FeatureTreeNode feature : otherSelection) {
+                    if(!isSelected(feature)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            return new HashCodeBuilder(17, 37)
+                    .append(model)
+                    .toHashCode();
         }
     }
 

@@ -3,14 +3,18 @@ package de.upb.spl;
 import constraints.BooleanVariable;
 import constraints.PropositionalFormula;
 import fm.*;
+import org.sat4j.core.VecInt;
+import util.Cache;
 import util.DefaultMap;
-import util.FilteredIterator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static de.upb.spl.FMSatUtil.nonUnitLiteralOrder;
 
 public class FMUtil {
 
@@ -18,27 +22,32 @@ public class FMUtil {
 
 	private static class FeatureModelCache {
 
-		final List<FeatureTreeNode> nodes;
-		final List<FeatureTreeNode> sayyadUnfixedFeatures;
-		final List<FeatureTreeNode> optionalNodes;
-		final List<CrossTreeConstraint> ctcs;
+		final Cache<List<FeatureTreeNode>> features;
+		final Cache<List<FeatureTreeNode>> optionalNodes;
+		final Cache<List<CrossTreeConstraint>> ctcs;
 		final DefaultMap<FeatureTreeNode, List<FeatureTreeNode>> premisses;
 		final DefaultMap<FeatureTreeNode, List<FeatureTreeNode>> exclusions;
 		final DefaultMap<FeatureTreeNode, List<FeatureTreeNode>> conclusions;
+
 		FeatureModelCache(FeatureModel fm) {
 		    {
-				ctcs = new ArrayList<>();
-				for(PropositionalFormula formula : fm.getConstraints()) {
-					CrossTreeConstraint interpretation = ctc(fm, formula);
-					ctcs.add(interpretation);
-				}
+				ctcs = new Cache<>( () -> {
+                    List<CrossTreeConstraint> list = new ArrayList<>();
+                    for (PropositionalFormula formula : fm.getConstraints()) {
+                        CrossTreeConstraint interpretation = ctc(fm, formula);
+                        list.add(interpretation);
+                    }
+                    return list;
+                });
+
 				/*
 				 * CROSS TREE CONSTRAINTS
 				 */
+
 				premisses = new DefaultMap<FeatureTreeNode, List<FeatureTreeNode>>(feature-> {
 					List<FeatureTreeNode> impliedByFeatures = new ArrayList<>();
 
-					for(CrossTreeConstraint interpretation : ctcs){
+					for(CrossTreeConstraint interpretation : ctcs.get()){
 						if(interpretation.isConclusion(feature)) {
 							// implication:
 							impliedByFeatures.add(interpretation.feature1);
@@ -49,7 +58,7 @@ public class FMUtil {
 
 				exclusions = new DefaultMap<FeatureTreeNode, List<FeatureTreeNode>>(feature-> {
 					List<FeatureTreeNode> excludedFeatures = new ArrayList<>();
-					for(CrossTreeConstraint interpretation : ctcs){
+					for(CrossTreeConstraint interpretation : ctcs.get()){
 						if(interpretation.isExclusion(feature)) {
 							// exclusion:
 							excludedFeatures.add(interpretation.other(feature));
@@ -59,7 +68,7 @@ public class FMUtil {
 				});
 				conclusions = new DefaultMap<FeatureTreeNode, List<FeatureTreeNode>>(feature-> {
 					List<FeatureTreeNode> impliedFeatures = new ArrayList<>();
-					for (CrossTreeConstraint interpretation : ctcs) {
+					for (CrossTreeConstraint interpretation : ctcs.get()) {
 						if (interpretation.isPremiss(feature)) {
 							// implication:
 							impliedFeatures.add(interpretation.feature2);
@@ -68,34 +77,37 @@ public class FMUtil {
 					return impliedFeatures;
 				});
 			}
-			nodes = new ArrayList<>();
-			new FeatureModelIterable(fm).forEachRemaining(nodes::add);
 
-            sayyadUnfixedFeatures = new ArrayList<>();
-            new FilteredIterator<FeatureTreeNode>(nodes.iterator(), this::isSayyadUnfixed).forEachRemaining(sayyadUnfixedFeatures::add);
+			features = new Cache<>( () -> {
+			    List<FeatureTreeNode> features = new ArrayList<>();
+                new FeatureModelIterable(fm).forEachRemaining(features::add);
+                return features;
+            });
 
-
-			optionalNodes = new ArrayList<>();
-			new FilteredIterator<FeatureTreeNode>(nodes.iterator(), this::isImpliedFeature).forEachRemaining(optionalNodes::add);
+			optionalNodes = new Cache<>( () ->
+                    features.get().stream().filter(this::isImpliedFeature).collect(Collectors.toList()));
 		}
 
-		boolean isSayyadUnfixed(FeatureTreeNode feature) {
-		    if(feature.isRoot()) {
-		        return false;
-            }
-		    if(!FMUtil.isOptionalFeature(feature) && !isSayyadUnfixed((FeatureTreeNode) feature.getParent())) {
-		        return false;
-            }
-            List<FeatureTreeNode> impliedFeatures = conclusions.get(feature);
-            List<FeatureTreeNode> impliedByFeatures = premisses.get(feature);
-		    for(FeatureTreeNode premiss : impliedByFeatures) {
-                if(!impliedFeatures.contains(premiss) && !isSayyadUnfixed(premiss)) {
-                    return false;
-                }
-            }
-		    return true;
-        }
 
+
+
+//
+//		boolean isSayyadUnfixed(FeatureTreeNode feature) {
+//		    if(feature.isRoot()) {
+//		        return false;
+//            }
+//		    if(!FMUtil.isNonMandatoryFeature(feature) && !isSayyadUnfixed((FeatureTreeNode) feature.getParent())) {
+//		        return false;
+//            }
+//            List<FeatureTreeNode> impliedFeatures = conclusions.get(feature);
+//            List<FeatureTreeNode> impliedByFeatures = premisses.get(feature);
+//		    for(FeatureTreeNode premiss : impliedByFeatures) {
+//                if(!impliedFeatures.contains(premiss) && !isSayyadUnfixed(premiss)) {
+//                    return false;
+//                }
+//            }
+//		    return true;
+//        }
 		boolean isImpliedFeature(FeatureTreeNode feature) {
 			/*
 			 * If there is a cross tree constraint `a->b` with b==listFeatures and a is NOT optional then b is also not optional:
@@ -112,12 +124,12 @@ public class FMUtil {
 			/*
 			 * If listFeatures is optional or in a alternative/or-group it is not implied.
 			 */
-			return isOptionalFeature(feature);
+			return isNonMandatoryFeature(feature);
 		}
 
-	}
-	private static class FeatureModelIterable implements Iterator<FeatureTreeNode> {
 
+    }
+    private static class FeatureModelIterable implements Iterator<FeatureTreeNode> {
 		FeatureTreeNode current;
 
 		FeatureModelIterable(FeatureModel model) {
@@ -158,8 +170,9 @@ public class FMUtil {
 			return toBeReturned;
 		}
 
-	}
-	/**
+
+    }
+    /**
 	 * if implication is true:
 	 *  	feature1 implies feature2
 	 * else:
@@ -168,14 +181,13 @@ public class FMUtil {
 	 *
 	 */
 	public static class CrossTreeConstraint {
-		public final FeatureTreeNode feature1, feature2;
-		public final boolean implication;
-		CrossTreeConstraint(FeatureTreeNode feature1, FeatureTreeNode feature2, boolean implication) {
+        public final FeatureTreeNode feature1, feature2;
+        public final boolean implication;
+        CrossTreeConstraint(FeatureTreeNode feature1, FeatureTreeNode feature2, boolean implication) {
 			this.feature1 = feature1;
 			this.feature2 = feature2;
 			this.implication = implication;
 		}
-
 		FeatureTreeNode other(FeatureTreeNode feature) {
 			if(feature1 == feature) {
 				return feature2;
@@ -193,11 +205,12 @@ public class FMUtil {
 		boolean isConclusion(FeatureTreeNode feature) {
 			return implication && feature == feature2;
 		}
-		boolean isExclusion(FeatureTreeNode feature) {
-			return implication && (feature == feature1 || feature == feature2);
+
+        boolean isExclusion(FeatureTreeNode feature) {
+			return !implication && (feature == feature1 || feature == feature2);
 		}
-	}
-	public static FeatureSelection selectFromPredicate(List<FeatureTreeNode> features, Predicate<Integer> selection) {
+    }
+    public static FeatureSelection selectFromPredicate(List<FeatureTreeNode> features, Predicate<Integer> selection) {
 		FeatureSet set = new FeatureSet();
 		for (int i = 0, size = features.size(); i < size; i++) {
 			if(selection.test(i)) {
@@ -207,39 +220,38 @@ public class FMUtil {
 		}
 		return set;
 	}
-
 	public static Predicate<Integer> predicateFromSelection(List<FeatureTreeNode> features, FeatureSelection selection) {
 		return i -> selection.isSelected(features.get(i));
 	}
 
 
 	public static List<FeatureTreeNode> listFeatures(FeatureModel model){
-		return cache.get(model).nodes;
+		return cache.get(model).features.get();
 	}
 
 
-	public static List<FeatureTreeNode> listUnfixedFeatures(FeatureModel model) {
-        return cache.get(model).sayyadUnfixedFeatures;
-    }
 
+//	public static List<FeatureTreeNode> listUnfixedFeatures(FeatureModel model) {
+//        return cache.get(model).sayyadUnfixedFeatures;
+//    }
 	public static Stream<FeatureTreeNode> featureStream(FeatureModel model){
-		return cache.get(model).nodes.stream();
+		return cache.get(model).features.get().stream();
 	}
 
-	public static Stream<FeatureTreeNode> unfixedFeatureStream(FeatureModel model){
-		return cache.get(model).sayyadUnfixedFeatures.stream();
-	}
 
+//	public static Stream<FeatureTreeNode> unfixedFeatureStream(FeatureModel model){
+//		return cache.get(model).sayyadUnfixedFeatures.stream();
+//	}
 	public static List<CrossTreeConstraint> crossTreeConstraints(FeatureModel model) {
-		return  cache.get(model).ctcs;
+		return  cache.get(model).ctcs.get();
 	}
 
 	public static int countFeatures(FeatureModel model){
-		return cache.get(model).nodes.size();
+		return cache.get(model).features.get().size();
 	}
 
 	public static int countVariantFeatures(FeatureModel model){
-		return cache.get(model).optionalNodes.size();
+		return cache.get(model).optionalNodes.get().size();
 	}
 
 	public static boolean isRoot(FeatureTreeNode feature) {
@@ -278,22 +290,36 @@ public class FMUtil {
 	}
 
 	public static boolean isImpliedFeature(FeatureModel fm, FeatureTreeNode feature){
-		return !cache.get(fm).optionalNodes.contains(feature);
+		return !cache.get(fm).optionalNodes.get().contains(feature);
 	}
 
-	public static boolean isOptionalFeature(FeatureTreeNode feature) {
+    public static boolean isHierarchicalFeature(FeatureTreeNode feature) {
+        for(FeatureTreeNode child : children(feature)) {
+            if(!isOptionalFeature(child)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+	public static boolean isNonMandatoryFeature(FeatureTreeNode feature) {
 		/*
 		 * If listFeatures is optional or in a alternative/or-group it is optional.
 		 */
-		if(feature instanceof SolitaireFeature && ((SolitaireFeature)feature).isOptional()) {
-			return true;
-		} else if(isInAlternativeGroup(feature) || isInOrGroup(feature)) {
-			return true;
-		} else {
-			return false;
-		}
+		return !isMandatoryFeature(feature);
 	}
 
+
+    public static boolean isOptionalFeature(FeatureTreeNode feature) {
+        return feature instanceof SolitaireFeature && ((SolitaireFeature)feature).isOptional();
+    }
+
+
+    public static boolean isMandatoryFeature(FeatureTreeNode feature) {
+        return
+                (feature instanceof SolitaireFeature && !((SolitaireFeature)feature).isOptional()) || feature instanceof FeatureGroup;
+    }
 
 	public static CrossTreeConstraint ctc(FeatureModel fm, PropositionalFormula formula) {
 		Iterator<BooleanVariable> it = formula.getVariables().iterator();
@@ -400,7 +426,7 @@ public class FMUtil {
 						 */
 						FeatureTreeNode parent = (FeatureTreeNode) feature.getParent();
 						if(parent != null) {
-							newFeatureSelected = selection.add(parent);
+							newFeatureSelected = selection.add(parent) || newFeatureSelected;
 						}
 					}
 					{
@@ -408,8 +434,8 @@ public class FMUtil {
 						 * Add non optional children:
 						 */
 						for(FeatureTreeNode child : FMUtil.children(feature)) {
-							if(!isOptionalFeature(child)) {
-								newFeatureSelected = selection.add(child);
+							if(isMandatoryFeature(child)) {
+								newFeatureSelected = selection.add(child) || newFeatureSelected;
 							}
 						}
 					}
@@ -436,23 +462,37 @@ public class FMUtil {
 				if(!isRoot(feature) && !selection.isSelected((FeatureTreeNode) feature.getParent())) {
 					return false;
 				}
-				if(feature instanceof FeatureGroup) {
-					FeatureGroup group = (FeatureGroup) feature;
-					int selectedChildCount = 0;
+				if(isOrGroup(feature)) {
+                    boolean childSelected = false;
 					for(FeatureTreeNode child : children(feature)) {
 						if(selection.isSelected(child)) {
-							selectedChildCount ++;
+							childSelected = true;
+							break;
 						}
 					}
-					if(selectedChildCount == 0) {
+					if(!childSelected) {
 						return false;
 					}
-					if(group.getMax() > 0) {
-						if(selectedChildCount < group.getMin() || selectedChildCount > group.getMax()) {
-							return false;
-						}
-					}
-				}
+				} else if(isAlternativeGroup(feature)) {
+                    boolean childSelected = false;
+                    for(FeatureTreeNode child : children(feature)) {
+                        if(selection.isSelected(child)) {
+                            if(childSelected) {
+                                return false;
+                            }
+                            childSelected = true;
+                        }
+                    }
+                    if(!childSelected) {
+                        return false;
+                    }
+                } else {
+                    for(FeatureTreeNode child : children(feature)) {
+                        if(!isOptionalFeature(child) && !selection.isSelected(child)) {
+                            return false;
+                        }
+                    }
+                }
 			}
 		}
 		return true;

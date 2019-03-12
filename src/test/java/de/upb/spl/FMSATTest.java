@@ -1,5 +1,9 @@
 package de.upb.spl;
 
+import de.upb.spl.benchmarks.BenchmarkReport;
+import de.upb.spl.benchmarks.env.AbstractBenchmarkEnv;
+import de.upb.spl.benchmarks.env.AttributedFeatureModelEnv;
+import de.upb.spl.hierons.NovelRepresentation;
 import fm.FeatureModel;
 import fm.FeatureModelException;
 import fm.XMLFeatureModel;
@@ -17,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class FMSATTest {
 	static FeatureModel featureModel;
@@ -88,22 +95,8 @@ public class FMSATTest {
 
 	}
 
-	@Test
-	public void testFixedLiterals() throws FeatureModelException {
-        String featureModelFile = FMTest.class.getClassLoader().getResource("radom_10000.xml").getPath();
-        FeatureModel featureModel = new XMLFeatureModel(featureModelFile, XMLFeatureModel.USE_VARIABLE_NAME_AS_ID);
-        // Load the XML file and creates the listFeatures model
-        featureModel.loadModel();
-
-        FMSAT fmsat = FMSAT.transform(featureModel);
-        VecInt vecInt = FMSatUtil.nonUnitLiteralOrder(fmsat);
-        System.out.println("Unit literals: " + Arrays.toString(vecInt.toArray()));
-        System.out.println("Size: " + vecInt.size());
-        vecInt = FMSatUtil.unitLiterals(fmsat);
-        System.out.println("Unit propagation fixed: " +Arrays.toString(vecInt.toArray()));
-        System.out.println("Size: " + vecInt.size());
 
 
-    }
+
 
 }

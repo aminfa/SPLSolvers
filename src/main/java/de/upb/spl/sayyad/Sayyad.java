@@ -3,6 +3,7 @@ package de.upb.spl.sayyad;
 import de.upb.spl.FMSatUtil;
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
+import de.upb.spl.ibea.BasicIbea;
 import de.upb.spl.ibea.CompoundVariation;
 import de.upb.spl.reasoner.EAReasoner;
 import de.upb.spl.reasoner.SPLEvaluator;
@@ -32,6 +33,19 @@ public class Sayyad  extends EAReasoner {
 
     public Sayyad() {
         super(NAME);
+    }
+
+    public static BinaryVariable binarizeSeed(VecInt literalOrder, VecInt seed) {
+        BinaryVariable var = new BinaryVariable(literalOrder.size());
+        binarizeSeed(var, literalOrder, seed);
+        return var;
+    }
+
+    public static void binarizeSeed(BinaryVariable variable, VecInt literalOrder, VecInt seed) {
+        for (int j = 0; j < literalOrder.size(); j++) {
+            int literal = literalOrder.get(j);
+            variable.set(j, seed.get(literal-1) > 0);
+        }
     }
 
     @Override
@@ -78,14 +92,11 @@ public class Sayyad  extends EAReasoner {
 
             for(int i = 0; i < this.populationSize; ++i) {
                 Solution solution = this.problem.newSolution();
-                if(i<env.richSeeds().size() && i == 0) {
+                if(i<env.richSeeds().size() && i < env.configuration().getSayyadSeedCount()) {
                     VecInt seed = env.richSeeds().get(i);
                     VecInt literalOrder = problem.literalsOrder;
                     BinaryVariable variable = (BinaryVariable) solution.getVariable(0);
-                    for (int j = 0; j < literalOrder.size(); j++) {
-                        int literal = literalOrder.get(j);
-                        variable.set(j, seed.get(literal-1) > 0);
-                    }
+                    binarizeSeed(variable, literalOrder, seed);
 //                    logger.info("Injecting seed: {}\n into initial population: {}", seed.toString(), variable.toString());
                 } else {
                     for (int j = 0; j < solution.getNumberOfVariables(); ++j) {
@@ -113,21 +124,9 @@ public class Sayyad  extends EAReasoner {
 
         @Override
         public void evaluate(Solution solution) {
-            FeatureSelection selection = assemble((BinaryVariable) solution.getVariable(0));
-            double [] evaluations = SPLEvaluator.evaluateFeatureSelection(env, selection, NAME,false);
-            double [] objectives = new double[evaluations.length + 1];
-            for (int i = 0; i < evaluations.length; i++) {
-                objectives[i] = evaluations[i];
-            }
-            int violations = env.sat().violatedConstraints(selection);
-            objectives[objectives.length-1] =violations;
-            if(logger.isTraceEnabled() && violations == 0) {
-                logger.trace("Solution with 0 violations found: " + selection +". Objectives: " + Arrays.toString(objectives));
-                if(!FMUtil.isValidSelection(env.model(), selection)) {
-                    throw new RuntimeException("0 Clauses violated but selection is not valid.");
-                }
-            }
-            solution.setObjectives(objectives);
+            solution.setObjectives(BasicIbea.evaluateAndCountViolatedConstraints(env,
+                    assemble((BinaryVariable) solution.getVariable(0)),
+                    NAME));
         }
 
         FeatureSelection assemble(BinaryVariable variable) {

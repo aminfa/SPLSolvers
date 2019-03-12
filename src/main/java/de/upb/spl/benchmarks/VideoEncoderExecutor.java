@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 public class VideoEncoderExecutor implements Runnable{
 
@@ -170,15 +171,15 @@ public class VideoEncoderExecutor implements Runnable{
         boolean exited = child.waitFor(3, TimeUnit.MINUTES);
         if(!exited) {
             child.destroyForcibly();
-            throw new RuntimeException("Execution timeout for job: " + report.getJobId());
-
+            throw new RuntimeException("Execution timeout for job: " + report.getJobId() +
+                    " Command:\n " + Arrays.asList(shell_cmd).stream().collect(Collectors.joining(" ")));
         }
         String shellOutput = Streams.InReadString(child.getInputStream());
         String shellError  = Streams.InReadString(child.getErrorStream());
         if(child.exitValue()!=0) {
             throw new RuntimeException("Couldn't execute video encoding pipeline: " + shellOutput + "\nError: "+ shellError);
         }
-		if(logger.isDebugEnabled()) {
+		if(logger.isTraceEnabled()) {
 			FileUtil.writeStringToFile(String.format("x264-logs/%s-shellout-%s.log", getExecutorId(), report.getJobId()), shellOutput);
 		}
 		String lastHash = report.getConfigHashes().get(report.getConfigHashes().size()-1);

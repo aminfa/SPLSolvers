@@ -38,6 +38,7 @@ public abstract class BinaryStringProblem extends AbstractProblem {
 
     public FeatureSelection assemble(BinaryVariable variable) {
         FeatureSelection selection = FMUtil.selectFromPredicate(getFeatures(), variable::get);
+
         return selection;
     }
 
@@ -45,6 +46,16 @@ public abstract class BinaryStringProblem extends AbstractProblem {
         int binaryLength = getBinaryStringLength();
         BinaryVariable var = new BinaryVariable(binaryLength);
         Predicate<Integer> predicate = FMUtil.predicateFromSelection(getFeatures(), selection);
+        for (int i = 0; i < binaryLength; i++) {
+            var.set(i, predicate.test(i));
+        }
+        return var;
+    }
+
+    public static BinaryVariable binarize(FeatureSelection selection, List<FeatureTreeNode> featureOrder) {
+        int binaryLength = featureOrder.size();
+        BinaryVariable var = new BinaryVariable(binaryLength);
+        Predicate<Integer> predicate = FMUtil.predicateFromSelection(featureOrder, selection);
         for (int i = 0; i < binaryLength; i++) {
             var.set(i, predicate.test(i));
         }

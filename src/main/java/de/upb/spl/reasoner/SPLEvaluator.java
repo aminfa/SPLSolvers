@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 
 public final class SPLEvaluator {
     private final static Logger logger = LoggerFactory.getLogger(SPLEvaluator.class);
@@ -50,6 +51,8 @@ public final class SPLEvaluator {
         }
         return evaluation;
     }
+
+
 
     public static Solution toSolution(BinaryVariable featureSelectionBinaryString,
                                               double[] evaluation){

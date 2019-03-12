@@ -7,6 +7,15 @@ import org.aeonbits.owner.Mutable;
 @Config.Sources({ "file:splreasoners.properties",
         "classpath:de/upb/spl/splreasoners.properties"})
 public interface SPLReasonerConfiguration extends Mutable {
+
+    /*
+     * Universal
+     */
+
+    @Key("de.upb.spl.SPLReasoner.evaluations")
+    @DefaultValue("500")
+    Integer getEvaluationPermits();
+
     /*
      * Guo
      */
@@ -18,19 +27,6 @@ public interface SPLReasonerConfiguration extends Mutable {
     @DefaultValue("0.6")
     Double getGUOD();
 
-    /*
-     * Hernard
-     */
-    @Key("de.upb.spl.SPLReasoner.Hernard.populationSize")
-    @DefaultValue("30")
-    Integer getHenardPopulationSize();
-
-    /*
-     * Universal
-     */
-    @Key("de.upb.spl.SPLReasoner.evaluations")
-    @DefaultValue("50")
-    Integer getEvaluationPermits();
 
     /*
      * Basic Ibea
@@ -38,7 +34,6 @@ public interface SPLReasonerConfiguration extends Mutable {
     @Key("de.upb.spl.SPLReasoner.ibea.populationSize")
     @DefaultValue("30")
     Integer getBasicIbeaPopulationSize();
-
     @Key("de.upb.spl.SPLReasoner.ibea.indicator")
     @DefaultValue("epsilon")
     String getBasicIbeaIndicator();
@@ -51,7 +46,6 @@ public interface SPLReasonerConfiguration extends Mutable {
     @DefaultValue("0.01")
     Double getBasicIbeaSinglePointCrossoverProbability();
 
-
     /*
      * Sayyad
      */
@@ -59,14 +53,46 @@ public interface SPLReasonerConfiguration extends Mutable {
     @DefaultValue("30")
     Integer getSayyadPopulationSize();
 
+
+    @Key("de.upb.spl.SPLReasoner.sayyad.seedCount")
+    @DefaultValue("5")
+    Integer getSayyadSeedCount();
+
     /*
-     * Henard
+     * Hernard
      */
-    @Key("de.upb.spl.SPLReasoner.henard.p.smartMutation")
+    @Key("de.upb.spl.SPLReasoner.Hernard.populationSize")
+    @DefaultValue("30")
+    Integer getHenardPopulationSize();
+
+    @Key("de.upb.spl.SPLReasoner.Henard.p.smartMutation")
     @DefaultValue("0.01")
     Double getHenardSmartMutationProbability();
 
-    @Key("de.upb.spl.SPLReasoner.henard.p.smartReplacement")
+    @Key("de.upb.spl.SPLReasoner.Henard.p.smartReplacement")
     @DefaultValue("0.003")
     Double getHenardSmartReplacementProbability();
+
+    @Key("de.upb.spl.SPLReasoner.Hernard.seedCount")
+    @DefaultValue("5")
+    Integer getHernardSeedCount();
+
+    /*
+     * Hierons
+     */
+    @Key("de.upb.spl.SPLReasoner.Hierons.populationSize")
+    @DefaultValue("30")
+    Integer getHieronsPopulationSize();
+
+    @Key("de.upb.spl.SPLReasoner.Hierons.p.smartMutation")
+    @DefaultValue("0.01")
+    Double getHieronsSmartMutationProbability();
+
+    @Key("de.upb.spl.SPLReasoner.Hierons.p.smartReplacement")
+    @DefaultValue("0.003")
+    Double getHieronsSmartReplacementProbability();
+
+    @Key("de.upb.spl.SPLReasoner.Hierons.seedCount")
+    @DefaultValue("5")
+    Integer getHieronsSeedCount();
 }

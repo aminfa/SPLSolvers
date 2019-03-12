@@ -6,7 +6,7 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 import java.util.*;
 
-public class FeatureSet extends ObjectOpenHashSet<FeatureTreeNode> implements FeatureSelection {
+public class FeatureSet extends LinkedHashSet<FeatureTreeNode> implements FeatureSelection {
 
 	public FeatureSet(FeatureTreeNode... features) {
 		this.addAll(Arrays.asList(features));

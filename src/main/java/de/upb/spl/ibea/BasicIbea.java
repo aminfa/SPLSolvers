@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.function.Function;
 
 public class BasicIbea extends EAReasoner {
 
@@ -78,21 +79,28 @@ public class BasicIbea extends EAReasoner {
 
         @Override
         public void evaluate(Solution solution) {
-            FeatureSelection selection = assemble((BinaryVariable) solution.getVariable(0));
-            double [] evaluations = SPLEvaluator.evaluateFeatureSelection(env, selection, NAME,false);
-            double [] objectives = new double[evaluations.length + 1];
-            for (int i = 0; i < evaluations.length; i++) {
-                objectives[i] = evaluations[i];
-            }
-            int violations = env.sat().violatedConstraints(selection);
-            objectives[objectives.length-1] =violations;
-            if(logger.isTraceEnabled() && violations == 0) {
-                logger.trace("Solution with 0 violations found: " + selection +". Objectives: " + Arrays.toString(objectives));
-                if(!FMUtil.isValidSelection(env.model(), selection)) {
-                    throw new RuntimeException("0 Clauses violated but selection is not valid.");
-                }
-            }
-            solution.setObjectives(objectives);
+            solution.setObjectives(evaluateAndCountViolatedConstraints(env,
+                    assemble((BinaryVariable) solution.getVariable(0)),
+                    NAME));
         }
+    }
+
+
+    public static double[] evaluateAndCountViolatedConstraints(BenchmarkEnvironment env,
+                                                           FeatureSelection selection,
+                                                           String clientName) {
+        double [] objectives = new double[env.objectives().size() + 1];
+        int violations = env.sat().violatedConstraints(selection);
+        objectives[objectives.length-1] =violations;
+        double [] evaluations;
+        if(violations > 0) {
+            evaluations = SPLEvaluator.failedEvaluation(env);
+        } else {
+            evaluations = SPLEvaluator.evaluateFeatureSelection(env, selection, clientName,false);
+        }
+        for (int i = 0; i < evaluations.length; i++) {
+            objectives[i] = evaluations[i];
+        }
+        return objectives;
     }
 }

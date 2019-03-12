@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 /**
  * Fe ature s election Transform
@@ -57,18 +58,32 @@ public class FesTransform {
 		/*
 		 *
 		 */
-		for(FeatureTreeNode feature : Sg) {
-			int childCount = feature.getChildCount();
-			if(feature.getChildCount() > 0) {
-				// include a random child
-				int randomChildIndex = random.nextInt(childCount);
-				FeatureTreeNode child = (FeatureTreeNode) feature.getChildAt(randomChildIndex);
-				includeFeature(child);
+        List<Integer> childIndices = new ArrayList<>();
+        for(FeatureTreeNode feature : Sg) {
+            int childCount = feature.getChildCount();
+            if(feature.getChildCount() > 0) {
+                // include a random child
+                boolean childIncluded = false;
+
+                childIndices.clear();
+                IntStream.range(0, childCount).forEach(childIndices::add);
+
+                while(!childIndices.isEmpty() && !childIncluded) {
+                    int randomIndex = random.nextInt(childIndices.size());
+                    int randomChildIndex = childIndices.get(randomIndex);
+                    FeatureTreeNode child = (FeatureTreeNode) feature.getChildAt(randomChildIndex);
+                    if(!Se.contains(feature)){
+                        childIncluded = true;
+                        includeFeature(child);
+                    } else {
+                        childIndices.remove(randomIndex);
+                    }
+                }
 			}
 		}
 
 		validFeatureSelection = new FeatureSet(Sv);
-		FMUtil.addImpliedFeatures(fm, validFeatureSelection);
+//		FMUtil.addImpliedFeatures(fm, validFeatureSelection);
 	}
 
 	private void includeFeature(FeatureTreeNode feature) {
@@ -82,6 +97,11 @@ public class FesTransform {
 		if(!FMUtil.isRoot(feature)) {
 			includeFeature((FeatureTreeNode) feature.getParent());
 		}
+
+        for(FeatureTreeNode excludedFeature : FMUtil.crosstreeExclusion(fm, feature)) {
+            excludeFeature(excludedFeature);
+        }
+
 		if(FMUtil.isInAlternativeGroup(feature)) {
 			FeatureTreeNode parent = (FeatureTreeNode) feature.getParent();
 			for(FeatureTreeNode sibling : FMUtil.children(parent)) {
@@ -91,17 +111,14 @@ public class FesTransform {
 			}
 		}
 
-		if(! FMUtil.isAlternativeGroup(feature)){
+		if(!FMUtil.isAlternativeGroup(feature)){
 			for(FeatureTreeNode child : FMUtil.children(feature)) {
-				if(!FMUtil.isOptionalFeature(child)) {
+				if(FMUtil.isMandatoryFeature(child)) {
 					includeFeature(child);
 				}
 			}
 		}
 
-		for(FeatureTreeNode excludedFeature : FMUtil.crosstreeExclusion(fm, feature)) {
-			excludeFeature(excludedFeature);
-		}
 
 		for(FeatureTreeNode impliedFeature : FMUtil.crosstreeConclusions(fm, feature)) {
 			includeFeature(impliedFeature);
@@ -129,7 +146,7 @@ public class FesTransform {
 			}
 			excludeFeature(childFeature);
 		}
-		if(!FMUtil.isOptionalFeature(feature)) {
+		if(FMUtil.isMandatoryFeature(feature)) {
 			excludeFeature((FeatureTreeNode) feature.getParent());
 		}
 		for(FeatureTreeNode impliedBy : FMUtil.crosstreePremises(fm, feature)) {

@@ -226,17 +226,23 @@ public class VideoEncoderEnv extends AbstractBenchmarkEnv implements BenchmarkEn
 
 		if(selection.isSelected("aq_mode_1"))
 			config.put("aq_mode", 1);
-		if(selection.isSelected("aq_mode_2"))
+		else if(selection.isSelected("aq_mode_2"))
 			config.put("aq_mode", 2);
-		if(selection.isSelected("aq_mode_3"))
+		else if(selection.isSelected("aq_mode_3"))
 			config.put("aq_mode", 3);
+        else {
+            throw new RuntimeException("Selection isnt valid.");
+        }
 
 		if(selection.isSelected("aq_strength_1"))
 			config.put("aq_strength", 1);
-		if(selection.isSelected("aq_strength_2"))
+		else if(selection.isSelected("aq_strength_2"))
 			config.put("aq_strength", 2);
-		if(selection.isSelected("aq_strength_3"))
+		else if(selection.isSelected("aq_strength_3"))
 			config.put("aq_strength", 3);
+        else {
+            throw new RuntimeException("Selection isnt valid.");
+        }
 
 		if(selection.isSelected("ipratio_1_4"))
 			config.put("ipratio", "1.4");
