@@ -38,11 +38,11 @@ public class ReasonerTest {
 	static BenchmarkEnvironment video_encoding_env;
 	static BenchmarkAgent agent;
 
-	final static String spl = "random_10000";
+	final static String spl = "video_encoder";
 
 	private static Map<String, Population> results = new HashMap<>();
 
-//	@BeforeClass
+	@BeforeClass
 	public static void setEnvironment() throws FeatureModelException, IOException {
 		agent = new BenchmarkAgent(10000);
 		VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent, "/Users/aminfaez/Documents/BA/x264_1");
@@ -51,7 +51,7 @@ public class ReasonerTest {
 		video_encoding_env = new VideoEncoderEnv(agent);
 	}
 
-    @BeforeClass
+//    @BeforeClass
 	public static void setupAttributeEnvironment() {
         video_encoding_env = new AttributedFeatureModelEnv("src/main/resources", spl);
     }
@@ -133,7 +133,7 @@ public class ReasonerTest {
 	public void testRunHenard()  {
         Henard henard = new Henard();
         Population population = henard.run(video_encoding_env);
-        Population moPopulation = new Population();
+        Population moPopulation = new NondominatedPopulation();
         population.forEach(solution ->
         {
             FeatureSelection selection = henard.assemble(video_encoding_env, solution);
@@ -150,7 +150,7 @@ public class ReasonerTest {
     public void testRunHierons() {
         Hierons hierons = new Hierons();
         Population population = hierons.run(video_encoding_env);
-        Population moPopulation = new Population();
+        Population moPopulation = new NondominatedPopulation();
         population.forEach(solution ->
         {
             FeatureSelection selection = hierons.assemble(video_encoding_env, solution);
