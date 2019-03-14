@@ -42,7 +42,7 @@ public class ReasonerTest {
 
 	private static Map<String, Population> results = new HashMap<>();
 
-	@BeforeClass
+//	@BeforeClass
 	public static void setEnvironment() throws FeatureModelException, IOException {
 		agent = new BenchmarkAgent(10000);
 		VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent, "/Users/aminfaez/Documents/BA/x264_1");
@@ -51,7 +51,7 @@ public class ReasonerTest {
 		video_encoding_env = new VideoEncoderEnv(agent);
 	}
 
-//    @BeforeClass
+    @BeforeClass
 	public static void setupAttributeEnvironment() {
         video_encoding_env = new AttributedFeatureModelEnv("src/main/resources", spl);
     }

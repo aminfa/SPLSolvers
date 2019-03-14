@@ -50,7 +50,7 @@ public class FeatureAttributeGenerator {
     public Map<String, Double> generateWithNames(FeatureModel fm, AbstractAttribute attribute) {
         Map<FeatureTreeNode, Double> attributeValues = generate(fm, attribute);
         Object2DoubleMap<String> attributeNameValues = new Object2DoubleOpenHashMap<>();
-        attributeValues.forEach((FeatureTreeNode feature, Double value) -> attributeNameValues.put(feature.getName(), value));
+        attributeValues.forEach((FeatureTreeNode feature, Double value) -> attributeNameValues.put(feature.getName(), value.doubleValue()));
         return attributeNameValues;
     }
 
