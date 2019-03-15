@@ -5,6 +5,7 @@ import de.upb.spl.hasco.FeatureSelectionEvaluatedEvent;
 import jaicore.basic.algorithm.events.AlgorithmEvent;
 import jaicore.basic.algorithm.events.ScoredSolutionCandidateFoundEvent;
 import jaicore.graphvisualizer.events.graph.bus.AlgorithmEventSource;
+import jaicore.graphvisualizer.events.graph.bus.HandleAlgorithmEventException;
 import jaicore.graphvisualizer.events.gui.GUIEvent;
 import jaicore.graphvisualizer.events.gui.GUIEventSource;
 import jaicore.graphvisualizer.plugin.*;
@@ -13,6 +14,7 @@ import jaicore.graphvisualizer.plugin.solutionperformanceplotter.SolutionPerform
 import jaicore.graphvisualizer.plugin.solutionperformanceplotter.SolutionPerformanceTimelinePluginView;
 import jaicore.graphvisualizer.plugin.timeslider.GoToTimeStepEvent;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.NumberAxis;
@@ -38,18 +40,13 @@ public class GUIPluginEvalTimeline implements IGUIPlugin {
         this.env = env;
         this.objectiveIndex = objectiveIndex;
         model = new Model();
-        view = new View(model);
-        controller = new Controller(model, view);
-
-        model.setController(controller);
-        model.setView(view);
-
-        view.setController(controller);
+        view = new View();
+        controller = new Controller();
 
     }
 
     @Override
-    public IGUIPluginController getController() {
+    public Controller getController() {
         return controller;
     }
 
@@ -59,7 +56,7 @@ public class GUIPluginEvalTimeline implements IGUIPlugin {
     }
 
     @Override
-    public IGUIPluginView getView() {
+    public View getView() {
         return view;
     }
 
@@ -73,7 +70,7 @@ public class GUIPluginEvalTimeline implements IGUIPlugin {
         guiEventSource.registerListener(controller);
     }
 
-    public class Model extends ASimpleMVCPluginModel<View, Controller> {
+    public class Model implements IGUIPluginModel {
 
         public Model() {
         }
@@ -109,10 +106,10 @@ public class GUIPluginEvalTimeline implements IGUIPlugin {
         }
     }
 
-    public class View extends ASimpleMVCPluginView<Model, Controller, AreaChart<Number, Number>> {
-
-        public View(Model model) {
-            super(model, new AreaChart<Number, Number>(new NumberAxis(), new NumberAxis()));
+    public class View implements IGUIPluginView {
+        private final AreaChart<Number, Number> node;
+        public View() {
+            node = new AreaChart<Number, Number>(new NumberAxis(), new NumberAxis());
 
             // defining the axes
             getNode().getXAxis().setLabel("elapsed time (s)");
@@ -126,6 +123,11 @@ public class GUIPluginEvalTimeline implements IGUIPlugin {
         }
 
         @Override
+        public AreaChart<Number, Number> getNode() {
+            return node;
+        }
+
+        @Override
         public void update() {
         }
 
@@ -134,7 +136,6 @@ public class GUIPluginEvalTimeline implements IGUIPlugin {
             return env.objectives().get(objectiveIndex) +  " Evaluation Performance Timeline";
         }
 
-        @Override
         public void clear() {
             Platform.runLater(()->{
                 for(XYChart.Series<Number, Number> series : performanceSeries.values()) {
@@ -145,12 +146,11 @@ public class GUIPluginEvalTimeline implements IGUIPlugin {
         }
     }
 
-    public class Controller extends ASimpleMVCPluginController<Model, View> {
+    public class Controller implements IGUIPluginController {
 
         private Logger logger = LoggerFactory.getLogger(SolutionPerformanceTimelinePlugin.class);
 
-        public Controller(Model model, View view) {
-            super(model, view);
+        public Controller() {
         }
 
         @Override
@@ -160,9 +160,8 @@ public class GUIPluginEvalTimeline implements IGUIPlugin {
             }
         }
 
-        @SuppressWarnings("unchecked")
         @Override
-        public void handleAlgorithmEventInternally(AlgorithmEvent algorithmEvent) {
+        public void handleAlgorithmEvent(AlgorithmEvent algorithmEvent) throws HandleAlgorithmEventException {
             if (algorithmEvent instanceof FeatureSelectionEvaluatedEvent) {
                 getModel().addEntry((FeatureSelectionEvaluatedEvent) algorithmEvent);
             }
