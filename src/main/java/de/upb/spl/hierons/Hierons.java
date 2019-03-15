@@ -36,7 +36,7 @@ public class Hierons extends EAReasoner {
     }
 
     @Override
-    public AbstractEvolutionaryAlgorithm createAlgorithm(BenchmarkEnvironment env) {
+    public AbstractEvolutionaryAlgorithm createEA(BenchmarkEnvironment env) {
         NovelRepresentation representation = new NovelRepresentation(env, NAME);
         NovelRepresentation.Problem problem = representation.getProblem();
         int populationSize = env.configuration().getHieronsPopulationSize();
@@ -82,7 +82,7 @@ public class Hierons extends EAReasoner {
                     VecInt literalOrder = representation.literalOrder();
                     BinaryVariable variable = (BinaryVariable) solution.getVariable(0);
                     Sayyad.binarizeSeed(variable, literalOrder, seed);
-//                    logger.info("Injecting seed: {}\n into initial population: {}", seed.toString(), variable.toString());
+//                    logger.info("Injecting seed: {}\n into initial runAndGetPopulation: {}", seed.toString(), variable.toString());
                 } else {
                     for (int j = 0; j < solution.getNumberOfVariables(); ++j) {
                         solution.getVariable(j).randomize();

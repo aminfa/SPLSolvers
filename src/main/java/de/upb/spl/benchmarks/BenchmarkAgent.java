@@ -6,9 +6,10 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.SimpleHttpHandler;
+import de.upb.spl.util.SimpleHttpHandler;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,9 +43,13 @@ public class BenchmarkAgent {
 	private final HttpServer jobService;
 	private final static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-	public BenchmarkAgent(int jobServerPort) throws IOException {
-		jobService = HttpServer.create(new InetSocketAddress(jobServerPort), 0);
-		jobService.createContext("/job/offer", new HandleJobOffer());
+	public BenchmarkAgent(int jobServerPort) {
+        try {
+            jobService = HttpServer.create(new InetSocketAddress(jobServerPort), 0);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+        jobService.createContext("/job/offer", new HandleJobOffer());
 
 		jobService.createContext("/job/application", new HandleJobApplication());
 		jobService.createContext("/job/update", new HandleJobUpdate());

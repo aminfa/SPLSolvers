@@ -42,7 +42,7 @@ public class BasicIbea extends EAReasoner {
     }
 
     @Override
-    public AbstractEvolutionaryAlgorithm createAlgorithm(BenchmarkEnvironment env) {
+    public AbstractEvolutionaryAlgorithm createEA(BenchmarkEnvironment env) {
 
         Problem problem = new Problem(env);
 

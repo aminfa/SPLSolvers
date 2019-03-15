@@ -42,7 +42,7 @@ public class Henard extends EAReasoner {
     }
 
     @Override
-    public AbstractEvolutionaryAlgorithm createAlgorithm(BenchmarkEnvironment env) {
+    public AbstractEvolutionaryAlgorithm createEA(BenchmarkEnvironment env) {
         Problem problem = new Problem(env);
         int populationSize = env.configuration().getHenardPopulationSize();
         String indicator = env.configuration().getBasicIbeaIndicator();
@@ -82,12 +82,12 @@ public class Henard extends EAReasoner {
 
             for(int i = 0; i < this.populationSize; ++i) {
                 Solution solution = this.problem.newSolution();
-                if(i<env.richSeeds().size() && i < env.configuration().getHernardSeedCount()) {
-                    VecInt seed = env.richSeeds().get(0);
+                if(i<env.richSeeds().size() && i < env.configuration().getSayyadSeedCount()) {
+                    VecInt seed = env.richSeeds().get(i);
                     VecInt literalOrder = problem.literalsOrder;
                     BinaryVariable variable = (BinaryVariable) solution.getVariable(0);
                     Sayyad.binarizeSeed(variable, literalOrder, seed);
-//                    logger.info("Injecting seed: {}\n into initial population: {}", seed.toString(), variable.toString());
+//                    logger.info("Injecting seed: {}\n into initial runAndGetPopulation: {}", seed.toString(), variable.toString());
                 } else {
                     for (int j = 0; j < solution.getNumberOfVariables(); ++j) {
                         solution.getVariable(j).randomize();

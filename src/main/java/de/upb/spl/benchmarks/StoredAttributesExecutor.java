@@ -1,14 +1,11 @@
 package de.upb.spl.benchmarks;
 
 
-import com.google.common.hash.Hashing;
 import com.tdunning.math.stats.AVLTreeDigest;
 import com.tdunning.math.stats.TDigest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.DefaultMap;
 
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;

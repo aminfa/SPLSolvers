@@ -7,7 +7,7 @@ import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import org.json.simple.JSONObject;
 import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.Population;
-import util.FileUtil;
+import de.upb.spl.util.FileUtil;
 
 import javax.swing.*;
 import java.awt.*;

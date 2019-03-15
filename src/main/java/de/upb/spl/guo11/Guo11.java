@@ -29,7 +29,7 @@ public class Guo11 extends EAReasoner {
     }
 
     @Override
-    public AbstractEvolutionaryAlgorithm createAlgorithm(BenchmarkEnvironment env) {
+    public AbstractEvolutionaryAlgorithm createEA(BenchmarkEnvironment env) {
         return new GuoAlgorithm(env, new Problem(env),  new Initialization(env));
     }
 
@@ -79,7 +79,7 @@ public class Guo11 extends EAReasoner {
 
         final private BenchmarkEnvironment env;
         final private Double  d;  // [0, 1] parameter d determines expected number of selected features in every generated chromosome.
-        final private Integer p,  // population size
+        final private Integer p,  // runAndGetPopulation size
                 n; // number of features
 
 

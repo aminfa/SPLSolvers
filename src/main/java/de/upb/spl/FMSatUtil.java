@@ -6,14 +6,13 @@ import fm.FeatureTreeNode;
 import org.sat4j.core.VecInt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.DefaultMap;
+import de.upb.spl.util.DefaultMap;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.function.IntConsumer;
-import java.util.function.IntPredicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;

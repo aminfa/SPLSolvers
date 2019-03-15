@@ -33,13 +33,17 @@ public final class SPLEvaluator {
         try {
             report = env.run(selection, client).get();
         } catch (InterruptedException | ExecutionException e) {
-            logger.warn("Couldn't run benchmark for " + selection + ".", e);
+            logger.warn("Couldn't runAndGetPopulation benchmark for " + selection + ".", e);
             report = null;
         }
 
         if(report == null || env.violatesConstraints(report)) {
             return failedEvaluation(env);
         }
+        return extractEvaluation(env, report, raw);
+    }
+
+    public static double[] extractEvaluation(BenchmarkEnvironment env, BenchmarkReport report, boolean raw) {
         double[] evaluation = new double[env.objectives().size()];
         for (int i = 0; i < evaluation.length; i++) {
             String objectiveName = env.objectives().get(i);

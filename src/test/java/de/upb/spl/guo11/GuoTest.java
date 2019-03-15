@@ -47,7 +47,7 @@ public class GuoTest {
 	@Test
 	public void testRun() throws InvocationTargetException, InterruptedException, ExecutionException {
 		Guo11 guo11 = new Guo11();
-		Population population = guo11.run(video_encoding_env);
+		Population population = guo11.runAndGetPopulation(video_encoding_env);
 		dumpPopulation(population);
 		JFrame frame = ParetoPresentation.showGUI(video_encoding_env, guo11, population);
 		EventQueue.invokeAndWait(()->frame.setVisible(true));

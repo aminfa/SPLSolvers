@@ -32,7 +32,7 @@ public class GuoAlgorithm extends AbstractEvolutionaryAlgorithm {
 	@Override
 	protected void iterate() {
 		/*
-		 * For each generation, two parent chromosomes are selected randomly in the population.
+		 * For each generation, two parent chromosomes are selected randomly in the runAndGetPopulation.
 		 */
 		int populationsize = population.size();
 		BinaryStringProblem problem = (BinaryStringProblem) getProblem();
@@ -76,14 +76,14 @@ public class GuoAlgorithm extends AbstractEvolutionaryAlgorithm {
 		newChr = problem.binarize(transform.getValidSelection());
         for(Solution members : getPopulation()) {
             if(members.getVariable(0).toString().equals(newChr.toString())) {
-                logger.info("Offspring's chromosome `{}` already exists. Skipping evaluation and adding it to the population.", newChr.toString());
+                logger.info("Offspring's chromosome `{}` already exists. Skipping evaluation and adding it to the runAndGetPopulation.", newChr.toString());
                 return;
             }
         }
 		/*
 		 * If the generated offspring is superior to both parents, it replaces the similar parent;
 		 * if it is in between the two parents, it replaces the inferior parent;
-		 * otherwise, the most inferior chromosome in the population is replaced.
+		 * otherwise, the most inferior chromosome in the runAndGetPopulation is replaced.
 		 */
 		Solution offspring = new Solution(1, parent1.getNumberOfObjectives());
 		offspring.setVariable(0, newChr);
@@ -130,7 +130,7 @@ public class GuoAlgorithm extends AbstractEvolutionaryAlgorithm {
                 getPopulation().remove(mostInferior);
                 getPopulation().add(offspring);
             } else {
-			    logger.info("New offspring is not added to the population.");
+			    logger.info("New offspring is not added to the runAndGetPopulation.");
             }
 		}
 		logger.info("Population size is: " + getPopulation().size());

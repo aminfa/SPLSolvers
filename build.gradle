@@ -11,7 +11,6 @@ dependencies {
     compile 'com.google.guava:guava:23.0'
     compile 'org.moeaframework:moeaframework:2.12'
     compile files('lib/sxfm.jar')
-//    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     compile group: 'org.aeonbits.owner', name: 'owner', version: '1.0.10'
     compile group: 'org.sat4j', name: 'org.sat4j.core', version: '2.3.1'
 //    compile group: 'de.fosd.typechef', name: 'featureexprlib_2.12', version: '0.4.1'
@@ -20,13 +19,19 @@ dependencies {
 
     compile group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
     compile group: 'commons-codec', name: 'commons-codec', version: '1.11'
-//    runtime group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.11.1'
-//    runtime group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
+
     compile 'com.tdunning:t-digest:3.2'
     compile group: 'org.jfree', name: 'jfreesvg', version: '3.4'
+
     compile project(":hasco")
 
+//    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+//    runtime group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.11.1'
+//    runtime group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
+
+
     testImplementation 'junit:junit:4.12'
+
 }
 
 repositories {

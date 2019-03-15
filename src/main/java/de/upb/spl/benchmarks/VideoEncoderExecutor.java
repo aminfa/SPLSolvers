@@ -5,8 +5,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.FileUtil;
-import util.Streams;
+import de.upb.spl.util.FileUtil;
+import de.upb.spl.util.Streams;
 
 import java.nio.file.Paths;
 import java.util.*;

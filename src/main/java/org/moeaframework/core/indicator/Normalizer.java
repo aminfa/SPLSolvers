@@ -24,9 +24,13 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 
 /**
+ *
+ * Monkey-Patch: Essentially, this hack will assign a fixed objective value (0.) for any degenerate objectives instead of throwing the exception. Since the value is fixed, it is not adding to the hypervolume. The end result is the hypervolume of the remaining, non-degenerate objectives.
+ *
+ *
  * Normalizes populations so that all objectives reside in the range {@code
  * [0, 1]}.  This normalization ignores infeasible solutions, so the resulting
- * normalized population contains no infeasible solutions.  A reference set
+ * normalized runAndGetPopulation contains no infeasible solutions.  A reference set
  * should be used to ensure the normalization is uniformly applied.
  */
 public class Normalizer {
@@ -49,11 +53,11 @@ public class Normalizer {
     /**
      * Constructs a normalizer for normalizing populations so that all
      * objectives reside in the range {@code [0, 1]}.  This constructor derives
-     * the minimum and maximum bounds from the given population.
+     * the minimum and maximum bounds from the given runAndGetPopulation.
      *
      * @param problem the problem
-     * @param population the population defining the minimum and maximum bounds
-     * @throws IllegalArgumentException if the population set contains fewer
+     * @param population the runAndGetPopulation defining the minimum and maximum bounds
+     * @throws IllegalArgumentException if the runAndGetPopulation set contains fewer
      *         than two solutions, or if there exists an objective with an
      *         empty range
      */
@@ -62,13 +66,12 @@ public class Normalizer {
         this.problem = problem;
         this.minimum = new double[problem.getNumberOfObjectives()];
         this.maximum = new double[problem.getNumberOfObjectives()];
-
         calculateRanges(population);
         checkRanges();
     }
 
     /**
-     * Constructs a normalizer for normalizing population so that all
+     * Constructs a normalizer for normalizing runAndGetPopulation so that all
      * objectives reside in the range {@code [0, 1]}.  This constructor allows
      * defining the minimum and maximum bounds explicitly.
      *
@@ -81,16 +84,15 @@ public class Normalizer {
         this.problem = problem;
         this.minimum = minimum.clone();
         this.maximum = maximum.clone();
-
         checkRanges();
     }
 
     /**
-     * Calculates the range of each objective given the population.  The range
+     * Calculates the range of each objective given the runAndGetPopulation.  The range
      * is defined by the minimum and maximum value of each objective.
      *
-     * @param population the population defining the minimum and maximum bounds
-     * @throws IllegalArgumentException if the population contains fewer than
+     * @param population the runAndGetPopulation defining the minimum and maximum bounds
+     * @throws IllegalArgumentException if the runAndGetPopulation contains fewer than
      *         two solutions
      */
     private void calculateRanges(Population population) {
@@ -135,12 +137,12 @@ public class Normalizer {
     }
 
     /**
-     * Returns a new non-dominated population containing the normalized
-     * solutions from the specified population.
+     * Returns a new non-dominated runAndGetPopulation containing the normalized
+     * solutions from the specified runAndGetPopulation.
      *
-     * @param population the population
-     * @return a new non-dominated population containing the normalized
-     *         solutions from the specified population
+     * @param population the runAndGetPopulation
+     * @return a new non-dominated runAndGetPopulation containing the normalized
+     *         solutions from the specified runAndGetPopulation
      */
     public NondominatedPopulation normalize(NondominatedPopulation population) {
         NondominatedPopulation result = new NondominatedPopulation() {
@@ -160,12 +162,12 @@ public class Normalizer {
     }
 
     /**
-     * Returns a new population containing the normalized solutions from the
-     * specified population.
+     * Returns a new runAndGetPopulation containing the normalized solutions from the
+     * specified runAndGetPopulation.
      *
-     * @param population the population
-     * @return a new population containing the normalized solutions from the
-     *         specified population
+     * @param population the runAndGetPopulation
+     * @return a new runAndGetPopulation containing the normalized solutions from the
+     *         specified runAndGetPopulation
      */
     public Population normalize(Population population) {
         Population result = new Population();
@@ -177,8 +179,8 @@ public class Normalizer {
      * Performs the actual normalization.  Each solution in {@code originalSet}
      * is copied, normalized and added to {@code normalizedSet}.
      *
-     * @param originalSet the unnormalized population
-     * @param normalizedSet the normalized population
+     * @param originalSet the unnormalized runAndGetPopulation
+     * @param normalizedSet the normalized runAndGetPopulation
      */
     private void normalize(Population originalSet, Population normalizedSet) {
         for (Solution solution : originalSet) {
@@ -190,7 +192,7 @@ public class Normalizer {
 
             for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
                 if (maximum[j] - minimum[j] < Settings.EPS) {
-                    clone.setObjective(j, 0.5);
+                    clone.setObjective(j, 0.);
                 } else {
                     clone.setObjective(j,
                             (clone.getObjective(j) - minimum[j]) /

@@ -3,48 +3,86 @@ package de.upb.spl.benchmarks.env;
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.BenchmarkReport;
 
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class BenchmarkBill {
 
     private final String clientName;
 
-    private final AtomicInteger evaluations;
-
-    private final Map<FeatureSelection, BenchmarkReport> log = new ConcurrentHashMap<>();
+    private final List<Log> evalLogs = Collections.synchronizedList(new ArrayList<>());
+    private final Map<FeatureSelection, BenchmarkReport> evalCache = new ConcurrentHashMap<>();
 
     public BenchmarkBill(String clientName) {
         this.clientName = clientName;
-        this.evaluations = new AtomicInteger(0);
     }
 
     public int getEvaluationsCount() {
-        return evaluations.get();
+        return evalLogs.size();
     }
 
     public void logEvaluation(FeatureSelection selection, BenchmarkReport report) {
-        BenchmarkReport oldReport = log.get(selection);
-        if(oldReport == null || oldReport != report) {
-            synchronized (log) {
-                log.put(selection, report);
+        Log log = new Log(selection, report);
+        boolean newLogEntry;
+        synchronized (evalCache) {
+            newLogEntry = evalCache.containsKey(selection);
+            if(!newLogEntry) {
+                evalCache.put(selection, report);
             }
-            evaluations.incrementAndGet();
+        }
+        if(!newLogEntry) {
+            evalLogs.add(log);
         }
     }
 
     public Optional<BenchmarkReport> checkLog(FeatureSelection selection) {
-        BenchmarkReport oldReport = log.get(selection);
+        BenchmarkReport oldReport = evalCache.get(selection);
         return Optional.ofNullable(oldReport);
+    }
+
+    public Log checkLog(int index) {
+        if(index < 0 || index >= getEvaluationsCount()) {
+            throw new ArrayIndexOutOfBoundsException("Array index " + index + " out of range: " + getEvaluationsCount());
+        }
+        return evalLogs.get(index);
     }
 
     public String getClientName() {
         return clientName;
     }
 
-    public void reset() {
-        evaluations.set(0);
+    public class Log {
+        private final FeatureSelection selection;
+        private final BenchmarkReport report;
+
+        public Log(FeatureSelection selection, BenchmarkReport report) {
+            this.selection = selection;
+            this.report = report;
+        }
+
+        public FeatureSelection selection() {
+            return selection;
+        }
+
+        public BenchmarkReport report() {
+            return report;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Log)) return false;
+
+            Log log = (Log) o;
+
+            if (!selection.equals(log.selection)) return false;
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = selection.hashCode();
+            return result;
+        }
     }
 }

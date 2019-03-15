@@ -17,7 +17,7 @@ import org.sat4j.reader.ParseFormatException;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.IteratorInt;
-import util.Iterators;
+import de.upb.spl.util.Iterators;
 
 
 import java.io.IOException;

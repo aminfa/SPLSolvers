@@ -1,6 +1,5 @@
 package de.upb.spl;
 
-import com.google.gson.Gson;
 import de.upb.spl.benchmarks.*;
 import de.upb.spl.benchmarks.env.AttributedFeatureModelEnv;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
@@ -10,28 +9,30 @@ import de.upb.spl.henard.Henard;
 import de.upb.spl.hierons.Hierons;
 import de.upb.spl.ibea.BasicIbea;
 import de.upb.spl.presentation.ParetoPresentation;
+import de.upb.spl.reasoner.EAReasoner;
 import de.upb.spl.reasoner.SPLEvaluator;
+import de.upb.spl.reasoner.SPLReasoner;
 import de.upb.spl.sayyad.Sayyad;
 import fm.FeatureModelException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.analysis.plot.Plot;
-import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Population;
-import org.moeaframework.core.Solution;
+import org.moeaframework.core.*;
 import org.moeaframework.core.variable.BinaryVariable;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
+import java.util.stream.StreamSupport;
 
 public class ReasonerTest {
 
@@ -41,6 +42,13 @@ public class ReasonerTest {
 	final static String spl = "video_encoder";
 
 	private static Map<String, Population> results = new HashMap<>();
+
+	private static final BiFunction<Solution, SPLReasoner, Solution> reevaluator = (solution, reasoner) ->
+    {
+        FeatureSelection selection = reasoner.assemble(video_encoding_env, solution);
+        double[] evaluation = SPLEvaluator.evaluateFeatureSelection(video_encoding_env, selection, null, false);
+        return SPLEvaluator.toSolution((BinaryVariable) solution.getVariable(0), evaluation);
+    };
 
 //	@BeforeClass
 	public static void setEnvironment() throws FeatureModelException, IOException {
@@ -55,8 +63,6 @@ public class ReasonerTest {
 	public static void setupAttributeEnvironment() {
         video_encoding_env = new AttributedFeatureModelEnv("src/main/resources", spl);
     }
-
-
 
     @AfterClass
     public static void saveResults() throws IOException {
@@ -77,92 +83,52 @@ public class ReasonerTest {
         plot.save(new File(plotFile), "SVG", 800, 600);
 	}
 
+	public void testReasoner(EAReasoner reasoner) {
+        AbstractEvolutionaryAlgorithm alg = reasoner.runAlgorithm(video_encoding_env);
+        Population population = alg.getPopulation();
+        Population moPopulation = new NondominatedPopulation();
+
+        StreamSupport.stream(population.spliterator(), false)
+                .map(s -> reevaluator.apply(s, reasoner))
+                .forEach(moPopulation::add);
+
+        Solution bestPerformer = EAReasoner.bestPerformer(alg.getProblem(), population);
+        Solution reevaluatedBestPerformer = reevaluator.apply(bestPerformer, reasoner);
+        dumpSolution(reevaluatedBestPerformer);
+
+        results.put(reasoner.name(), moPopulation);
+        ParetoPresentation.saveSolutionAsJson(video_encoding_env, reasoner, moPopulation);
+    }
+
 	@Test
 	public void testRunGUO() {
 		Guo11 guo11 = new Guo11();
-		Population population = guo11.run(video_encoding_env);
-		dumpBinaryString(population);
-        Population moPopulation = new NondominatedPopulation();
-		population.forEach(solution ->
-        {
-            FeatureSelection selection = guo11.assemble(video_encoding_env, solution);
-            double[] evaluation = SPLEvaluator.evaluateFeatureSelection(video_encoding_env, selection, null, false);
-            moPopulation.add(SPLEvaluator.toSolution((BinaryVariable) solution.getVariable(0), evaluation));
-        });
-        results.put(guo11.name(), moPopulation);
-//        ParetoPresentation.savePlotAsSvg(video_encoding_env, guo11, moPopulation);
-        ParetoPresentation.saveSolutionAsJson(video_encoding_env, guo11, moPopulation);
-//        ParetoPresentation.showDialog(video_encoding_env, guo11, moPopulation).setVisible(true);
+		testReasoner(guo11);
 	}
 
 //	@Test
     public void testBasicIbea() throws ExecutionException, InterruptedException {
         BasicIbea basicIbea = new BasicIbea();
-        Population population = basicIbea.run(video_encoding_env);
-        dumpBinaryString(population);
-        Population moPopulation = new NondominatedPopulation();
-        population.forEach(solution ->
-        {
-            FeatureSelection selection = basicIbea.assemble(video_encoding_env, solution);
-            double[] evaluation = SPLEvaluator.evaluateFeatureSelection(video_encoding_env, selection, null, false);
-            moPopulation.add(SPLEvaluator.toSolution((BinaryVariable) solution.getVariable(0), evaluation));
-        });
-        results.put(basicIbea.name(), moPopulation);
-//        ParetoPresentation.savePlotAsSvg(video_encoding_env, basicIbea, moPopulation);
-        ParetoPresentation.saveSolutionAsJson(video_encoding_env, basicIbea, moPopulation);
+        testReasoner(basicIbea);
     }
 
-    @Test
+//    @Test
     public void testSayyad() {
         Sayyad sayyad = new Sayyad();
-        Population population = sayyad.run(video_encoding_env);
-        dumpBinaryString(population);
-        Population moPopulation = new NondominatedPopulation();
-        population.forEach(solution ->
-        {
-            FeatureSelection selection = sayyad.assemble(video_encoding_env, solution);
-            double[] evaluation = SPLEvaluator.evaluateFeatureSelection(video_encoding_env, selection, null, false);
-            moPopulation.add(SPLEvaluator.toSolution((BinaryVariable) solution.getVariable(0), evaluation));
-        });
-        results.put(sayyad.name(), moPopulation);
-//        ParetoPresentation.savePlotAsSvg(video_encoding_env, sayyad, moPopulation);
-        ParetoPresentation.saveSolutionAsJson(video_encoding_env, sayyad, moPopulation);
+        testReasoner(sayyad);
     }
 
 	@Test
 	public void testRunHenard()  {
         Henard henard = new Henard();
-        Population population = henard.run(video_encoding_env);
-        Population moPopulation = new NondominatedPopulation();
-        population.forEach(solution ->
-        {
-            FeatureSelection selection = henard.assemble(video_encoding_env, solution);
-            double[] evaluation = SPLEvaluator.evaluateFeatureSelection(video_encoding_env, selection, null, false);
-            moPopulation.add(SPLEvaluator.toSolution((BinaryVariable) solution.getVariable(0), evaluation));
-        });
-        dumpBinaryString(moPopulation);
-        results.put(henard.name(), moPopulation);
-//        ParetoPresentation.savePlotAsSvg(video_encoding_env, sayyad, moPopulation);
-        ParetoPresentation.saveSolutionAsJson(video_encoding_env, henard, moPopulation);
+        testReasoner(henard);
 	}
 
 	@Test
     public void testRunHierons() {
         Hierons hierons = new Hierons();
-        Population population = hierons.run(video_encoding_env);
-        Population moPopulation = new NondominatedPopulation();
-        population.forEach(solution ->
-        {
-            FeatureSelection selection = hierons.assemble(video_encoding_env, solution);
-            double[] evaluation = SPLEvaluator.evaluateFeatureSelection(video_encoding_env, selection, null, false);
-            moPopulation.add(SPLEvaluator.toSolution((BinaryVariable) solution.getVariable(0), evaluation));
-        });
-        dumpBinaryString(moPopulation);
-        results.put(hierons.name(), moPopulation);
-//        ParetoPresentation.savePlotAsSvg(video_encoding_env, sayyad, moPopulation);
-        ParetoPresentation.saveSolutionAsJson(video_encoding_env, hierons, moPopulation);
+        testReasoner(hierons);
     }
-
 
 
     private void dumpBinaryString(Population population)  {
@@ -177,15 +143,13 @@ public class ReasonerTest {
         }
     }
 
-    private void dumpPopulation(Population population) throws ExecutionException,
-            InterruptedException {
-        for(Solution solution : population) {
-            BinaryVariable variable = (BinaryVariable) solution.getVariable(0);
-            FeatureSelection selection = FMUtil.selectFromPredicate(FMUtil.featureStream(video_encoding_env.model()).collect(Collectors.toList()),
-                    variable::get);
-            System.out.println("Configuration: "      + selection);
-            System.out.println("File size: "          + solution.getObjective(0));
-            System.out.println("Subjective quality: " + solution.getObjective(1));
-        }
+    private void dumpSolution(Solution solution) {
+        BinaryVariable variable = (BinaryVariable) solution.getVariable(0);
+        System.out.println("BinaryVariable: "      + variable.toString());
+        DoubleSummaryStatistics stats = DoubleStream.of(solution.getObjectives()).collect(DoubleSummaryStatistics::new,
+                DoubleSummaryStatistics::accept,
+                DoubleSummaryStatistics::combine);
+        System.out.println("Performance average: "      + stats.getAverage() );
+
     }
 }

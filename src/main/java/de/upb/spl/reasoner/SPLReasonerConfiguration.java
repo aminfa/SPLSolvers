@@ -13,7 +13,7 @@ public interface SPLReasonerConfiguration extends Mutable {
      */
 
     @Key("de.upb.spl.SPLReasoner.evaluations")
-    @DefaultValue("50")
+    @DefaultValue("30")
     Integer getEvaluationPermits();
 
     /*
@@ -39,7 +39,7 @@ public interface SPLReasonerConfiguration extends Mutable {
     String getBasicIbeaIndicator();
 
     @Key("de.upb.spl.SPLReasoner.ibea.p.bitflip")
-    @DefaultValue("0.005")
+    @DefaultValue("0.1")
     Double getBasicIbeaBitFlipProbability();
 
     @Key("de.upb.spl.SPLReasoner.ibea.p.singlePointCO")
@@ -50,12 +50,12 @@ public interface SPLReasonerConfiguration extends Mutable {
      * Sayyad
      */
     @Key("de.upb.spl.SPLReasoner.sayyad.populationSize")
-    @DefaultValue("30")
+    @DefaultValue("50")
     Integer getSayyadPopulationSize();
 
 
     @Key("de.upb.spl.SPLReasoner.sayyad.seedCount")
-    @DefaultValue("10")
+    @DefaultValue("1") // seed
     Integer getSayyadSeedCount();
 
     /*
@@ -70,11 +70,11 @@ public interface SPLReasonerConfiguration extends Mutable {
     Double getHenardSmartMutationProbability();
 
     @Key("de.upb.spl.SPLReasoner.Henard.p.smartReplacement")
-    @DefaultValue("0.001")
+    @DefaultValue("0.01")
     Double getHenardSmartReplacementProbability();
 
     @Key("de.upb.spl.SPLReasoner.Hernard.seedCount")
-    @DefaultValue("0")
+    @DefaultValue("1") // seed
     Integer getHernardSeedCount();
 
     /*
@@ -89,10 +89,10 @@ public interface SPLReasonerConfiguration extends Mutable {
     Double getHieronsSmartMutationProbability();
 
     @Key("de.upb.spl.SPLReasoner.Hierons.p.smartReplacement")
-    @DefaultValue("0.001")
+    @DefaultValue("0.01")
     Double getHieronsSmartReplacementProbability();
 
     @Key("de.upb.spl.SPLReasoner.Hierons.seedCount")
-    @DefaultValue("0")
+    @DefaultValue("1") // seed
     Integer getHieronsSeedCount();
 }

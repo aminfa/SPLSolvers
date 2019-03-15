@@ -1,16 +1,16 @@
 package de.upb.spl.benchmarks.env;
 
 import de.upb.spl.FMSAT;
+import de.upb.spl.FeatureSelection;
+import de.upb.spl.benchmarks.BenchmarkReport;
 import fm.FeatureModel;
 import fm.XMLFeatureModel;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.sat4j.core.Vec;
 import org.sat4j.core.VecInt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.FileUtil;
+import de.upb.spl.util.FileUtil;
 
 import java.io.File;
 import java.util.*;
@@ -21,6 +21,12 @@ public abstract class AbstractBenchmarkEnv implements BenchmarkEnvironment {
     private final static String SUB_FOLDER_NAME = "attributes";
     private String splName;
     private Map<String, BenchmarkBill> books = new HashMap<>();
+    private final BenchmarkBill offBooks = new BenchmarkBill(null) {
+        public void logEvaluation(FeatureSelection selection, BenchmarkReport report) {
+            // log nothing.
+        }
+    };
+
     private Optional<List<String>> objectives = Optional.empty();
     private Optional<List<VecInt>> richSeeds = Optional.empty();
     private Optional<Map> attributeValues = Optional.empty();
@@ -143,7 +149,7 @@ public abstract class AbstractBenchmarkEnv implements BenchmarkEnvironment {
 
     public synchronized BenchmarkBill bill(String clientName) {
         if(clientName == null) {
-            return new BenchmarkBill("anonymous");
+            return offBooks;
         }
         BenchmarkBill bill = books.get(clientName);
         if(bill == null) {

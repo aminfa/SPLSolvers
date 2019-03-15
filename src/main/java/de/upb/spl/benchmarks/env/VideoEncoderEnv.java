@@ -10,7 +10,7 @@ import org.apache.commons.lang3.concurrent.ConcurrentUtils;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.FileUtil;
+import de.upb.spl.util.FileUtil;
 
 import java.io.File;
 import java.util.*;
@@ -48,7 +48,7 @@ public class VideoEncoderEnv extends AbstractBenchmarkEnv implements BenchmarkEn
                 JobReport report = toReport(selection, clientName);
                 return executorService.submit(new SubmitVideoEncoding(agent, report, selection));
             } catch(Exception ex) {
-                logger.warn("Couldnt run benchmark for assemble {}. Exception message: {}", selection, ex.getMessage());
+                logger.warn("Couldnt runAndGetPopulation benchmark for assemble {}. Exception message: {}", selection, ex.getMessage());
                 logger.trace("Exception: ", ex);
                 return null;
             }

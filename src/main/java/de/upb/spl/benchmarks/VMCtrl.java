@@ -2,7 +2,7 @@ package de.upb.spl.benchmarks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.ShellUtil;
+import de.upb.spl.util.ShellUtil;
 
 import java.io.File;
 

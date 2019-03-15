@@ -8,7 +8,7 @@ import de.upb.spl.attributes.FeatureAttributeGenerator;
 import org.aeonbits.owner.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.DefaultMap;
+import de.upb.spl.util.DefaultMap;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;

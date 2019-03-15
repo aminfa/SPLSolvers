@@ -54,7 +54,7 @@ public class Sayyad  extends EAReasoner {
     }
 
     @Override
-    public AbstractEvolutionaryAlgorithm createAlgorithm(BenchmarkEnvironment env) {
+    public AbstractEvolutionaryAlgorithm createEA(BenchmarkEnvironment env) {
         Problem problem = new Problem(env);
         int populationSize = env.configuration().getSayyadPopulationSize();
         String indicator = env.configuration().getBasicIbeaIndicator();
@@ -97,7 +97,7 @@ public class Sayyad  extends EAReasoner {
                     VecInt literalOrder = problem.literalsOrder;
                     BinaryVariable variable = (BinaryVariable) solution.getVariable(0);
                     binarizeSeed(variable, literalOrder, seed);
-//                    logger.info("Injecting seed: {}\n into initial population: {}", seed.toString(), variable.toString());
+//                    logger.info("Injecting seed: {}\n into initial runAndGetPopulation: {}", seed.toString(), variable.toString());
                 } else {
                     for (int j = 0; j < solution.getNumberOfVariables(); ++j) {
                         solution.getVariable(j).randomize();

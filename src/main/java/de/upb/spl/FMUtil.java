@@ -3,9 +3,8 @@ package de.upb.spl;
 import constraints.BooleanVariable;
 import constraints.PropositionalFormula;
 import fm.*;
-import org.sat4j.core.VecInt;
-import util.Cache;
-import util.DefaultMap;
+import de.upb.spl.util.Cache;
+import de.upb.spl.util.DefaultMap;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,8 +12,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static de.upb.spl.FMSatUtil.nonUnitLiteralOrder;
 
 public class FMUtil {
 
