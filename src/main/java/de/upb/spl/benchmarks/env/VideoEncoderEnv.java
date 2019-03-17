@@ -20,7 +20,7 @@ public class VideoEncoderEnv extends AbstractBenchmarkEnv implements BenchmarkEn
 
 	private final static Logger logger = LoggerFactory.getLogger(BenchmarkEnvironment.class);
 
-	final static String testVideo = "flower_garden";
+	final String testVideo;
 	final static String SPL_NAME = "video_encoder";
 
 	final Random generator = new Random();
@@ -31,6 +31,7 @@ public class VideoEncoderEnv extends AbstractBenchmarkEnv implements BenchmarkEn
 
 	public VideoEncoderEnv(BenchmarkAgent agent) {
         super(new File(FileUtil.getPathOfResource(SPL_NAME + ".xml")).getParent(), SPL_NAME);
+        this.testVideo = this.configuration().getVideoSourceFile();
 		this.agent = Objects.requireNonNull(agent);
 	}
 

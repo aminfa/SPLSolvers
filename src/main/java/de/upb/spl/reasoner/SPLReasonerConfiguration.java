@@ -1,5 +1,6 @@
 package de.upb.spl.reasoner;
 
+import jmetal.encodings.variable.Int;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Mutable;
 
@@ -13,8 +14,13 @@ public interface SPLReasonerConfiguration extends Mutable {
      */
 
     @Key("de.upb.spl.SPLReasoner.evaluations")
-    @DefaultValue("30")
+    @DefaultValue("50")
     Integer getEvaluationPermits();
+
+    @Key("de.upb.spl.videoEncoding.RAWSourceFile")
+    @DefaultValue("flower_garden")
+    String getVideoSourceFile();
+
 
     /*
      * Guo
@@ -39,11 +45,11 @@ public interface SPLReasonerConfiguration extends Mutable {
     String getBasicIbeaIndicator();
 
     @Key("de.upb.spl.SPLReasoner.ibea.p.bitflip")
-    @DefaultValue("0.1")
+    @DefaultValue("0.001")
     Double getBasicIbeaBitFlipProbability();
 
     @Key("de.upb.spl.SPLReasoner.ibea.p.singlePointCO")
-    @DefaultValue("0.1")
+    @DefaultValue("0.01")
     Double getBasicIbeaSinglePointCrossoverProbability();
 
     /*
@@ -95,4 +101,23 @@ public interface SPLReasonerConfiguration extends Mutable {
     @Key("de.upb.spl.SPLReasoner.Hierons.seedCount")
     @DefaultValue("1") // seed
     Integer getHieronsSeedCount();
+
+    /*
+     * HASCO
+     */
+    @Key("de.upb.spl.SPLReasoner.Hasco.randomSearch")
+    @DefaultValue("false")
+    Boolean getHascoRandomSearch();
+
+    @Key("de.upb.spl.SPLReasoner.Hasco.randomSearchSamples")
+    @DefaultValue("1")
+    Integer getHascoRandomSearchSamples();
+
+    @Key("de.upb.spl.SPLReasoner.Hasco.evalTimeout")
+    @DefaultValue("600000") // 600 seconds ~ 10 minutes
+    Integer getHascoTimeoutForEval();
+
+    @Key("de.upb.spl.SPLReasoner.Hasco.nodeEvalTimeout")
+    @DefaultValue("600000") // 600 seconds
+    Integer getHascoTimeoutForNodeEval();
 }

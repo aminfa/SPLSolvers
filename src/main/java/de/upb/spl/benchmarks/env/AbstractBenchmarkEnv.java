@@ -3,6 +3,8 @@ package de.upb.spl.benchmarks.env;
 import de.upb.spl.FMSAT;
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.BenchmarkReport;
+import de.upb.spl.hasco.FM2CM;
+import de.upb.spl.hasco.SimpleReduction;
 import fm.FeatureModel;
 import fm.XMLFeatureModel;
 import org.json.simple.JSONObject;
@@ -33,14 +35,19 @@ public abstract class AbstractBenchmarkEnv implements BenchmarkEnvironment {
     private Random generator;
     private Optional<FeatureModel> fm;
     private Optional<FMSAT> fmsat;
+    private Optional<FM2CM> cm;
 
     public AbstractBenchmarkEnv(String resourceFolder, String splName) {
         this.splName = splName;
         logger.info("Creating environemt for spl-name={} in resource-folder={}.", splName, resourceFolder);
+
         String modelFile = resourceFolder + File.separator + splName + ".xml";
         logger.info("Loading feature model from: {}.", modelFile);
+        String componentModelFile = resourceFolder + File.separator + splName + ".json";
+        logger.info("Loading component model from: {}.", componentModelFile);
         String dimacsFile = resourceFolder + File.separator + splName + ".dimacs";
         logger.info("Loading sat formula from from: {}.", dimacsFile);
+
         String attributeValuesFile = resourceFolder + File.separator + SUB_FOLDER_NAME + File.separator + splName + ".attributes.json";
         logger.info("Loading attribute values from: {}.", attributeValuesFile);
         String objectivesFile = resourceFolder + File.separator + SUB_FOLDER_NAME + File.separator + splName + ".objectives.json";
@@ -63,6 +70,16 @@ public abstract class AbstractBenchmarkEnv implements BenchmarkEnvironment {
         } else {
             try {
                 // TODO load dimacs
+            } catch (Exception e) {
+            }
+        }
+
+
+        if(fm.isPresent()) {
+            this.cm = Optional.of(new SimpleReduction(fm.get()));
+        } else {
+            try {
+                // TODO load component model
             } catch (Exception e) {
             }
         }
@@ -125,6 +142,10 @@ public abstract class AbstractBenchmarkEnv implements BenchmarkEnvironment {
     @Override
     public FeatureModel model() {
         return fm.get();
+    }
+
+    public FM2CM componentModel() {
+        return cm.get();
     }
 
     @Override

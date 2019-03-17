@@ -168,7 +168,14 @@ public class VideoEncoderExecutor implements Runnable{
         logger.info("Executing job {}.", report.getJobId());
 //		String shell_command = String.join(" ", shell_cmd);
         Process child = Runtime.getRuntime().exec(shell_cmd);
-        boolean exited = child.waitFor(3, TimeUnit.MINUTES);
+        int timeoutInSeconds = 600;
+        int sampleTime = 30;
+        boolean exited = false;
+        while(!exited && timeoutInSeconds > 0) {
+            exited = child.waitFor(sampleTime, TimeUnit.SECONDS);
+            timeoutInSeconds -= sampleTime;
+            exited = exited || !child.isAlive();
+        }
         if(!exited) {
             child.destroyForcibly();
             throw new RuntimeException("Execution timeout for job: " + report.getJobId() +

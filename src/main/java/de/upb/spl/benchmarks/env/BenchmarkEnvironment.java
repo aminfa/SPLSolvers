@@ -2,6 +2,7 @@ package de.upb.spl.benchmarks.env;
 
 import de.upb.spl.FMSAT;
 import de.upb.spl.FeatureSelection;
+import de.upb.spl.hasco.FM2CM;
 import de.upb.spl.reasoner.SPLReasonerConfiguration;
 import de.upb.spl.benchmarks.BenchmarkReport;
 import fm.FeatureModel;
@@ -18,6 +19,8 @@ public interface BenchmarkEnvironment {
 
 	FMSAT sat();
 
+	FM2CM componentModel();
+
 	List<String> objectives();
 
 	List<VecInt> richSeeds();
@@ -33,6 +36,8 @@ public interface BenchmarkEnvironment {
 	default boolean violatesConstraints(BenchmarkReport report){
 	    return false;
     }
+
+
 
 	default SPLReasonerConfiguration configuration(){
 	    return ConfigFactory.create(SPLReasonerConfiguration.class);

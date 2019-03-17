@@ -6,13 +6,13 @@ import fm.FeatureTreeNode;
 import hasco.model.Component;
 import hasco.model.ComponentInstance;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
 import static de.upb.spl.FMUtil.*;
 
 /**
- * This class provides a component model for a feature model.
- * It also offers transformation for a grounded component to its feature selection.
+ * This class provides a component model for a specific feature model.
+ * It also offers transformation for a grounded component instance to its feature selection.
  */
 public abstract class FM2CM {
 
@@ -20,7 +20,7 @@ public abstract class FM2CM {
 
     private final FeatureModel fm;
 
-    private Component dumdum = new Component(HascoSPLReasoner.DUMMY_COMPONENT);
+    private Component dumdum = new Component(HASCOSPLReasoner.DUMMY_COMPONENT);
 
     public FM2CM(FeatureModel fm) {
         this.fm = fm;
@@ -32,6 +32,12 @@ public abstract class FM2CM {
 
     public String createAlternativeChildrenInterfaceName(FeatureTreeNode feature) {
         return "i" + id(feature);
+    }
+
+    public Collection<Component> getComponents() {
+        List<Component> components = new ArrayList<>(this.components.values());
+        components.add(dumdum);
+        return components;
     }
 
     public String createParentChildInterfaceName(FeatureTreeNode feature, FeatureTreeNode child) {
@@ -47,4 +53,8 @@ public abstract class FM2CM {
     }
 
     public abstract FeatureSelection transform(ComponentInstance object);
+
+    public String rootInterface() {
+        return "ROOT";
+    }
 }

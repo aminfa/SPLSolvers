@@ -44,7 +44,7 @@ public class FileUtil {
 		}
 	}
 
-	private static File getResourceFile(String resourceFilePath) {
+	public static File getResourceFile(String resourceFilePath) {
 		File resourceFile;
 		ClassLoader classLoader = FileUtil.class.getClassLoader();
 		try{

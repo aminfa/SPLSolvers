@@ -1,4 +1,4 @@
-package de.upb.spl.hasco;
+package de.upb.spl.ailibsintegration;
 
 import de.upb.spl.FeatureSelection;
 import jaicore.basic.algorithm.events.ASolutionCandidateFoundEvent;

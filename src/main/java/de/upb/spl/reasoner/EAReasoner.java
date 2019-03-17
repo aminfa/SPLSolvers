@@ -1,14 +1,8 @@
 package de.upb.spl.reasoner;
 
 import de.upb.spl.FeatureSelection;
-import de.upb.spl.benchmarks.env.BenchmarkBill;
+import de.upb.spl.ailibsintegration.SPLReasonerAlgorithm;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.hasco.FeatureSelectionEvaluatedEvent;
-import de.upb.spl.hasco.FeatureSelectionPerformance;
-import jaicore.basic.algorithm.AAlgorithm;
-import jaicore.basic.algorithm.AlgorithmExecutionCanceledException;
-import jaicore.basic.algorithm.events.*;
-import jaicore.basic.algorithm.exceptions.AlgorithmException;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.Population;
@@ -20,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.StreamSupport;
 
 /**
@@ -121,70 +114,12 @@ public abstract class EAReasoner implements SPLReasoner {
     /**
      * This IAlgorithm class wraps an evolutionary algorithm.
      */
-    public final class SPLEvoAlgorithm extends AAlgorithm<BenchmarkEnvironment, FeatureSelection> {
+    public final class SPLEvoAlgorithm extends SPLReasonerAlgorithm {
 
-        private int lastEvalCountLog = -1;
-        private int nextEvalIndex = 0;
         private AbstractEvolutionaryAlgorithm ea;
 
         protected SPLEvoAlgorithm(BenchmarkEnvironment env) {
-            super(env);
-        }
-
-        @Override
-        public String getId() {
-            return name;
-        }
-
-        @Override
-        public AlgorithmEvent nextWithException() throws InterruptedException, AlgorithmExecutionCanceledException, TimeoutException, AlgorithmException {
-            switch(getState()) {
-                case created:
-                    ea = createEA(getInput());
-                    logger.info("Finished initializing {}", name());
-                    activate();
-                    return new AlgorithmInitializedEvent(getId());
-                case active:
-                    return step();
-                default:
-                    return new AlgorithmFinishedEvent(getId());
-            }
-        }
-
-        /**
-         * Advances the EA until a never-seen-before candidate has been evaluated.
-         * When multiple new candidates are evaluated in one ea step, they are returned separately in each step invocation.
-         * Returns candidates in the order they were found.
-         * Ends the algorithm if the evaluation permits are reached.
-         *
-         * @return Candidate solution found by ea.
-         * @throws AlgorithmException error when running ea algorithm
-         */
-        private ASolutionCandidateFoundEvent step() throws AlgorithmException {
-            int evals = getInput().configuration().getEvaluationPermits();
-            int currentEvals = getInput().bill(name()).getEvaluationsCount();
-            if(nextEvalIndex > evals) {
-                throw new AlgorithmException("Algorithm already finished.");
-            }
-            if(currentEvals > lastEvalCountLog) {
-                lastEvalCountLog = currentEvals;
-                logger.debug("{} performing evaluation {}/{}.", name(), currentEvals, evals);
-            }
-            while(nextEvalIndex == currentEvals) {
-                try {
-                    ea.step(); // EVO ALGORITHM GENERATION STEP
-                } catch(Exception ex) {
-                    throw new AlgorithmException(ex, "Error running while stepping ea in: " + name());
-                }
-                currentEvals = getInput().bill(name()).getEvaluationsCount();
-            }
-            BenchmarkBill.Log log = getInput().bill(name()).checkLog(nextEvalIndex);
-            FeatureSelectionPerformance performance = new FeatureSelectionPerformance(0, SPLEvaluator.extractEvaluation(getInput(), log.report(), true));
-            nextEvalIndex++;
-            if(nextEvalIndex > evals) {
-                terminate();
-            }
-            return new FeatureSelectionEvaluatedEvent(getId(), log.selection(), nextEvalIndex-1, performance);
+            super(env, name);
         }
 
         public AbstractEvolutionaryAlgorithm getEA() {
@@ -192,15 +127,27 @@ public abstract class EAReasoner implements SPLReasoner {
         }
 
         @Override
-        public FeatureSelection call() throws InterruptedException, AlgorithmExecutionCanceledException, TimeoutException, AlgorithmException {
-            while (hasNext()) {
-                next();
-            }
-            try{
-                return assemble(getInput(), bestPerformer(getEA().getProblem(), getEA().getPopulation()));
-            } catch (IllegalArgumentException ex) {
-                throw new AlgorithmException(ex, "Error selecting best performer.");
-            }
+        protected void init() {
+            ea = createEA(getInput());
+            logger.info("Finished initializing {}", name());
+            activate();
+        }
+
+        protected void innerStep() {
+            ea.step(); // EVO ALGORITHM GENERATION STEP
+        }
+
+        /**
+         * Steps a generation in the evolutionary algorithm.
+         */
+        @Override
+        protected void proceed() {
+            ea.step();
+        }
+
+        @Override
+        protected FeatureSelection best() {
+            return assemble(getInput(), bestPerformer(getEA().getProblem(), getEA().getPopulation()));
         }
     }
 }

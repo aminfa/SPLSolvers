@@ -2,17 +2,21 @@ package de.upb.spl.hasco;
 
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
+import de.upb.spl.FeatureSet;
 import fm.FeatureModel;
 import fm.FeatureTreeNode;
 import hasco.model.Component;
 import hasco.model.ComponentInstance;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 import static de.upb.spl.FMUtil.*;
 import static de.upb.spl.FMUtil.id;
 
-public class SimpleTransformation extends FM2CM {
+public class SimpleReduction extends FM2CM {
 
-    public SimpleTransformation(FeatureModel fm) {
+    public SimpleReduction(FeatureModel fm) {
         super(fm);
         createComponents();
         createInterfaces();
@@ -20,9 +24,50 @@ public class SimpleTransformation extends FM2CM {
 
     @Override
     public FeatureSelection transform(ComponentInstance object) {
-        return null;
+        FeatureSelection selection = new FeatureSet();
+        traverseComponentInstance(selection, object);
+        return selection;
     }
 
+    /**
+     * Walks through the component instance and adds the matching features to the given selection.
+     *
+     * @param selection This feature selection is filled with components contained by the rootComponent instance.
+     * @param rootInstance the root component instance which matches the root feature.
+     */
+    private void traverseComponentInstance(final FeatureSelection selection, final ComponentInstance rootInstance) {
+        /*
+         * Deque of unvisited component instances, i.e. the ones that weren't added to the selection.
+         */
+        final Deque<ComponentInstance> unvisited = new ArrayDeque<>(selection.size());
+        final FeatureModel fm = getFM();
+
+        unvisited.add(rootInstance);
+        selection.add(fm.getRoot());
+
+        while(!unvisited.isEmpty()) {
+            ComponentInstance instance = unvisited.removeFirst();
+            for(ComponentInstance child : instance.getSatisfactionOfRequiredInterfaces().values()) {
+                String childComponentName = child.getComponent().getName();
+                if(childComponentName.equals(HASCOSPLReasoner.DUMMY_COMPONENT)) {
+                    continue;
+                } else {
+                    FeatureTreeNode feature = find(fm, childComponentName);
+                    if(feature == null) {
+                        throw new IllegalArgumentException("Component name was not recognized: " + childComponentName);
+                    }
+                    if(selection.add(feature)) {
+                        traverseComponentInstance(selection, child);
+                    }
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Creates a component for each feature.
+     */
     private void createComponents() {
         for(FeatureTreeNode featureTreeNode : listFeatures(getFM())) {
             Component c = new Component(id(featureTreeNode));
@@ -30,7 +75,15 @@ public class SimpleTransformation extends FM2CM {
         }
     }
 
+    /**
+     * Adds required and provided interface information that enforce the parent-child relationship of the feature model.
+     */
     private void createInterfaces() {
+        /*
+         * The root feature offers the ROOT interface:
+         */
+        get(getFM().getRoot()).addProvidedInterface(rootInterface());
+
         for(FeatureTreeNode feature : FMUtil.listFeatures(getFM())) {
             Component component = get(feature);
 

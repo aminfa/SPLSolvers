@@ -1,9 +1,8 @@
 package de.upb.spl.presentation;
 
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.hasco.FeatureSelectionEvaluatedEvent;
+import de.upb.spl.ailibsintegration.FeatureSelectionEvaluatedEvent;
 import jaicore.basic.algorithm.events.AlgorithmEvent;
-import jaicore.basic.algorithm.events.ScoredSolutionCandidateFoundEvent;
 import jaicore.graphvisualizer.events.graph.bus.AlgorithmEventSource;
 import jaicore.graphvisualizer.events.graph.bus.HandleAlgorithmEventException;
 import jaicore.graphvisualizer.events.gui.GUIEvent;
@@ -11,10 +10,8 @@ import jaicore.graphvisualizer.events.gui.GUIEventSource;
 import jaicore.graphvisualizer.plugin.*;
 import jaicore.graphvisualizer.plugin.controlbar.ResetEvent;
 import jaicore.graphvisualizer.plugin.solutionperformanceplotter.SolutionPerformanceTimelinePlugin;
-import jaicore.graphvisualizer.plugin.solutionperformanceplotter.SolutionPerformanceTimelinePluginView;
 import jaicore.graphvisualizer.plugin.timeslider.GoToTimeStepEvent;
 import javafx.application.Platform;
-import javafx.scene.Node;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.NumberAxis;
