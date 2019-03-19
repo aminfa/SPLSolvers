@@ -25,7 +25,7 @@ public class RunAll extends VisualSPLReasoner{
 
 //    @Env()
     public Bookkeeper videoEncodingEnv() {
-        VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(), "/Users/aminfaez/Documents/BA/x264_1");
+        VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(),  System.getProperty("user.home") + "/Documents/BA/x264_1");
         return new Bookkeeper(new VideoEncoderEnv(agent()));
     }
 
@@ -108,6 +108,6 @@ public class RunAll extends VisualSPLReasoner{
     }
 
     public static void main(String... args) {
-        new RunReplay().setup(RunAll.class);
+        new RunAll().setup(RunAll.class);
     }
 }

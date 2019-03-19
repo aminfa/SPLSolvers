@@ -13,9 +13,9 @@ import jaicore.graphvisualizer.plugin.IGUIPlugin;
 
 public class RunReplay extends VisualSPLReasoner{
 
-    //    @Env()
+    @Env()
     public Bookkeeper videoEncodingEnv() {
-        VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(), "/Users/aminfaez/Documents/BA/x264_1");
+        VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(), System.getProperty("user.home") + "/Documents/BA/x264_1");
         return new Bookkeeper(new VideoEncoderEnv(agent()));
     }
 
