@@ -1,16 +1,13 @@
 package de.upb.spl;
 
 import de.upb.spl.benchmarks.*;
-import de.upb.spl.benchmarks.env.AttributedFeatureModelEnv;
-import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.benchmarks.env.VideoEncoderEnv;
+import de.upb.spl.benchmarks.env.*;
 import de.upb.spl.guo11.Guo11;
 import de.upb.spl.henard.Henard;
 import de.upb.spl.hierons.Hierons;
 import de.upb.spl.ibea.BasicIbea;
 import de.upb.spl.presentation.ParetoPresentation;
 import de.upb.spl.reasoner.EAReasoner;
-import de.upb.spl.reasoner.SPLEvaluator;
 import de.upb.spl.reasoner.SPLReasoner;
 import de.upb.spl.sayyad.Sayyad;
 import fm.FeatureModelException;
@@ -29,25 +26,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.StreamSupport;
 
-public class ReasonerTest {
+public class EAReasonerTest {
 
-	static BenchmarkEnvironment video_encoding_env;
+	static BenchmarkEnvironment env;
+	static BenchmarkEnvironment rawEnv;
 	static BenchmarkAgent agent;
 
 	final static String spl = "video_encoder";
 
 	private static Map<String, Population> results = new HashMap<>();
 
-	private static final BiFunction<Solution, SPLReasoner, Solution> reevaluator = (solution, reasoner) ->
+	private static final BiFunction<Solution, EAReasoner, Solution> reevaluator = (solution, reasoner) ->
     {
-        FeatureSelection selection = reasoner.assemble(video_encoding_env, solution);
-        double[] evaluation = SPLEvaluator.evaluateFeatureSelection(video_encoding_env, selection, null, false);
-        return SPLEvaluator.toSolution((BinaryVariable) solution.getVariable(0), evaluation);
+        FeatureSelection selection = reasoner.assemble(env, solution);
+        double[] evaluation = BenchmarkHelper.evaluateFeatureSelection(rawEnv, selection);
+        return BenchmarkHelper.toSolution((BinaryVariable) solution.getVariable(0), evaluation);
     };
 
 //	@BeforeClass
@@ -56,12 +52,14 @@ public class ReasonerTest {
 		VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent, "/Users/aminfaez/Documents/BA/x264_1");
 //		VideoEncoderExecutor.fixedAttributesExecutor(agent);
 		// Load the XML file and creates the listFeatures model
-		video_encoding_env = new VideoEncoderEnv(agent);
+		env = new VideoEncoderEnv(agent);
+        rawEnv = new RawResults(env);
 	}
 
     @BeforeClass
 	public static void setupAttributeEnvironment() {
-        video_encoding_env = new AttributedFeatureModelEnv("src/main/resources", spl);
+        env = new AttributedFeatureModelEnv("src/main/resources", spl);
+        rawEnv = new RawResults(env);
     }
 
     @AfterClass
@@ -75,16 +73,17 @@ public class ReasonerTest {
             }
             plot.add(splreasonerName, results.get(splreasonerName));
         }
-        plot.setXLabel(video_encoding_env.objectives().get(0));
-        if(video_encoding_env.objectives().size() > 1)
-            plot.setYLabel(video_encoding_env.objectives().get(1));
+        plot.setXLabel(env.objectives().get(0));
+        if(env.objectives().size() > 1)
+            plot.setYLabel(env.objectives().get(1));
 
-        String plotFile = "presentations/" + ParetoPresentation.presentationFileNameForCurrentTime(video_encoding_env.toString()) + ".svg";
+        String plotFile = "presentations/" + ParetoPresentation.presentationFileNameForCurrentTime(env.toString()) + ".svg";
         plot.save(new File(plotFile), "SVG", 800, 600);
 	}
 
 	public void testReasoner(EAReasoner reasoner) {
-        AbstractEvolutionaryAlgorithm alg = reasoner.runAlgorithm(video_encoding_env);
+	    BenchmarkEnvironment billedEnv = env.openTab(reasoner.name());
+        AbstractEvolutionaryAlgorithm alg = reasoner.runAlgorithm(billedEnv);
         Population population = alg.getPopulation();
         Population moPopulation = new NondominatedPopulation();
 
@@ -97,7 +96,7 @@ public class ReasonerTest {
         dumpSolution(reevaluatedBestPerformer);
 
         results.put(reasoner.name(), moPopulation);
-        ParetoPresentation.saveSolutionAsJson(video_encoding_env, reasoner, moPopulation);
+        ParetoPresentation.saveSolutionAsJson(env, reasoner, moPopulation);
     }
 
 	@Test

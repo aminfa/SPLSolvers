@@ -2,7 +2,9 @@ package de.upb.spl.presentation;
 
 import de.upb.spl.benchmarks.VideoEncoderExecutor;
 import de.upb.spl.benchmarks.env.AttributedFeatureModelEnv;
+import de.upb.spl.benchmarks.env.Bookkeeper;
 import de.upb.spl.benchmarks.env.VideoEncoderEnv;
+import de.upb.spl.eval.ReasonerRecorder;
 import de.upb.spl.guo11.Guo11;
 import de.upb.spl.hasco.HASCOSPLReasoner;
 import de.upb.spl.henard.Henard;
@@ -22,22 +24,27 @@ import java.util.concurrent.ExecutionException;
 public class RunAll extends VisualSPLReasoner{
 
 //    @Env()
-    public VideoEncoderEnv videoEncodingEnv() {
+    public Bookkeeper videoEncodingEnv() {
         VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(), "/Users/aminfaez/Documents/BA/x264_1");
-        return new VideoEncoderEnv(agent());
+        return new Bookkeeper(new VideoEncoderEnv(agent()));
     }
 
 
-
     @Env()
-    public AttributedFeatureModelEnv setupAttributeEnvironment() {
-        return new AttributedFeatureModelEnv("src/main/resources", "random_1000");
+    public Bookkeeper setupAttributeEnvironment() {
+        return new Bookkeeper(
+                new AttributedFeatureModelEnv("src/main/resources", "video_encoder"));
     }
 
     @Reasoner(order = 1)
     public SPLReasoner guo() {
         Guo11 guo11 = new Guo11();
         return guo11;
+    }
+
+    @Collect
+    public ReasonerRecorder recordGUO() {
+        return new ReasonerRecorder(env(), Guo11.NAME, "recordings/" + Guo11.NAME + ".json");
     }
 
     @Reasoner(order = 1, enabled = false)
@@ -64,10 +71,20 @@ public class RunAll extends VisualSPLReasoner{
         return hierons;
     }
 
+    @Collect
+    public ReasonerRecorder recordHierons() {
+        return new ReasonerRecorder(env(), Hierons.NAME, "recordings/" + Hierons.NAME + ".json");
+    }
+
     @Reasoner(order = 0)
     public SPLReasoner hasco() {
         HASCOSPLReasoner hasco = new HASCOSPLReasoner();
         return hasco;
+    }
+
+    @Collect
+    public ReasonerRecorder recordHasco() {
+        return new ReasonerRecorder(env(), HASCOSPLReasoner.NAME, "recordings/" + HASCOSPLReasoner.NAME + ".json");
     }
 
     @GUI(order = -1)
@@ -91,6 +108,6 @@ public class RunAll extends VisualSPLReasoner{
     }
 
     public static void main(String... args) {
-        new RunAll().setup(RunAll.class);
+        new RunReplay().setup(RunAll.class);
     }
 }

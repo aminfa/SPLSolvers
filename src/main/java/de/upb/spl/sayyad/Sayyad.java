@@ -1,12 +1,10 @@
 package de.upb.spl.sayyad;
 
 import de.upb.spl.FMSatUtil;
-import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.ibea.BasicIbea;
 import de.upb.spl.ibea.CompoundVariation;
 import de.upb.spl.reasoner.EAReasoner;
-import de.upb.spl.reasoner.SPLEvaluator;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.algorithm.IBEA;
@@ -14,7 +12,6 @@ import org.moeaframework.core.*;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
-import org.moeaframework.core.operator.OnePointCrossover;
 import org.moeaframework.core.operator.binary.BitFlip;
 import org.moeaframework.core.operator.binary.HUX;
 import org.moeaframework.core.variable.BinaryVariable;
@@ -22,8 +19,6 @@ import org.moeaframework.problem.AbstractProblem;
 import org.sat4j.core.VecInt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
 
 public class Sayyad  extends EAReasoner {
 

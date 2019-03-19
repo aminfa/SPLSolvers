@@ -1,37 +1,27 @@
-package de.upb.spl.reasoner;
+package de.upb.spl.benchmarks.env;
 
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
-import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.BenchmarkReport;
-import fm.FeatureTreeNode;
+import de.upb.spl.benchmarks.JobReport;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Function;
 
-public final class SPLEvaluator {
-    private final static Logger logger = LoggerFactory.getLogger(SPLEvaluator.class);
-
-    public static double[] evaluateBinaryString(BenchmarkEnvironment env,
-                                                BinaryVariable featureSelectionBinaryString,
-                                                List<FeatureTreeNode> featureOrder, String client, boolean raw) {
-        FeatureSelection selection = FMUtil.selectFromPredicate(featureOrder, featureSelectionBinaryString::get);
-        return evaluateFeatureSelection(env, selection, client, raw);
-    }
+public final class BenchmarkHelper {
+    private final static Logger logger = LoggerFactory.getLogger(BenchmarkHelper.class);
 
     public static double[] evaluateFeatureSelection(BenchmarkEnvironment env,
-                                                    FeatureSelection selection, String client, boolean raw) {
+                                                    FeatureSelection selection) {
         if(!FMUtil.isValidSelection(env.model(), selection)) {
             return failedEvaluation(env);
         }
-        BenchmarkReport report;
+        JobReport report;
         try {
-            report = env.run(selection, client).get();
+            report = env.run(selection).get();
         } catch (InterruptedException | ExecutionException e) {
             logger.warn("Couldn't runAndGetPopulation benchmark for " + selection + ".", e);
             report = null;
@@ -40,23 +30,23 @@ public final class SPLEvaluator {
         if(report == null || env.violatesConstraints(report)) {
             return failedEvaluation(env);
         }
-        return extractEvaluation(env, report, raw);
+        return extractEvaluation(env, report);
     }
 
-    public static double[] extractEvaluation(BenchmarkEnvironment env, BenchmarkReport report, boolean raw) {
+    public static double[] extractEvaluation(BenchmarkEnvironment env, JobReport report) {
+        boolean raw = env.isRaw();
         double[] evaluation = new double[env.objectives().size()];
         for (int i = 0; i < evaluation.length; i++) {
             String objectiveName = env.objectives().get(i);
+            BenchmarkReport reportReader = env.reader(report);
             if(raw) {
-                evaluation[i] = report.rawResult(objectiveName).orElse(Double.NaN);
+                evaluation[i] = reportReader.rawResult(objectiveName).orElse(Double.NaN);
             } else {
-                evaluation[i] = report.readResult(objectiveName).orElse(Double.NaN);
+                evaluation[i] = reportReader.readResult(objectiveName).orElse(Double.NaN);
             }
         }
         return evaluation;
     }
-
-
 
     public static Solution toSolution(BinaryVariable featureSelectionBinaryString,
                                               double[] evaluation){
@@ -73,5 +63,4 @@ public final class SPLEvaluator {
         }
         return evaluation;
     }
-
 }

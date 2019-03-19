@@ -17,17 +17,11 @@ import de.upb.spl.util.FileUtil;
 import java.io.File;
 import java.util.*;
 
-public abstract class AbstractBenchmarkEnv implements BenchmarkEnvironment {
+public final class FileBenchmarkEnv extends BenchmarkEnvironmentDecoration {
 
-    private final static Logger logger = LoggerFactory.getLogger(AbstractBenchmarkEnv.class);
+    private final static Logger logger = LoggerFactory.getLogger(FileBenchmarkEnv.class);
     private final static String SUB_FOLDER_NAME = "attributes";
     private String splName;
-    private Map<String, BenchmarkBill> books = new HashMap<>();
-    private final BenchmarkBill offBooks = new BenchmarkBill(null) {
-        public void logEvaluation(FeatureSelection selection, BenchmarkReport report) {
-            // log nothing.
-        }
-    };
 
     private Optional<List<String>> objectives = Optional.empty();
     private Optional<List<VecInt>> richSeeds = Optional.empty();
@@ -37,7 +31,13 @@ public abstract class AbstractBenchmarkEnv implements BenchmarkEnvironment {
     private Optional<FMSAT> fmsat;
     private Optional<FM2CM> cm;
 
-    public AbstractBenchmarkEnv(String resourceFolder, String splName) {
+
+    public FileBenchmarkEnv(String resourceFolder, String splName) {
+        this(new BaseEnv(), resourceFolder, splName);
+    }
+
+    public FileBenchmarkEnv(BenchmarkEnvironment env, String resourceFolder, String splName) {
+        super(env);
         this.splName = splName;
         logger.info("Creating environemt for spl-name={} in resource-folder={}.", splName, resourceFolder);
 
@@ -163,24 +163,14 @@ public abstract class AbstractBenchmarkEnv implements BenchmarkEnvironment {
         return richSeeds.get();
     }
 
+
     @Override
     public Random generator() {
         return generator;
     }
 
-    public synchronized BenchmarkBill bill(String clientName) {
-        if(clientName == null) {
-            return offBooks;
-        }
-        BenchmarkBill bill = books.get(clientName);
-        if(bill == null) {
-            bill = new BenchmarkBill(clientName);
-            books.put(clientName, bill);
-        }
-        return bill;
-    }
-
     public String toString() {
         return splName;
     }
+
 }

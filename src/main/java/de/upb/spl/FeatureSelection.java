@@ -3,8 +3,7 @@ package de.upb.spl;
 import fm.FeatureModel;
 import fm.FeatureTreeNode;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 import java.util.function.Predicate;
 
 public interface FeatureSelection extends Predicate<FeatureTreeNode>, Iterable<FeatureTreeNode>, Collection<FeatureTreeNode> {

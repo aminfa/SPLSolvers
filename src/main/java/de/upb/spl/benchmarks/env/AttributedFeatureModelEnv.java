@@ -12,37 +12,50 @@ import java.util.*;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-public class AttributedFeatureModelEnv extends AbstractBenchmarkEnv implements BenchmarkEnvironment {
+public class AttributedFeatureModelEnv extends BenchmarkEnvironmentDecoration {
     private final static Logger logger = LoggerFactory.getLogger(AttributedFeatureModelEnv.class);
 
     private final StoredAttributesExecutor executor;
 
 
     public AttributedFeatureModelEnv(String resourceFolder, String splName) {
-        super(resourceFolder, splName);
+        this(new FileBenchmarkEnv(resourceFolder, splName));
+    }
+
+    public AttributedFeatureModelEnv(FileBenchmarkEnv env) {
+        super(env);
         this.executor = new StoredAttributesExecutor(null, attributes());
     }
 
-
     @Override
-    public Future<BenchmarkReport> run(FeatureSelection selection, String clientName) {
-        BenchmarkBill bill = bill(clientName);
-        Optional<BenchmarkReport> loggedReport = bill.checkLog(selection);
-        BenchmarkReport report;
-        JobReport job;
+    public Future<JobReport> run(FeatureSelection selection, BenchmarkBill bill) {
+        Optional<JobReport> loggedReport = bill.checkLog(selection);
         if(loggedReport.isPresent()) {
-            report = loggedReport.get();
+            return ConcurrentUtils.constantFuture(loggedReport.get());
         } else {
-            job = job = toReport(selection);
-            report = new AttributeValueReport(job);
+            JobReport job = toReport(selection);
             try {
                 executor.executeJob(job);
-                bill(clientName).logEvaluation(selection, report);
+                bill.logEvaluation(selection, job);
+                return ConcurrentUtils.constantFuture(job);
             } catch (Exception e) {
                 logger.warn("Couldn't create attribute values for assemble={}.", selection, e);
+                throw new IllegalArgumentException("Attribute Feature model env.");
             }
         }
-        return ConcurrentUtils.constantFuture(report);
+    }
+
+    @Override
+    public BenchmarkReport reader(JobReport jobReport) {
+        return new AttributeValueReport(jobReport);
+    }
+
+    protected FileBenchmarkEnv getBaseEnv() {
+        return (FileBenchmarkEnv) super.getBaseEnv();
+    }
+
+    public Map attributes() {
+        return getBaseEnv().attributes();
     }
 
     public JobReport toReport(FeatureSelection selection) {
@@ -92,6 +105,11 @@ public class AttributedFeatureModelEnv extends AbstractBenchmarkEnv implements B
                 }
                 return Optional.ofNullable(result.doubleValue());
             }
+        }
+
+        @Override
+        public JobReport getJobReport() {
+            return report;
         }
     }
 

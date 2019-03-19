@@ -1,7 +1,6 @@
 package de.upb.spl;
 
-import de.upb.spl.benchmarks.BenchmarkReport;
-import de.upb.spl.benchmarks.env.AbstractBenchmarkEnv;
+import de.upb.spl.benchmarks.env.FileBenchmarkEnv;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.hierons.NovelRepresentation;
 import de.upb.spl.sayyad.Sayyad;
@@ -15,7 +14,6 @@ import org.sat4j.specs.TimeoutException;
 import org.sat4j.tools.ModelIterator;
 
 import java.util.Arrays;
-import java.util.concurrent.Future;
 import java.util.stream.IntStream;
 
 public class NovelReprTest {
@@ -24,15 +22,9 @@ public class NovelReprTest {
 
     @BeforeClass
     public static void setEnv() {
-        env = new AbstractBenchmarkEnv(
+        env = new FileBenchmarkEnv(
                 "src/main/resources",
-                "Eshop") {
-            @Override
-            public Future<BenchmarkReport> run(FeatureSelection selection, String clientName) {
-                return null;
-            }
-        };
-
+                "Eshop");
     }
 
     @Test

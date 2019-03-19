@@ -13,9 +13,9 @@ public class JobMaintainer {
 	private final static Logger logger = LoggerFactory.getLogger(JobMaintainer.class);
 
 
-	private final List<JobReport> unassignedJobs = new ArrayList<>(2 << 10);
-	private final List<JobReport> runningJobs = new ArrayList<>(2 << 10);
-	private final List<JobReport> finishedJobs = new ArrayList<>(2 << 10);
+	private final List<JobReport> unassignedJobs = new ArrayList<>(2 << 7);
+	private final List<JobReport> runningJobs = new ArrayList<>(2 << 7);
+	private final List<JobReport> finishedJobs = new ArrayList<>(2 << 7);
 
 
 	public void offerJob(JobReport newJob) {

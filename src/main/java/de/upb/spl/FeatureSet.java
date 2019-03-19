@@ -13,17 +13,31 @@ public class FeatureSet extends LinkedHashSet<FeatureTreeNode> implements Featur
 	}
 
 	public FeatureSet(FeatureModel fm, String... featuresIds) {
-		for(String featureId : featuresIds) {
-			FeatureTreeNode feature = fm.getNodeByID(featureId);
-			if(feature == null) {
-				throw new IllegalArgumentException("Cannot find listFeatures with id " + featureId);
-			}
-			this.add(feature);
-		}
+	    this(fm, Arrays.stream(featuresIds).iterator());
 	}
 
 
-	/**
+    public FeatureSet(FeatureModel fm, Collection<String> featuresIds) {
+        this(fm, featuresIds.iterator());
+    }
+
+    public FeatureSet(FeatureModel fm, Iterator<String> iterator) {
+        while(iterator.hasNext())
+        {
+            String featureId = iterator.next();
+            FeatureTreeNode feature = FMUtil.find(fm, featureId);
+            if(feature == null) {
+                throw new IllegalArgumentException("Cannot find listFeatures with id " + featureId);
+            }
+            this.add(feature);
+        }
+    }
+
+
+
+
+
+    /**
 	 * Copy constructor
 	 * @param fm
 	 */

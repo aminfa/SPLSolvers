@@ -49,7 +49,7 @@ public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginContr
 
 //    private final Map<String, List<MarkedDataPoint>> data = new ConcurrentHashMap<>();
 
-    private final Map<ReasonerObjectiveTuple, XYChart.Series<Number, Number>> chartData = new HashMap<>();
+    private final Map<ReasonerObjectiveTuple, XYChart.Series<Number, Number>> chartData = new LinkedHashMap<>();
 
     private Insertion currentInsertion = new Insertion();
 

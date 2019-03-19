@@ -2,6 +2,8 @@ package de.upb.spl.benchmarks.env;
 
 import de.upb.spl.FMSAT;
 import de.upb.spl.FeatureSelection;
+import de.upb.spl.benchmarks.BenchmarkBill;
+import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.hasco.FM2CM;
 import de.upb.spl.reasoner.SPLReasonerConfiguration;
 import de.upb.spl.benchmarks.BenchmarkReport;
@@ -25,23 +27,33 @@ public interface BenchmarkEnvironment {
 
 	List<VecInt> richSeeds();
 
-    Future<BenchmarkReport> run(FeatureSelection selection, String clientName);
-
-    default Future<BenchmarkReport> runAnonymously(FeatureSelection selection){
-        return run(selection, null);
+    default Future<JobReport> run(FeatureSelection selection) {
+        return run(selection, currentTab());
     }
+
+    Future<JobReport> run(FeatureSelection selection, BenchmarkBill bill);
+
 
 	Random generator();
 
-	default boolean violatesConstraints(BenchmarkReport report){
+	default boolean violatesConstraints(JobReport report){
 	    return false;
     }
 
+    BenchmarkReport reader(JobReport jobReport);
 
 
 	default SPLReasonerConfiguration configuration(){
 	    return ConfigFactory.create(SPLReasonerConfiguration.class);
     }
 
-    BenchmarkBill bill(String clientName);
+    BenchmarkBill currentTab();
+
+    default boolean isRaw() {
+        return false;
+    }
+
+    BenchmarkEnvironment openTab(String reasoner);
+
+    BenchmarkBill bill(String reasonerName);
 }

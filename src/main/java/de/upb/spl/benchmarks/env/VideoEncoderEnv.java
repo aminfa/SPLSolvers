@@ -3,6 +3,7 @@ package de.upb.spl.benchmarks.env;
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.BenchmarkAgent;
+import de.upb.spl.benchmarks.BenchmarkBill;
 import de.upb.spl.benchmarks.BenchmarkReport;
 import de.upb.spl.benchmarks.JobReport;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -16,7 +17,7 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class VideoEncoderEnv extends AbstractBenchmarkEnv implements BenchmarkEnvironment {
+public class VideoEncoderEnv extends BenchmarkEnvironmentDecoration {
 
 	private final static Logger logger = LoggerFactory.getLogger(BenchmarkEnvironment.class);
 
@@ -30,24 +31,31 @@ public class VideoEncoderEnv extends AbstractBenchmarkEnv implements BenchmarkEn
 	final BenchmarkAgent agent;
 
 	public VideoEncoderEnv(BenchmarkAgent agent) {
-        super(new File(FileUtil.getPathOfResource(SPL_NAME + ".xml")).getParent(), SPL_NAME);
-        this.testVideo = this.configuration().getVideoSourceFile();
-		this.agent = Objects.requireNonNull(agent);
+        this(
+                new FileBenchmarkEnv(
+                        new File(FileUtil.getPathOfResource(SPL_NAME + ".xml")).getParent(),
+                        SPL_NAME),
+                agent
+        );
 	}
 
 
+    public VideoEncoderEnv(BenchmarkEnvironment env, BenchmarkAgent agent) {
+	    super(env);
+        this.testVideo = this.configuration().getVideoSourceFile();
+        this.agent = Objects.requireNonNull(agent);
+    }
+
+
 	@Override
-	public Future<BenchmarkReport> run(FeatureSelection selection, String clientName) {
-        BenchmarkBill bill = bill(clientName);
-        Optional<BenchmarkReport> loggedReport = bill.checkLog(selection);
+	public Future<JobReport> run(FeatureSelection selection, BenchmarkBill bill) {
+        Optional<JobReport> loggedReport = bill.checkLog(selection);
         if(loggedReport.isPresent()) {
-            BenchmarkReport report;
-            report = loggedReport.get();
-            return ConcurrentUtils.constantFuture(report);
+            return ConcurrentUtils.constantFuture(loggedReport.get());
         } else {
             try {
-                JobReport report = toReport(selection, clientName);
-                return executorService.submit(new SubmitVideoEncoding(agent, report, selection));
+                JobReport report = toReport(selection, bill.getClientName());
+                return executorService.submit(new SubmitVideoEncoding(agent, report, selection, bill));
             } catch(Exception ex) {
                 logger.warn("Couldnt runAndGetPopulation benchmark for assemble {}. Exception message: {}", selection, ex.getMessage());
                 logger.trace("Exception: ", ex);
@@ -56,26 +64,33 @@ public class VideoEncoderEnv extends AbstractBenchmarkEnv implements BenchmarkEn
         }
 	}
 
-	private class SubmitVideoEncoding implements Callable<BenchmarkReport> {
+    @Override
+    public BenchmarkReport reader(JobReport jobReport) {
+        return new VideoEncoderReport(jobReport);
+    }
+
+	private class SubmitVideoEncoding implements Callable<JobReport> {
 
 		final JobReport report;
 		final BenchmarkAgent agent;
 		final FeatureSelection selection;
-		SubmitVideoEncoding(BenchmarkAgent agent, JobReport report, FeatureSelection selection) {
+		final BenchmarkBill bill;
+		SubmitVideoEncoding(BenchmarkAgent agent, JobReport report, FeatureSelection selection, BenchmarkBill bill) {
 			this.report = report;
 			this.agent = agent;
 			this.selection = selection;
+			this.bill = bill;
 		}
 
 		@Override
-		public BenchmarkReport call() throws Exception {
+		public JobReport call() throws Exception {
 			agent.jobs().offerJob(report);
 			agent.jobs().waitForResults(report);
 			BenchmarkReport summary = new VideoEncoderReport(report);
             if(checkResults(summary)) {
-                bill(report.getClientName()).logEvaluation(selection, summary);
+                bill.logEvaluation(selection, report);
             }
-            return summary;
+            return report;
 		}
 	}
 
@@ -273,7 +288,8 @@ public class VideoEncoderEnv extends AbstractBenchmarkEnv implements BenchmarkEn
 	}
 
 
-	public static class VideoEncoderReport implements BenchmarkReport {
+
+    public static class VideoEncoderReport implements BenchmarkReport {
 		private final JobReport report;
 
 		VideoEncoderReport(JobReport report) {
@@ -303,8 +319,8 @@ public class VideoEncoderEnv extends AbstractBenchmarkEnv implements BenchmarkEn
 		    return Optional.empty();
         }
 
-		public JobReport getFinalReport() {
-			return report;
-		}
+		public JobReport getJobReport() {
+		    return report;
+        }
 	}
 }

@@ -1,10 +1,8 @@
 package de.upb.spl.ailibsintegration;
 
 import de.upb.spl.FeatureSelection;
-import de.upb.spl.benchmarks.env.BenchmarkBill;
-import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.reasoner.EAReasoner;
-import de.upb.spl.reasoner.SPLEvaluator;
+import de.upb.spl.benchmarks.BenchmarkEntry;
+import de.upb.spl.benchmarks.env.*;
 import jaicore.basic.algorithm.AAlgorithm;
 import jaicore.basic.algorithm.AlgorithmExecutionCanceledException;
 import jaicore.basic.algorithm.events.ASolutionCandidateFoundEvent;
@@ -19,7 +17,7 @@ import java.util.concurrent.TimeoutException;
 
 public abstract class SPLReasonerAlgorithm extends AAlgorithm<BenchmarkEnvironment, FeatureSelection> {
 
-    private final static Logger logger = LoggerFactory.getLogger(EAReasoner.class);
+    private final static Logger logger = LoggerFactory.getLogger(SPLReasonerAlgorithm.class);
     private final String name;
 
 
@@ -29,10 +27,7 @@ public abstract class SPLReasonerAlgorithm extends AAlgorithm<BenchmarkEnvironme
     public SPLReasonerAlgorithm(BenchmarkEnvironment env,  String name) {
         super(env);
         this.name = name;
-
     }
-
-
 
     @Override
     public final String getId() {
@@ -83,7 +78,7 @@ public abstract class SPLReasonerAlgorithm extends AAlgorithm<BenchmarkEnvironme
      */
     private final ASolutionCandidateFoundEvent step() throws AlgorithmException {
         int evals = getInput().configuration().getEvaluationPermits();
-        int currentEvals = getInput().bill(name).getEvaluationsCount();
+        int currentEvals = getInput().currentTab().getEvaluationsCount();
         if(nextEvalIndex > evals) {
             throw new AlgorithmException("Algorithm already finished.");
         }
@@ -97,11 +92,12 @@ public abstract class SPLReasonerAlgorithm extends AAlgorithm<BenchmarkEnvironme
             } catch(Exception ex) {
                 throw new AlgorithmException(ex, "Error while proceeding in: " + getId());
             }
-            currentEvals = getInput().bill(name).getEvaluationsCount();
+            currentEvals = getInput().currentTab().getEvaluationsCount();
         }
-        BenchmarkBill.Log log = getInput().bill(name).checkLog(nextEvalIndex);
+        BenchmarkEntry log = getInput().currentTab().checkLog(nextEvalIndex);
 
-        double[] evaluation = SPLEvaluator.evaluateFeatureSelection(getInput(), log.selection(), null, true);
+        BenchmarkEnvironment rawEnv = new RawResults(getInput());
+        double[] evaluation = BenchmarkHelper.evaluateFeatureSelection(rawEnv, log.selection());
         FeatureSelectionPerformance reevaluatedPerformance = new FeatureSelectionPerformance(0, evaluation);
         nextEvalIndex++;
         if(nextEvalIndex > evals) {

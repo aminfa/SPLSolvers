@@ -1,9 +1,5 @@
 package de.upb.spl;
 
-import de.upb.spl.benchmarks.BenchmarkReport;
-import de.upb.spl.benchmarks.env.AbstractBenchmarkEnv;
-import de.upb.spl.benchmarks.env.AttributedFeatureModelEnv;
-import de.upb.spl.hierons.NovelRepresentation;
 import fm.FeatureModel;
 import fm.FeatureModelException;
 import fm.XMLFeatureModel;
@@ -18,12 +14,8 @@ import org.sat4j.specs.TimeoutException;
 import org.sat4j.tools.ModelIterator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Future;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class FMSATTest {
 	static FeatureModel featureModel;

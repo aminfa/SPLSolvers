@@ -3,13 +3,13 @@ package de.upb.spl.guo11;
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.BenchmarkReport;
+import de.upb.spl.benchmarks.env.BenchmarkHelper;
 import de.upb.spl.reasoner.*;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import fm.FeatureTreeNode;
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.*;
 import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +50,7 @@ public class Guo11 extends EAReasoner {
         @Override
         public void evaluate(Solution solution) {
             FeatureSelection selection = assemble((BinaryVariable) solution.getVariable(0));
-            double[] evaluation = SPLEvaluator.evaluateFeatureSelection(env, selection, name(), false);
+            double[] evaluation = BenchmarkHelper.evaluateFeatureSelection(env, selection);
             double[] score = new double[1];
             /*
              * If a single objective fails (is NaN), return the worst score

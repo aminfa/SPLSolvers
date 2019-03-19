@@ -75,6 +75,10 @@ public abstract class EAReasoner implements SPLReasoner {
         return population.get(bestPerformerIndex);
     }
 
+
+    public abstract FeatureSelection assemble(BenchmarkEnvironment env, Solution solution);
+
+
     public AbstractEvolutionaryAlgorithm runAlgorithm(BenchmarkEnvironment env) {
         SPLEvoAlgorithm algorithm = algorithm(env);
         try {
@@ -94,14 +98,14 @@ public abstract class EAReasoner implements SPLReasoner {
         return runAlgorithm(env).getPopulation();
     }
 
-    @Override
+//    @Override
     public List<FeatureSelection> search(BenchmarkEnvironment env) {
         Population population = runAlgorithm(env).getResult();
         List<FeatureSelection> selections = new ArrayList<>();
         for(Solution solution : population) {
             selections.add(assemble(env,solution));
         }
-        return  selections;
+        return selections;
     }
 
     @Override
@@ -133,16 +137,12 @@ public abstract class EAReasoner implements SPLReasoner {
             activate();
         }
 
-        protected void innerStep() {
-            ea.step(); // EVO ALGORITHM GENERATION STEP
-        }
-
         /**
          * Steps a generation in the evolutionary algorithm.
          */
         @Override
         protected void proceed() {
-            ea.step();
+            ea.step(); // EVO ALGORITHM GENERATION STEP
         }
 
         @Override

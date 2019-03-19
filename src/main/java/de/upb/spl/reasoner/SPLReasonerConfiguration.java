@@ -106,7 +106,7 @@ public interface SPLReasonerConfiguration extends Mutable {
      * HASCO
      */
     @Key("de.upb.spl.SPLReasoner.Hasco.randomSearch")
-    @DefaultValue("false")
+    @DefaultValue("true")
     Boolean getHascoRandomSearch();
 
     @Key("de.upb.spl.SPLReasoner.Hasco.randomSearchSamples")
@@ -120,4 +120,11 @@ public interface SPLReasonerConfiguration extends Mutable {
     @Key("de.upb.spl.SPLReasoner.Hasco.nodeEvalTimeout")
     @DefaultValue("600000") // 600 seconds
     Integer getHascoTimeoutForNodeEval();
+
+    /*
+     * Replay
+     */
+    @Key("de.upb.spl.SPLReasoner.Replay.rerunSelection")
+    @DefaultValue("true")
+    Boolean getReplayRerunSelection();
 }

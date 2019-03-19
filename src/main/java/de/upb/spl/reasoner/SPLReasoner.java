@@ -13,9 +13,6 @@ public interface SPLReasoner {
 
     SPLReasonerAlgorithm algorithm(BenchmarkEnvironment env);
 
-    Collection<FeatureSelection> search(BenchmarkEnvironment env);
-
-	FeatureSelection assemble(BenchmarkEnvironment env, Solution solution);
 
 	String name();
 

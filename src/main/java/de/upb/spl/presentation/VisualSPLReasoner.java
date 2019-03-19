@@ -1,17 +1,10 @@
 package de.upb.spl.presentation;
 
-import de.upb.spl.FeatureSelection;
 import de.upb.spl.ailibsintegration.SPLReasonerAlgorithm;
 import de.upb.spl.benchmarks.BenchmarkAgent;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.ailibsintegration.FeatureSelectionEvaluatedEvent;
-import de.upb.spl.ailibsintegration.FeatureSelectionPerformance;
-import de.upb.spl.reasoner.SPLEvaluator;
+import de.upb.spl.eval.Evaluator;
 import de.upb.spl.reasoner.SPLReasoner;
-import jaicore.basic.algorithm.AlgorithmExecutionCanceledException;
-import jaicore.basic.algorithm.IAlgorithm;
-import jaicore.basic.algorithm.events.AlgorithmEvent;
-import jaicore.basic.algorithm.exceptions.AlgorithmException;
 import jaicore.graphvisualizer.events.recorder.AlgorithmEventHistoryRecorder;
 import jaicore.graphvisualizer.plugin.IGUIPlugin;
 import jaicore.graphvisualizer.window.AlgorithmVisualizationWindow;
@@ -22,9 +15,9 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.ExecutorService;
 
-public abstract class VisualSPLReasoner {
+public class VisualSPLReasoner {
 
     private final static Logger logger = LoggerFactory.getLogger(VisualSPLReasoner.class);
 
@@ -39,6 +32,8 @@ public abstract class VisualSPLReasoner {
 
 
     private List<SPLReasoner> reasoners = new ArrayList<>();
+
+    private List<Evaluator> evaluators = new ArrayList<>();
 
     public final void setup(Class<? extends VisualSPLReasoner> runnerClass) {
         Optional<Method> agentCreator = Arrays.stream(runnerClass.getMethods())
@@ -107,7 +102,25 @@ public abstract class VisualSPLReasoner {
                 .forEach(m-> {
                     try {
                         SPLReasoner reasoner = (SPLReasoner) m.invoke(this);
-                        registerReasoner(reasoner);
+                        addReasoner(reasoner);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        return;
+                    }
+                });
+
+        Arrays.stream(runnerClass.getMethods())
+                .filter(m -> m.isAnnotationPresent(Collect.class))
+                .filter(m->m.getAnnotation(Collect.class).enabled())
+                .forEach(m-> {
+                    try {
+                        Object collector = m.invoke(this);
+                        if(collector instanceof Evaluator) {
+                            Evaluator evaluator = (Evaluator) collector;
+                            addEvaluator(evaluator);
+                        } else {
+                            logger.error("Collector not recognized: " + collector.getClass().getName());
+                        }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         return;
@@ -117,32 +130,51 @@ public abstract class VisualSPLReasoner {
         this.start();
     }
 
+
     protected final boolean hasEnv() {
         return env != null;
     }
 
-	private void registerReasoner(SPLReasoner reasoner) {
+    public void createUI() {
+        eventRecorder = new AlgorithmEventHistoryRecorder();
+        if(main == null && tabs.size() > 0) {
+            main = tabs.remove(0);
+        }
+        if(main == null) {
+            return;
+        }
+
+        final IGUIPlugin[] tabs = this.tabs.toArray(new IGUIPlugin[0]);
+        logger.info("Creating GUI with {} many tabs.", tabs.length);
+        Platform.runLater(() -> new AlgorithmVisualizationWindow(eventRecorder.getHistory(), main, tabs).run());
+    }
+
+	private void addReasoner(SPLReasoner reasoner) {
         reasoners.add(reasoner);
     }
 
-    private final void reevaluateCandidate(FeatureSelectionEvaluatedEvent event) {
-        FeatureSelectionPerformance oldPerformance = event.getScore();
-        FeatureSelection selection = event.getSolutionCandidate();
-        double[] evaluation = SPLEvaluator.evaluateFeatureSelection(env, selection, null, true);
-        FeatureSelectionPerformance reevaluatedPerformance = new FeatureSelectionPerformance(oldPerformance.violatedConstraints(), evaluation);
-        event.setPerformance(reevaluatedPerformance);
+
+    protected void addEvaluator(Evaluator evaluator) {
+        evaluators.add(evaluator);
     }
 
     public void start() {
+        logger.info("Starting spl benchmark.");
         reasoners.stream().forEach(reasoner -> {
-            SPLReasonerAlgorithm alg = reasoner.algorithm(env);
+            BenchmarkEnvironment billedEnv = env.openTab(reasoner.name());
+            SPLReasonerAlgorithm alg = reasoner.algorithm(billedEnv);
             alg.registerListener(eventRecorder);
             try {
+                logger.info("Starting reasoner {}.", reasoner.name());
                 alg.call();
+                logger.info("Reasoner {} finished.", reasoner.name());
             } catch (Exception ex) {
                 logger.error("Execution Error in algorithm {}: ", reasoner.name(), ex);
             }
         });
+//        ExecutorService evaluatorService
+        logger.info("Benchmark finished. Starting evaluations.");
+        evaluators.forEach(Runnable::run);
     }
 
 
@@ -163,20 +195,6 @@ public abstract class VisualSPLReasoner {
         main = plugin;
     }
 
-    public void createUI() {
-        eventRecorder = new AlgorithmEventHistoryRecorder();
-        if(main == null && tabs.size() > 0) {
-            main = tabs.remove(0);
-        }
-        if(main == null) {
-            return;
-        }
-
-        final IGUIPlugin[] tabs = this.tabs.toArray(new IGUIPlugin[0]);
-
-        Platform.runLater(() -> new AlgorithmVisualizationWindow(eventRecorder.getHistory(), main, tabs).run());
-    }
-
     public BenchmarkAgent agent() {
         return agent;
     }
@@ -184,5 +202,6 @@ public abstract class VisualSPLReasoner {
     public BenchmarkEnvironment env() {
         return env;
     }
+
 
 }

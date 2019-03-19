@@ -17,7 +17,7 @@ public class JobReport {
 	}
 
 
-	JobReport(Map report) {
+	public JobReport(Map report) {
 		update(report);
 		if(getJobId() == null) {
 			this.report.put("jobId", DigestUtils.sha256Hex(UUID.randomUUID().toString()));
@@ -72,6 +72,10 @@ public class JobReport {
 	public void addError(String s) {
 		getErrors().add(s);
 	}
+
+	public Map getJsonObj() {
+	    return report;
+    }
 
 	public String jsonSerialization() {
 		return gson.toJson(report);

@@ -10,4 +10,6 @@ public interface BenchmarkReport {
 	    return readResult(objective);
     }
 
+    JobReport getJobReport();
+
 }

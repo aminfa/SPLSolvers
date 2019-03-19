@@ -12,6 +12,7 @@ import hasco.core.SoftwareConfigurationProblem;
 import hasco.model.ComponentInstance;
 import hasco.variants.forwarddecomposition.HASCOViaFDAndBestFirst;
 import hasco.variants.forwarddecomposition.HASCOViaFDAndBestFirstFactory;
+import jaicore.basic.TimeOut;
 import jaicore.basic.algorithm.AlgorithmExecutionCanceledException;
 import jaicore.basic.algorithm.AlgorithmState;
 import jaicore.basic.algorithm.events.AlgorithmEvent;
@@ -33,16 +34,6 @@ public class HASCOSPLReasoner implements SPLReasoner {
     @Override
     public SPLReasonerAlgorithm algorithm(BenchmarkEnvironment env) {
         return new HASCOWrap(env);
-    }
-
-    @Override
-    public Collection<FeatureSelection> search(BenchmarkEnvironment env) {
-        return null;
-    }
-
-    @Override
-    public FeatureSelection assemble(BenchmarkEnvironment env, Solution solution) {
-        return null;
     }
 
     @Override
