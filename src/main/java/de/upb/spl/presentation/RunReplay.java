@@ -7,6 +7,7 @@ import de.upb.spl.benchmarks.env.VideoEncoderEnv;
 import de.upb.spl.guo11.Guo11;
 import de.upb.spl.hasco.HASCOSPLReasoner;
 import de.upb.spl.hierons.Hierons;
+import de.upb.spl.presentation.panels.ReasonerPerformanceTimeline;
 import de.upb.spl.reasoner.ReasonerReplayer;
 import de.upb.spl.reasoner.SPLReasoner;
 import jaicore.graphvisualizer.plugin.IGUIPlugin;
