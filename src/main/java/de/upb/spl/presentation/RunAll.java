@@ -1,15 +1,15 @@
 package de.upb.spl.presentation;
 
 import de.upb.spl.benchmarks.VideoEncoderExecutor;
-import de.upb.spl.benchmarks.env.*;
+import de.upb.spl.benchmarks.env.AttributedFeatureModelEnv;
+import de.upb.spl.benchmarks.env.Bookkeeper;
+import de.upb.spl.benchmarks.env.VideoEncoderEnv;
 import de.upb.spl.eval.ReasonerRecorder;
 import de.upb.spl.guo11.Guo11;
 import de.upb.spl.hasco.HASCOSPLReasoner;
 import de.upb.spl.henard.Henard;
 import de.upb.spl.hierons.Hierons;
 import de.upb.spl.ibea.BasicIbea;
-import de.upb.spl.presentation.panels.ParetoFront;
-import de.upb.spl.presentation.panels.ReasonerPerformanceTimeline;
 import de.upb.spl.reasoner.SPLReasoner;
 import de.upb.spl.sayyad.Sayyad;
 import hasco.gui.statsplugin.HASCOModelStatisticsPlugin;
@@ -24,16 +24,16 @@ import java.util.concurrent.ExecutionException;
 public class RunAll extends VisualSPLReasoner{
 
 //    @Env()
-    public BenchmarkEnvironment videoEncodingEnv() {
-        VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(), "/Users/aminfaez/Documents/BA/x264_1");
-        return new VideoEncoderCustomer1(new Bookkeeper(new VideoEncoderEnv(agent())));
+    public Bookkeeper videoEncodingEnv() {
+        VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(),  System.getProperty("user.home") + "/Documents/BA/x264_1");
+        return new Bookkeeper(new VideoEncoderEnv(agent()));
     }
 
 
     @Env()
-    public BenchmarkEnvironment setupAttributeEnvironment() {
-        return new Bookkeeper(new VideoEncoderCustomer1(
-                new AttributedFeatureModelEnv("src/main/resources", "video_encoder")));
+    public Bookkeeper setupAttributeEnvironment() {
+        return new Bookkeeper(
+                new AttributedFeatureModelEnv("src/main/resources", "video_encoder"));
     }
 
     @Reasoner(order = 1)
@@ -92,19 +92,14 @@ public class RunAll extends VisualSPLReasoner{
         return new ReasonerPerformanceTimeline(env());
     }
 
-//    @GUI(main = true)
+    @GUI(main = true)
     public IGUIPlugin graph() {
         return new GraphViewPlugin();
     }
 
-//    @GUI
+    @GUI
     public IGUIPlugin nodeInfo() {
         return new NodeInfoGUIPlugin<>(new JaicoreNodeInfoGenerator<>(new TFDNodeInfoGenerator()));
-    }
-
-    @GUI(main = true)
-    public IGUIPlugin paretoFront() {
-        return new ParetoFront(env());
     }
 
     @GUI(enabled = false)

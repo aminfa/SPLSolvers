@@ -1,23 +1,29 @@
 package de.upb.spl.presentation;
 
 import de.upb.spl.benchmarks.VideoEncoderExecutor;
-import de.upb.spl.benchmarks.env.*;
+import de.upb.spl.benchmarks.env.AttributedFeatureModelEnv;
+import de.upb.spl.benchmarks.env.Bookkeeper;
+import de.upb.spl.benchmarks.env.VideoEncoderEnv;
 import de.upb.spl.guo11.Guo11;
 import de.upb.spl.hasco.HASCOSPLReasoner;
-import de.upb.spl.henard.Henard;
 import de.upb.spl.hierons.Hierons;
-import de.upb.spl.presentation.panels.ParetoFront;
-import de.upb.spl.presentation.panels.ReasonerPerformanceTimeline;
 import de.upb.spl.reasoner.ReasonerReplayer;
 import de.upb.spl.reasoner.SPLReasoner;
-import de.upb.spl.sayyad.Sayyad;
 import jaicore.graphvisualizer.plugin.IGUIPlugin;
 
 public class RunReplay extends VisualSPLReasoner{
 
     @Env()
-    public BenchmarkEnvironment setupVideoEncoderEnv() {
+    public Bookkeeper videoEncodingEnv() {
+        VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(), System.getProperty("user.home") + "/Documents/BA/x264_1");
         return new Bookkeeper(new VideoEncoderEnv(agent()));
+    }
+
+
+    @Env()
+    public Bookkeeper setupAttributeEnvironment() {
+        return new Bookkeeper(
+                new AttributedFeatureModelEnv("src/main/resources", "video_encoder"));
     }
 
 
@@ -33,44 +39,15 @@ public class RunReplay extends VisualSPLReasoner{
         return replayer;
     }
 
-    @Reasoner(order = -1)
+    @Reasoner(order = 2)
     public SPLReasoner replayHASCO() {
         ReasonerReplayer replayer = new ReasonerReplayer("replays/" + HASCOSPLReasoner.NAME + ".json");
         return replayer;
     }
 
-    @Reasoner(order = 4)
-    public SPLReasoner replaySayyad() {
-        ReasonerReplayer replayer = new ReasonerReplayer("replays/" + Sayyad.NAME + ".json");
-        return replayer;
-    }
-
-    @Reasoner(order = 5)
-    public SPLReasoner replayHenard() {
-        ReasonerReplayer replayer = new ReasonerReplayer("replays/" + Henard.NAME + ".json");
-        return replayer;
-    }
-
-    @GUI(main = true)
+    @GUI(order = -1)
     public IGUIPlugin timeline() {
         return new ReasonerPerformanceTimeline(env());
-    }
-
-//    @GUI(order = -2)
-    public IGUIPlugin timelineCustomer1() {
-        BenchmarkEnvironment env = new VideoEncoderCustomer1(env());
-        return new ReasonerPerformanceTimeline(env);
-    }
-
-//    @GUI(main = true)
-    public IGUIPlugin front() {
-        return new ParetoFront(env());
-    }
-
-//    @GUI(order = -2)
-    public IGUIPlugin frontCustomer1() {
-        BenchmarkEnvironment env = new VideoEncoderCustomer1(env());
-        return new ParetoFront(env);
     }
 
     public static void main(String... args) {
