@@ -30,7 +30,7 @@
         "pbratio_1_3"
       ],
       "report": {
-        "jobId": "013a4",
+        "jobId": "8c9df",
         "configuration": {
           "features": [
             "Root",
@@ -63,10 +63,12 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
           "subjective_quality": 21.459786425883788,
+          "run_time": 13.620226443146581,
           "file_size": 198.7054818563347
         },
         "hash": [],
@@ -103,7 +105,7 @@
         "pbratio_1_3"
       ],
       "report": {
-        "jobId": "d04ae",
+        "jobId": "28bed",
         "configuration": {
           "features": [
             "Root",
@@ -136,10 +138,12 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
           "subjective_quality": 15.788374096805837,
+          "run_time": 13.20329270375777,
           "file_size": 265.72653417969644
         },
         "hash": [],
@@ -178,7 +182,7 @@
         "pbratio_2_3"
       ],
       "report": {
-        "jobId": "39131",
+        "jobId": "416a7",
         "configuration": {
           "features": [
             "Root",
@@ -213,10 +217,12 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
           "subjective_quality": 18.53367286339499,
+          "run_time": 13.21886057795243,
           "file_size": 151.95797225246716
         },
         "hash": [],
@@ -254,7 +260,7 @@
         "pbratio_1_8"
       ],
       "report": {
-        "jobId": "c5d2d",
+        "jobId": "7354e",
         "configuration": {
           "features": [
             "Root",
@@ -288,10 +294,12 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
           "subjective_quality": 16.87524902690432,
+          "run_time": 13.19840496573141,
           "file_size": 210.22246893161858
         },
         "hash": [],
@@ -330,7 +338,7 @@
         "two_pass"
       ],
       "report": {
-        "jobId": "b09fe",
+        "jobId": "97d93",
         "configuration": {
           "features": [
             "Root",
@@ -365,10 +373,12 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
           "subjective_quality": 15.934474892394416,
+          "run_time": 11.742365175459597,
           "file_size": 220.2005904075104
         },
         "hash": [],
@@ -405,7 +415,7 @@
         "two_pass"
       ],
       "report": {
-        "jobId": "256da",
+        "jobId": "3bc95",
         "configuration": {
           "features": [
             "Root",
@@ -438,10 +448,12 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
           "subjective_quality": 16.896091934283703,
+          "run_time": 12.70370749937269,
           "file_size": 197.38327878280865
         },
         "hash": [],
@@ -480,7 +492,7 @@
         "pbratio_1_8"
       ],
       "report": {
-        "jobId": "1a986",
+        "jobId": "9d42b",
         "configuration": {
           "features": [
             "Root",
@@ -515,10 +527,399 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
           "subjective_quality": 17.089959701879263,
+          "run_time": 13.21886057795243,
+          "file_size": 164.15452063048303
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_422",
+        "asm",
+        "strip",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_3",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_4",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "0f3aa",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_422",
+            "asm",
+            "strip",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_3",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_1_4",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 16.66053835192938,
+          "run_time": 13.620226443146581,
+          "file_size": 210.4326268902881
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "asm",
+        "strip",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_32",
+        "_id_4",
+        "qpstep_12",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_2",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_8",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "248cb",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_420",
+            "interlaced",
+            "asm",
+            "strip",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_32",
+            "_id_4",
+            "qpstep_12",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_2",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_1_8",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 19.0640415914125,
+          "run_time": 13.113009490943357,
+          "file_size": 157.68068766613285
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
+        "strip",
+        "lto",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_50",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_3",
+        "_id_10",
+        "ipratio_2_2",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "4b590",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_420",
+            "strip",
+            "lto",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_50",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_3",
+            "_id_10",
+            "ipratio_2_2",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 21.316923253330817,
+          "run_time": 13.177949353510387,
+          "file_size": 197.38327878280865
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_422",
+        "interlaced",
+        "asm",
+        "strip",
+        "lto",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_8",
+        "_id_7",
+        "lookahead_50",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_8",
+        "_id_11",
+        "pbratio_2_3",
+        "two_pass"
+      ],
+      "report": {
+        "jobId": "03c41",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_422",
+            "interlaced",
+            "asm",
+            "strip",
+            "lto",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_8",
+            "_id_7",
+            "lookahead_50",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_1_8",
+            "_id_11",
+            "pbratio_2_3",
+            "two_pass"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 18.542138801010545,
+          "run_time": 13.12413055352986,
+          "file_size": 153.38865110588358
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_10",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "asm",
+        "strip",
+        "lto",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_32",
+        "_id_4",
+        "qpstep_12",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_8",
+        "_id_11",
+        "pbratio_1_8",
+        "two_pass"
+      ],
+      "report": {
+        "jobId": "d79c5",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_10",
+            "_id_1",
+            "format_420",
+            "interlaced",
+            "asm",
+            "strip",
+            "lto",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_32",
+            "_id_4",
+            "qpstep_12",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_1_8",
+            "_id_11",
+            "pbratio_1_8",
+            "two_pass"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 22.053829259498293,
+          "run_time": 12.31873911670398,
           "file_size": 164.15452063048303
         },
         "hash": [],
@@ -544,20 +945,20 @@
         "_id_3",
         "q_26",
         "_id_4",
-        "qpstep_12",
+        "qpstep_4",
         "_id_7",
-        "lookahead_50",
+        "lookahead_20",
         "_id_8",
-        "aq_mode_1",
+        "aq_mode_2",
         "_id_9",
-        "aq_strength_3",
+        "aq_strength_2",
         "_id_10",
-        "ipratio_1_4",
+        "ipratio_2_2",
         "_id_11",
-        "pbratio_1_3"
+        "pbratio_1_8"
       ],
       "report": {
-        "jobId": "091c2",
+        "jobId": "d0ab5",
         "configuration": {
           "features": [
             "Root",
@@ -577,88 +978,13 @@
             "_id_3",
             "q_26",
             "_id_4",
-            "qpstep_12",
-            "_id_7",
-            "lookahead_50",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_3",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_3"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 17.089959701879263,
-          "file_size": 163.96563447712217
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_10",
-        "_id_1",
-        "format_422",
-        "interlaced",
-        "asm",
-        "strip",
-        "lto",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_2_2",
-        "_id_11",
-        "pbratio_1_8"
-      ],
-      "report": {
-        "jobId": "3da02",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_10",
-            "_id_1",
-            "format_422",
-            "interlaced",
-            "asm",
-            "strip",
-            "lto",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
             "qpstep_4",
             "_id_7",
             "lookahead_20",
             "_id_8",
-            "aq_mode_1",
+            "aq_mode_2",
             "_id_9",
-            "aq_strength_1",
+            "aq_strength_2",
             "_id_10",
             "ipratio_2_2",
             "_id_11",
@@ -667,11 +993,13 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 22.777933138030697,
-          "file_size": 210.22246893161858
+          "subjective_quality": 17.089959701879263,
+          "run_time": 13.21886057795243,
+          "file_size": 219.66384467907105
         },
         "hash": [],
         "group": "FixedAttributeValue"
@@ -684,9 +1012,10 @@
         "_id_0",
         "bit_depth_8",
         "_id_1",
-        "format_422",
+        "format_444",
         "interlaced",
         "asm",
+        "strip",
         "lto",
         "pic",
         "Runtime",
@@ -699,16 +1028,16 @@
         "_id_7",
         "lookahead_50",
         "_id_8",
-        "aq_mode_1",
+        "aq_mode_3",
         "_id_9",
-        "aq_strength_3",
+        "aq_strength_1",
         "_id_10",
-        "ipratio_1_4",
+        "ipratio_1_8",
         "_id_11",
         "pbratio_1_8"
       ],
       "report": {
-        "jobId": "475b7",
+        "jobId": "ab78b",
         "configuration": {
           "features": [
             "Root",
@@ -716,9 +1045,10 @@
             "_id_0",
             "bit_depth_8",
             "_id_1",
-            "format_422",
+            "format_444",
             "interlaced",
             "asm",
+            "strip",
             "lto",
             "pic",
             "Runtime",
@@ -731,97 +1061,24 @@
             "_id_7",
             "lookahead_50",
             "_id_8",
-            "aq_mode_1",
+            "aq_mode_3",
             "_id_9",
-            "aq_strength_3",
+            "aq_strength_1",
             "_id_10",
-            "ipratio_1_4",
+            "ipratio_1_8",
             "_id_11",
             "pbratio_1_8"
           ]
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 16.87524902690432,
-          "file_size": 157.68068766613285
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_422",
-        "interlaced",
-        "asm",
-        "strip",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_32",
-        "_id_4",
-        "qpstep_8",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_2",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_1_3"
-      ],
-      "report": {
-        "jobId": "dca24",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_422",
-            "interlaced",
-            "asm",
-            "strip",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_32",
-            "_id_4",
-            "qpstep_8",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_2",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_3"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 15.861424494600126,
-          "file_size": 210.22246893161858
+          "subjective_quality": 19.29959517376682,
+          "run_time": 12.798077678255362,
+          "file_size": 151.95797225246716
         },
         "hash": [],
         "group": "FixedAttributeValue"
@@ -836,7 +1093,9 @@
         "_id_1",
         "format_420",
         "interlaced",
+        "asm",
         "strip",
+        "lto",
         "pic",
         "Runtime",
         "_id_2",
@@ -844,20 +1103,21 @@
         "_id_3",
         "q_32",
         "_id_4",
-        "qpstep_4",
+        "qpstep_12",
         "_id_7",
         "lookahead_20",
         "_id_8",
-        "aq_mode_1",
+        "aq_mode_3",
         "_id_9",
-        "aq_strength_1",
+        "aq_strength_3",
         "_id_10",
         "ipratio_1_8",
         "_id_11",
-        "pbratio_1_8"
+        "pbratio_1_8",
+        "two_pass"
       ],
       "report": {
-        "jobId": "1b3de",
+        "jobId": "8d6f2",
         "configuration": {
           "features": [
             "Root",
@@ -867,6 +1127,168 @@
             "_id_1",
             "format_420",
             "interlaced",
+            "asm",
+            "strip",
+            "lto",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_32",
+            "_id_4",
+            "qpstep_12",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_3",
+            "_id_9",
+            "aq_strength_3",
+            "_id_10",
+            "ipratio_1_8",
+            "_id_11",
+            "pbratio_1_8",
+            "two_pass"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 19.535148756121146,
+          "run_time": 11.68165056838086,
+          "file_size": 170.1231721267945
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "asm",
+        "strip",
+        "lto",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_80",
+        "_id_8",
+        "aq_mode_2",
+        "_id_9",
+        "aq_strength_2",
+        "_id_10",
+        "ipratio_1_8",
+        "_id_11",
+        "pbratio_1_8",
+        "two_pass"
+      ],
+      "report": {
+        "jobId": "ef97b",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_420",
+            "interlaced",
+            "asm",
+            "strip",
+            "lto",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_80",
+            "_id_8",
+            "aq_mode_2",
+            "_id_9",
+            "aq_strength_2",
+            "_id_10",
+            "ipratio_1_8",
+            "_id_11",
+            "pbratio_1_8",
+            "two_pass"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 17.304670376854205,
+          "run_time": 12.841479213984147,
+          "file_size": 175.67150770576694
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "asm",
+        "strip",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_32",
+        "_id_4",
+        "qpstep_12",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_8",
+        "_id_11",
+        "pbratio_1_8",
+        "two_pass"
+      ],
+      "report": {
+        "jobId": "37034",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_420",
+            "interlaced",
+            "asm",
             "strip",
             "pic",
             "Runtime",
@@ -875,7 +1297,7 @@
             "_id_3",
             "q_32",
             "_id_4",
-            "qpstep_4",
+            "qpstep_12",
             "_id_7",
             "lookahead_20",
             "_id_8",
@@ -885,16 +1307,100 @@
             "_id_10",
             "ipratio_1_8",
             "_id_11",
-            "pbratio_1_8"
+            "pbratio_1_8",
+            "two_pass"
           ]
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 21.316923253330817,
-          "file_size": 156.25000881271643
+          "subjective_quality": 19.29959517376682,
+          "run_time": 12.31873911670398,
+          "file_size": 164.15452063048303
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "asm",
+        "strip",
+        "lto",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_50",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_2",
+        "_id_10",
+        "ipratio_1_8",
+        "_id_11",
+        "pbratio_1_3",
+        "two_pass"
+      ],
+      "report": {
+        "jobId": "976c2",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_420",
+            "interlaced",
+            "asm",
+            "strip",
+            "lto",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_50",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_2",
+            "_id_10",
+            "ipratio_1_8",
+            "_id_11",
+            "pbratio_1_3",
+            "two_pass"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 17.304670376854205,
+          "run_time": 13.12413055352986,
+          "file_size": 153.38865110588358
         },
         "hash": [],
         "group": "FixedAttributeValue"
@@ -907,16 +1413,91 @@
         "_id_0",
         "bit_depth_10",
         "_id_1",
-        "format_444",
+        "format_422",
+        "interlaced",
         "asm",
         "strip",
-        "lto",
-        "pic",
         "Runtime",
         "_id_2",
         "qp",
         "_id_3",
-        "q_32",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_80",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_4",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "c6b5b",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_10",
+            "_id_1",
+            "format_422",
+            "interlaced",
+            "asm",
+            "strip",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_80",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_1_4",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 18.828488009058177,
+          "run_time": 13.695251650286329,
+          "file_size": 198.7054818563347
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "asm",
+        "strip",
+        "lto",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_38",
         "_id_4",
         "qpstep_4",
         "_id_7",
@@ -928,27 +1509,28 @@
         "_id_10",
         "ipratio_1_4",
         "_id_11",
-        "pbratio_1_8"
+        "pbratio_1_8",
+        "two_pass"
       ],
       "report": {
-        "jobId": "7dceb",
+        "jobId": "fa60b",
         "configuration": {
           "features": [
             "Root",
             "Compile",
             "_id_0",
-            "bit_depth_10",
+            "bit_depth_8",
             "_id_1",
-            "format_444",
+            "format_420",
+            "interlaced",
             "asm",
             "strip",
             "lto",
-            "pic",
             "Runtime",
             "_id_2",
             "qp",
             "_id_3",
-            "q_32",
+            "q_38",
             "_id_4",
             "qpstep_4",
             "_id_7",
@@ -960,15 +1542,95 @@
             "_id_10",
             "ipratio_1_4",
             "_id_11",
-            "pbratio_1_8"
+            "pbratio_1_8",
+            "two_pass"
           ]
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 16.87524902690432,
+          "subjective_quality": 19.29959517376682,
+          "run_time": 12.814759272135117,
+          "file_size": 172.14315732202172
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_444",
+        "asm",
+        "strip",
+        "lto",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_4",
+        "_id_11",
+        "pbratio_2_3"
+      ],
+      "report": {
+        "jobId": "b3880",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_444",
+            "asm",
+            "strip",
+            "lto",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_1_4",
+            "_id_11",
+            "pbratio_2_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 16.85831715167322,
+          "run_time": 13.624969520319738,
           "file_size": 323.5561684188597
         },
         "hash": [],
@@ -982,9 +1644,8 @@
         "_id_0",
         "bit_depth_8",
         "_id_1",
-        "format_444",
+        "format_422",
         "interlaced",
-        "asm",
         "strip",
         "lto",
         "pic",
@@ -998,17 +1659,16 @@
         "_id_7",
         "lookahead_20",
         "_id_8",
-        "aq_mode_1",
+        "aq_mode_3",
         "_id_9",
-        "aq_strength_2",
+        "aq_strength_3",
         "_id_10",
         "ipratio_1_8",
         "_id_11",
-        "pbratio_1_8",
-        "two_pass"
+        "pbratio_1_3"
       ],
       "report": {
-        "jobId": "b027d",
+        "jobId": "6f3c0",
         "configuration": {
           "features": [
             "Root",
@@ -1016,9 +1676,8 @@
             "_id_0",
             "bit_depth_8",
             "_id_1",
-            "format_444",
+            "format_422",
             "interlaced",
-            "asm",
             "strip",
             "lto",
             "pic",
@@ -1032,23 +1691,174 @@
             "_id_7",
             "lookahead_20",
             "_id_8",
-            "aq_mode_1",
+            "aq_mode_3",
             "_id_9",
-            "aq_strength_2",
+            "aq_strength_3",
             "_id_10",
             "ipratio_1_8",
             "_id_11",
-            "pbratio_1_8",
-            "two_pass"
+            "pbratio_1_3"
           ]
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 17.304670376854205,
-          "file_size": 175.67150770576694
+          "subjective_quality": 22.970605292398396,
+          "run_time": 13.113009490943357,
+          "file_size": 157.68068766613285
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_10",
+        "_id_1",
+        "format_422",
+        "asm",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_3",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_4",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "51e02",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_10",
+            "_id_1",
+            "format_422",
+            "asm",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_3",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_1_4",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 16.445827676954437,
+          "run_time": 13.615483365973422,
+          "file_size": 206.73373650430648
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_10",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "asm",
+        "strip",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_8",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_2",
+        "_id_10",
+        "ipratio_1_4",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "7bf43",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_10",
+            "_id_1",
+            "format_420",
+            "interlaced",
+            "asm",
+            "strip",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_8",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_2",
+            "_id_10",
+            "ipratio_1_4",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 15.861424494600126,
+          "run_time": 13.249091666226175,
+          "file_size": 210.22246893161858
         },
         "hash": [],
         "group": "FixedAttributeValue"
@@ -1062,7 +1872,308 @@
         "bit_depth_8",
         "_id_1",
         "format_422",
+        "strip",
+        "lto",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_3",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_2_2",
+        "_id_11",
+        "pbratio_2_3"
+      ],
+      "report": {
+        "jobId": "42b08",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_422",
+            "strip",
+            "lto",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_3",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_2_2",
+            "_id_11",
+            "pbratio_2_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 20.948470250247077,
+          "run_time": 13.362049863499589,
+          "file_size": 206.73373650430648
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_10",
+        "_id_1",
+        "format_422",
+        "strip",
+        "lto",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_8",
+        "_id_7",
+        "lookahead_80",
+        "_id_8",
+        "aq_mode_2",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_4",
+        "_id_11",
+        "pbratio_1_8",
+        "two_pass"
+      ],
+      "report": {
+        "jobId": "61c13",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_10",
+            "_id_1",
+            "format_422",
+            "strip",
+            "lto",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_8",
+            "_id_7",
+            "lookahead_80",
+            "_id_8",
+            "aq_mode_2",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_1_4",
+            "_id_11",
+            "pbratio_1_8",
+            "two_pass"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 21.459786425883788,
+          "run_time": 12.716835138091046,
+          "file_size": 241.761137937934
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_422",
+        "asm",
+        "lto",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_8",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_4",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "042e5",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_422",
+            "asm",
+            "lto",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_8",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_1_4",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 16.66053835192938,
+          "run_time": 13.387393213746972,
+          "file_size": 265.72653417969644
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
         "interlaced",
+        "asm",
+        "strip",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_38",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_2",
+        "_id_10",
+        "ipratio_2_2",
+        "_id_11",
+        "pbratio_1_3",
+        "two_pass"
+      ],
+      "report": {
+        "jobId": "6407c",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_420",
+            "interlaced",
+            "asm",
+            "strip",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_38",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_2",
+            "_id_10",
+            "ipratio_2_2",
+            "_id_11",
+            "pbratio_1_3",
+            "two_pass"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 19.0640415914125,
+          "run_time": 13.249091666226175,
+          "file_size": 166.38466378437974
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "asm",
         "strip",
         "pic",
         "Runtime",
@@ -1075,17 +2186,16 @@
         "_id_7",
         "lookahead_20",
         "_id_8",
-        "aq_mode_3",
+        "aq_mode_1",
         "_id_9",
         "aq_strength_1",
         "_id_10",
         "ipratio_1_8",
         "_id_11",
-        "pbratio_1_3",
-        "two_pass"
+        "pbratio_2_3"
       ],
       "report": {
-        "jobId": "33720",
+        "jobId": "e1d0d",
         "configuration": {
           "features": [
             "Root",
@@ -1093,8 +2203,9 @@
             "_id_0",
             "bit_depth_8",
             "_id_1",
-            "format_422",
+            "format_420",
             "interlaced",
+            "asm",
             "strip",
             "pic",
             "Runtime",
@@ -1107,22 +2218,23 @@
             "_id_7",
             "lookahead_20",
             "_id_8",
-            "aq_mode_3",
+            "aq_mode_1",
             "_id_9",
             "aq_strength_1",
             "_id_10",
             "ipratio_1_8",
             "_id_11",
-            "pbratio_1_3",
-            "two_pass"
+            "pbratio_2_3"
           ]
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 22.777933138030697,
+          "subjective_quality": 18.52520692577944,
+          "run_time": 13.113009490943357,
           "file_size": 157.68068766613285
         },
         "hash": [],
@@ -1136,7 +2248,7 @@
         "_id_0",
         "bit_depth_8",
         "_id_1",
-        "format_422",
+        "format_420",
         "interlaced",
         "asm",
         "strip",
@@ -1148,20 +2260,21 @@
         "_id_3",
         "q_26",
         "_id_4",
-        "qpstep_8",
+        "qpstep_4",
         "_id_7",
         "lookahead_20",
         "_id_8",
-        "aq_mode_2",
+        "aq_mode_3",
         "_id_9",
         "aq_strength_1",
         "_id_10",
         "ipratio_1_8",
         "_id_11",
-        "pbratio_1_8"
+        "pbratio_1_3",
+        "two_pass"
       ],
       "report": {
-        "jobId": "c01c7",
+        "jobId": "71b02",
         "configuration": {
           "features": [
             "Root",
@@ -1169,7 +2282,7 @@
             "_id_0",
             "bit_depth_8",
             "_id_1",
-            "format_422",
+            "format_420",
             "interlaced",
             "asm",
             "strip",
@@ -1181,25 +2294,182 @@
             "_id_3",
             "q_26",
             "_id_4",
-            "qpstep_8",
+            "qpstep_4",
             "_id_7",
             "lookahead_20",
             "_id_8",
-            "aq_mode_2",
+            "aq_mode_3",
             "_id_9",
             "aq_strength_1",
             "_id_10",
             "ipratio_1_8",
             "_id_11",
-            "pbratio_1_8"
+            "pbratio_1_3",
+            "two_pass"
           ]
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 19.535148756121146,
+          "run_time": 12.054761828076014,
+          "file_size": 170.1231721267945
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
+        "asm",
+        "strip",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_8",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_4",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "62842",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_420",
+            "asm",
+            "strip",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_8",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_1_4",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 16.66053835192938,
+          "run_time": 13.20329270375777,
+          "file_size": 299.65056709672655
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_422",
+        "interlaced",
+        "asm",
+        "strip",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_8",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_8",
+        "_id_11",
+        "pbratio_1_8",
+        "two_pass"
+      ],
+      "report": {
+        "jobId": "3afad",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_422",
+            "interlaced",
+            "asm",
+            "strip",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_8",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_1_8",
+            "_id_11",
+            "pbratio_1_8",
+            "two_pass"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
         ],
         "results": {
           "subjective_quality": 19.29959517376682,
+          "run_time": 12.798077678255362,
           "file_size": 164.15452063048303
         },
         "hash": [],
@@ -1213,7 +2483,7 @@
         "_id_0",
         "bit_depth_8",
         "_id_1",
-        "format_444",
+        "format_420",
         "interlaced",
         "asm",
         "strip",
@@ -1225,834 +2495,11 @@
         "_id_3",
         "q_26",
         "_id_4",
-        "qpstep_12",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_1_8",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "0048c",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_444",
-            "interlaced",
-            "asm",
-            "strip",
-            "lto",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_12",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_8",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 17.304670376854205,
-          "file_size": 228.6398462840101
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_10",
-        "_id_1",
-        "format_420",
-        "asm",
-        "lto",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_2_2",
-        "_id_11",
-        "pbratio_1_8"
-      ],
-      "report": {
-        "jobId": "3c8cd",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_10",
-            "_id_1",
-            "format_420",
-            "asm",
-            "lto",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_2_2",
-            "_id_11",
-            "pbratio_1_8"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 20.948470250247077,
-          "file_size": 275.7449657745934
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_420",
-        "interlaced",
-        "lto",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
         "qpstep_8",
         "_id_7",
         "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_2_3",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "d1c44",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_420",
-            "interlaced",
-            "lto",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_8",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_2_3",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 18.75229457051821,
-          "file_size": 198.7054818563347
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_420",
-        "interlaced",
-        "asm",
-        "strip",
-        "lto",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_8",
-        "_id_7",
-        "lookahead_80",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_3",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_1_3"
-      ],
-      "report": {
-        "jobId": "f7752",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_420",
-            "interlaced",
-            "asm",
-            "strip",
-            "lto",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_8",
-            "_id_7",
-            "lookahead_80",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_3",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_3"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 19.0640415914125,
-          "file_size": 208.52249355137081
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_10",
-        "_id_1",
-        "format_420",
-        "interlaced",
-        "asm",
-        "strip",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_32",
-        "_id_4",
-        "qpstep_12",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_1_8"
-      ],
-      "report": {
-        "jobId": "030d2",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_10",
-            "_id_1",
-            "format_420",
-            "interlaced",
-            "asm",
-            "strip",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_32",
-            "_id_4",
-            "qpstep_12",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_8"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 18.828488009058177,
-          "file_size": 198.7054818563347
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_10",
-        "_id_1",
-        "format_422",
-        "interlaced",
-        "lto",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_2",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_1_8"
-      ],
-      "report": {
-        "jobId": "7f548",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_10",
-            "_id_1",
-            "format_422",
-            "interlaced",
-            "lto",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_2",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_8"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 15.788374096805837,
-          "file_size": 198.7054818563347
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_422",
-        "asm",
-        "strip",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_50",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_8",
-        "_id_11",
-        "pbratio_2_3"
-      ],
-      "report": {
-        "jobId": "4f4b2",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_422",
-            "asm",
-            "strip",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_50",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_8",
-            "_id_11",
-            "pbratio_2_3"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 18.51674098816389,
-          "file_size": 156.25000881271643
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_420",
-        "interlaced",
-        "asm",
-        "strip",
-        "lto",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_8",
-        "_id_7",
-        "lookahead_80",
         "_id_8",
         "aq_mode_3",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_1_8",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "9a2e4",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_420",
-            "interlaced",
-            "asm",
-            "strip",
-            "lto",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_8",
-            "_id_7",
-            "lookahead_80",
-            "_id_8",
-            "aq_mode_3",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_8",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 19.29959517376682,
-          "file_size": 199.33595573234322
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_444",
-        "interlaced",
-        "asm",
-        "strip",
-        "lto",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_80",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_2_3",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "75ad5",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_444",
-            "interlaced",
-            "asm",
-            "strip",
-            "lto",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_80",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_2_3",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 17.270806626391995,
-          "file_size": 228.6398462840101
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_420",
-        "asm",
-        "strip",
-        "lto",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_8",
-        "_id_11",
-        "pbratio_1_8",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "52a59",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_420",
-            "asm",
-            "strip",
-            "lto",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_8",
-            "_id_11",
-            "pbratio_1_8",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 19.29959517376682,
-          "file_size": 220.2005904075104
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_422",
-        "asm",
-        "strip",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_32",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_50",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_1_8",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "7eb67",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_422",
-            "asm",
-            "strip",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_32",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_50",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_8",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 16.87524902690432,
-          "file_size": 210.22246893161858
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_422",
-        "interlaced",
-        "lto",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
         "_id_9",
         "aq_strength_1",
         "_id_10",
@@ -2062,7 +2509,7 @@
         "two_pass"
       ],
       "report": {
-        "jobId": "a5f45",
+        "jobId": "772b5",
         "configuration": {
           "features": [
             "Root",
@@ -2070,8 +2517,10 @@
             "_id_0",
             "bit_depth_8",
             "_id_1",
-            "format_422",
+            "format_420",
             "interlaced",
+            "asm",
+            "strip",
             "lto",
             "pic",
             "Runtime",
@@ -2080,11 +2529,11 @@
             "_id_3",
             "q_26",
             "_id_4",
-            "qpstep_4",
+            "qpstep_8",
             "_id_7",
             "lookahead_20",
             "_id_8",
-            "aq_mode_1",
+            "aq_mode_3",
             "_id_9",
             "aq_strength_1",
             "_id_10",
@@ -2096,11 +2545,13 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 17.346356191612966,
-          "file_size": 210.22246893161858
+          "subjective_quality": 17.304670376854205,
+          "run_time": 11.224199873789331,
+          "file_size": 203.03484611832488
         },
         "hash": [],
         "group": "FixedAttributeValue"
@@ -2113,82 +2564,7 @@
         "_id_0",
         "bit_depth_8",
         "_id_1",
-        "format_422",
-        "interlaced",
-        "strip",
-        "lto",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_8",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_2_2",
-        "_id_11",
-        "pbratio_2_3"
-      ],
-      "report": {
-        "jobId": "4a465",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_422",
-            "interlaced",
-            "strip",
-            "lto",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_8",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_2_2",
-            "_id_11",
-            "pbratio_2_3"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 18.996314090488085,
-          "file_size": 210.22246893161858
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_420",
+        "format_444",
         "interlaced",
         "asm",
         "strip",
@@ -2200,20 +2576,20 @@
         "_id_3",
         "q_26",
         "_id_4",
-        "qpstep_4",
+        "qpstep_8",
         "_id_7",
         "lookahead_50",
         "_id_8",
-        "aq_mode_1",
+        "aq_mode_3",
         "_id_9",
-        "aq_strength_3",
+        "aq_strength_1",
         "_id_10",
         "ipratio_1_8",
         "_id_11",
-        "pbratio_1_3"
+        "pbratio_2_3"
       ],
       "report": {
-        "jobId": "ecdd8",
+        "jobId": "7c174",
         "configuration": {
           "features": [
             "Root",
@@ -2221,7 +2597,7 @@
             "_id_0",
             "bit_depth_8",
             "_id_1",
-            "format_420",
+            "format_444",
             "interlaced",
             "asm",
             "strip",
@@ -2233,25 +2609,27 @@
             "_id_3",
             "q_26",
             "_id_4",
-            "qpstep_4",
+            "qpstep_8",
             "_id_7",
             "lookahead_50",
             "_id_8",
-            "aq_mode_1",
+            "aq_mode_3",
             "_id_9",
-            "aq_strength_3",
+            "aq_strength_1",
             "_id_10",
             "ipratio_1_8",
             "_id_11",
-            "pbratio_1_3"
+            "pbratio_2_3"
           ]
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 19.29959517376682,
+          "subjective_quality": 18.53367286339499,
+          "run_time": 13.118570022236607,
           "file_size": 151.95797225246716
         },
         "hash": [],
@@ -2263,9 +2641,12 @@
         "Root",
         "Compile",
         "_id_0",
-        "bit_depth_8",
+        "bit_depth_10",
         "_id_1",
-        "format_444",
+        "format_420",
+        "interlaced",
+        "asm",
+        "strip",
         "lto",
         "pic",
         "Runtime",
@@ -2284,19 +2665,21 @@
         "_id_10",
         "ipratio_1_4",
         "_id_11",
-        "pbratio_1_8",
-        "two_pass"
+        "pbratio_1_3"
       ],
       "report": {
-        "jobId": "0bea7",
+        "jobId": "d299b",
         "configuration": {
           "features": [
             "Root",
             "Compile",
             "_id_0",
-            "bit_depth_8",
+            "bit_depth_10",
             "_id_1",
-            "format_444",
+            "format_420",
+            "interlaced",
+            "asm",
+            "strip",
             "lto",
             "pic",
             "Runtime",
@@ -2315,17 +2698,18 @@
             "_id_10",
             "ipratio_1_4",
             "_id_11",
-            "pbratio_1_8",
-            "two_pass"
+            "pbratio_1_3"
           ]
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 16.896091934283703,
-          "file_size": 245.51835803700942
+          "subjective_quality": 17.089959701879263,
+          "run_time": 13.438079914241738,
+          "file_size": 227.93376313032718
         },
         "hash": [],
         "group": "FixedAttributeValue"
@@ -2336,11 +2720,164 @@
         "Root",
         "Compile",
         "_id_0",
-        "bit_depth_10",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "strip",
+        "lto",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_3",
+        "_id_9",
+        "aq_strength_2",
+        "_id_10",
+        "ipratio_1_8",
+        "_id_11",
+        "pbratio_1_8",
+        "two_pass"
+      ],
+      "report": {
+        "jobId": "49995",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_420",
+            "interlaced",
+            "strip",
+            "lto",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_3",
+            "_id_9",
+            "aq_strength_2",
+            "_id_10",
+            "ipratio_1_8",
+            "_id_11",
+            "pbratio_1_8",
+            "two_pass"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 21.685376256414557,
+          "run_time": 11.618916556524832,
+          "file_size": 157.68068766613285
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
         "_id_1",
         "format_422",
+        "asm",
+        "strip",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_80",
+        "_id_8",
+        "aq_mode_3",
+        "_id_9",
+        "aq_strength_3",
+        "_id_10",
+        "ipratio_2_2",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "b26fc",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_422",
+            "asm",
+            "strip",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_80",
+            "_id_8",
+            "aq_mode_3",
+            "_id_9",
+            "aq_strength_3",
+            "_id_10",
+            "ipratio_2_2",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 18.828488009058177,
+          "run_time": 13.20329270375777,
+          "file_size": 209.11042381676205
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
         "interlaced",
         "asm",
+        "strip",
         "pic",
         "Runtime",
         "_id_2",
@@ -2348,31 +2885,31 @@
         "_id_3",
         "q_32",
         "_id_4",
-        "qpstep_8",
+        "qpstep_12",
         "_id_7",
         "lookahead_20",
         "_id_8",
         "aq_mode_1",
         "_id_9",
-        "aq_strength_2",
+        "aq_strength_1",
         "_id_10",
         "ipratio_1_4",
         "_id_11",
-        "pbratio_1_3",
-        "two_pass"
+        "pbratio_1_3"
       ],
       "report": {
-        "jobId": "1e46f",
+        "jobId": "66dc1",
         "configuration": {
           "features": [
             "Root",
             "Compile",
             "_id_0",
-            "bit_depth_10",
+            "bit_depth_8",
             "_id_1",
-            "format_422",
+            "format_420",
             "interlaced",
             "asm",
+            "strip",
             "pic",
             "Runtime",
             "_id_2",
@@ -2380,26 +2917,27 @@
             "_id_3",
             "q_32",
             "_id_4",
-            "qpstep_8",
+            "qpstep_12",
             "_id_7",
             "lookahead_20",
             "_id_8",
             "aq_mode_1",
             "_id_9",
-            "aq_strength_2",
+            "aq_strength_1",
             "_id_10",
             "ipratio_1_4",
             "_id_11",
-            "pbratio_1_3",
-            "two_pass"
+            "pbratio_1_3"
           ]
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 15.861424494600126,
+          "subjective_quality": 16.87524902690432,
+          "run_time": 13.249091666226175,
           "file_size": 210.22246893161858
         },
         "hash": [],
@@ -2413,80 +2951,10 @@
         "_id_0",
         "bit_depth_8",
         "_id_1",
-        "format_420",
+        "format_444",
+        "interlaced",
         "asm",
         "strip",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_2_3"
-      ],
-      "report": {
-        "jobId": "73dcf",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_420",
-            "asm",
-            "strip",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_2_3"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 18.508275050548335,
-          "file_size": 275.7449657745934
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_420",
-        "interlaced",
-        "lto",
         "pic",
         "Runtime",
         "_id_2",
@@ -2495,155 +2963,6 @@
         "q_26",
         "_id_4",
         "qpstep_4",
-        "_id_7",
-        "lookahead_80",
-        "_id_8",
-        "aq_mode_2",
-        "_id_9",
-        "aq_strength_3",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_1_3",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "40ac1",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_420",
-            "interlaced",
-            "lto",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_80",
-            "_id_8",
-            "aq_mode_2",
-            "_id_9",
-            "aq_strength_3",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_3",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 17.346356191612966,
-          "file_size": 208.52249355137081
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_420",
-        "interlaced",
-        "asm",
-        "strip",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_32",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_2",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_1_3"
-      ],
-      "report": {
-        "jobId": "3efe2",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_420",
-            "interlaced",
-            "asm",
-            "strip",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_32",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_2",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_3"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 16.00308477178078,
-          "file_size": 198.7054818563347
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_420",
-        "interlaced",
-        "asm",
-        "lto",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_8",
         "_id_7",
         "lookahead_20",
         "_id_8",
@@ -2657,7 +2976,7 @@
         "two_pass"
       ],
       "report": {
-        "jobId": "faec9",
+        "jobId": "1be90",
         "configuration": {
           "features": [
             "Root",
@@ -2665,10 +2984,10 @@
             "_id_0",
             "bit_depth_8",
             "_id_1",
-            "format_420",
+            "format_444",
             "interlaced",
             "asm",
-            "lto",
+            "strip",
             "pic",
             "Runtime",
             "_id_2",
@@ -2676,7 +2995,7 @@
             "_id_3",
             "q_26",
             "_id_4",
-            "qpstep_8",
+            "qpstep_4",
             "_id_7",
             "lookahead_20",
             "_id_8",
@@ -2692,10 +3011,12 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
           "subjective_quality": 17.089959701879263,
+          "run_time": 13.294890628694581,
           "file_size": 220.2005904075104
         },
         "hash": [],
@@ -2707,10 +3028,12 @@
         "Root",
         "Compile",
         "_id_0",
-        "bit_depth_10",
+        "bit_depth_8",
         "_id_1",
-        "format_420",
+        "format_422",
         "interlaced",
+        "asm",
+        "lto",
         "pic",
         "Runtime",
         "_id_2",
@@ -2722,25 +3045,27 @@
         "_id_7",
         "lookahead_20",
         "_id_8",
-        "aq_mode_1",
+        "aq_mode_3",
         "_id_9",
-        "aq_strength_2",
+        "aq_strength_1",
         "_id_10",
-        "ipratio_1_4",
+        "ipratio_1_8",
         "_id_11",
         "pbratio_1_3"
       ],
       "report": {
-        "jobId": "2f19c",
+        "jobId": "b74b5",
         "configuration": {
           "features": [
             "Root",
             "Compile",
             "_id_0",
-            "bit_depth_10",
+            "bit_depth_8",
             "_id_1",
-            "format_420",
+            "format_422",
             "interlaced",
+            "asm",
+            "lto",
             "pic",
             "Runtime",
             "_id_2",
@@ -2752,22 +3077,24 @@
             "_id_7",
             "lookahead_20",
             "_id_8",
-            "aq_mode_1",
+            "aq_mode_3",
             "_id_9",
-            "aq_strength_2",
+            "aq_strength_1",
             "_id_10",
-            "ipratio_1_4",
+            "ipratio_1_8",
             "_id_11",
             "pbratio_1_3"
           ]
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 15.715323699011549,
-          "file_size": 187.1884947810508
+          "subjective_quality": 19.0640415914125,
+          "run_time": 13.19840496573141,
+          "file_size": 157.68068766613285
         },
         "hash": [],
         "group": "FixedAttributeValue"
@@ -2778,320 +3105,13 @@
         "Root",
         "Compile",
         "_id_0",
-        "bit_depth_8",
+        "bit_depth_10",
         "_id_1",
         "format_444",
         "interlaced",
         "asm",
         "strip",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_2_3",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "ad486",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_444",
-            "interlaced",
-            "asm",
-            "strip",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_2_3",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 18.52520692577944,
-          "file_size": 210.22246893161858
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_10",
-        "_id_1",
-        "format_420",
-        "asm",
-        "strip",
         "lto",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_8",
-        "_id_7",
-        "lookahead_50",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_8",
-        "_id_11",
-        "pbratio_1_8",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "341aa",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_10",
-            "_id_1",
-            "format_420",
-            "asm",
-            "strip",
-            "lto",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_8",
-            "_id_7",
-            "lookahead_50",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_8",
-            "_id_11",
-            "pbratio_1_8",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 19.29959517376682,
-          "file_size": 164.15452063048303
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_10",
-        "_id_1",
-        "format_422",
-        "interlaced",
-        "asm",
-        "strip",
-        "lto",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_50",
-        "_id_8",
-        "aq_mode_2",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_2_2",
-        "_id_11",
-        "pbratio_1_8",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "0692e",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_10",
-            "_id_1",
-            "format_422",
-            "interlaced",
-            "asm",
-            "strip",
-            "lto",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_50",
-            "_id_8",
-            "aq_mode_2",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_2_2",
-            "_id_11",
-            "pbratio_1_8",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 19.535148756121146,
-          "file_size": 175.67150770576694
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_422",
-        "strip",
-        "lto",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_8",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_1_8",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "a9335",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_422",
-            "strip",
-            "lto",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_8",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_8",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 17.346356191612966,
-          "file_size": 253.95761391350914
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_422",
-        "interlaced",
-        "asm",
-        "strip",
-        "lto",
-        "pic",
         "Runtime",
         "_id_2",
         "qp",
@@ -3100,32 +3120,31 @@
         "_id_4",
         "qpstep_12",
         "_id_7",
-        "lookahead_80",
+        "lookahead_20",
         "_id_8",
-        "aq_mode_2",
+        "aq_mode_3",
         "_id_9",
-        "aq_strength_3",
+        "aq_strength_1",
         "_id_10",
-        "ipratio_1_4",
+        "ipratio_1_8",
         "_id_11",
         "pbratio_1_8",
         "two_pass"
       ],
       "report": {
-        "jobId": "f2111",
+        "jobId": "7b0ab",
         "configuration": {
           "features": [
             "Root",
             "Compile",
             "_id_0",
-            "bit_depth_8",
+            "bit_depth_10",
             "_id_1",
-            "format_422",
+            "format_444",
             "interlaced",
             "asm",
             "strip",
             "lto",
-            "pic",
             "Runtime",
             "_id_2",
             "qp",
@@ -3134,240 +3153,11 @@
             "_id_4",
             "qpstep_12",
             "_id_7",
-            "lookahead_80",
-            "_id_8",
-            "aq_mode_2",
-            "_id_9",
-            "aq_strength_3",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_8",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 17.304670376854205,
-          "file_size": 214.65875939573448
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_422",
-        "interlaced",
-        "asm",
-        "strip",
-        "lto",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_8",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_2",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_1_3",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "2a554",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_422",
-            "interlaced",
-            "asm",
-            "strip",
-            "lto",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_8",
-            "_id_7",
             "lookahead_20",
             "_id_8",
-            "aq_mode_1",
+            "aq_mode_3",
             "_id_9",
-            "aq_strength_2",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_3",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 16.007525290188703,
-          "file_size": 228.6398462840101
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_420",
-        "interlaced",
-        "asm",
-        "strip",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_32",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_2",
-        "_id_10",
-        "ipratio_1_4",
-        "_id_11",
-        "pbratio_1_3"
-      ],
-      "report": {
-        "jobId": "ae76c",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_420",
-            "interlaced",
-            "asm",
-            "strip",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_32",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_2",
-            "_id_10",
-            "ipratio_1_4",
-            "_id_11",
-            "pbratio_1_3"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 15.861424494600126,
-          "file_size": 210.22246893161858
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_422",
-        "asm",
-        "strip",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_8",
-        "_id_7",
-        "lookahead_50",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_3",
-        "_id_10",
-        "ipratio_1_8",
-        "_id_11",
-        "pbratio_1_8",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "b9f10",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_422",
-            "asm",
-            "strip",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_8",
-            "_id_7",
-            "lookahead_50",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_3",
+            "aq_strength_1",
             "_id_10",
             "ipratio_1_8",
             "_id_11",
@@ -3377,235 +3167,12 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 19.0640415914125,
-          "file_size": 157.68068766613285
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_422",
-        "interlaced",
-        "asm",
-        "strip",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_4",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_3",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_8",
-        "_id_11",
-        "pbratio_1_3",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "e8db1",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_422",
-            "interlaced",
-            "asm",
-            "strip",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_4",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_3",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_8",
-            "_id_11",
-            "pbratio_1_3",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 22.777933138030697,
-          "file_size": 157.68068766613285
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_422",
-        "strip",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_8",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_1",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_8",
-        "_id_11",
-        "pbratio_1_3",
-        "two_pass"
-      ],
-      "report": {
-        "jobId": "47533",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_422",
-            "strip",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_8",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_1",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_8",
-            "_id_11",
-            "pbratio_1_3",
-            "two_pass"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 21.863201694138887,
-          "file_size": 198.7054818563347
-        },
-        "hash": [],
-        "group": "FixedAttributeValue"
-      }
-    },
-    {
-      "selection": [
-        "Root",
-        "Compile",
-        "_id_0",
-        "bit_depth_8",
-        "_id_1",
-        "format_422",
-        "interlaced",
-        "asm",
-        "strip",
-        "lto",
-        "pic",
-        "Runtime",
-        "_id_2",
-        "qp",
-        "_id_3",
-        "q_26",
-        "_id_4",
-        "qpstep_8",
-        "_id_7",
-        "lookahead_20",
-        "_id_8",
-        "aq_mode_3",
-        "_id_9",
-        "aq_strength_1",
-        "_id_10",
-        "ipratio_1_8",
-        "_id_11",
-        "pbratio_1_3"
-      ],
-      "report": {
-        "jobId": "81053",
-        "configuration": {
-          "features": [
-            "Root",
-            "Compile",
-            "_id_0",
-            "bit_depth_8",
-            "_id_1",
-            "format_422",
-            "interlaced",
-            "asm",
-            "strip",
-            "lto",
-            "pic",
-            "Runtime",
-            "_id_2",
-            "qp",
-            "_id_3",
-            "q_26",
-            "_id_4",
-            "qpstep_8",
-            "_id_7",
-            "lookahead_20",
-            "_id_8",
-            "aq_mode_3",
-            "_id_9",
-            "aq_strength_1",
-            "_id_10",
-            "ipratio_1_8",
-            "_id_11",
-            "pbratio_1_3"
-          ]
-        },
-        "objectives": [
-          "subjective_quality",
-          "file_size"
-        ],
-        "results": {
-          "subjective_quality": 19.29959517376682,
+          "subjective_quality": 22.20109472977849,
+          "run_time": 12.798077678255362,
           "file_size": 162.30507543749223
         },
         "hash": [],
@@ -3619,10 +3186,10 @@
         "_id_0",
         "bit_depth_8",
         "_id_1",
-        "format_422",
+        "format_420",
+        "interlaced",
         "asm",
         "strip",
-        "lto",
         "pic",
         "Runtime",
         "_id_2",
@@ -3630,21 +3197,95 @@
         "_id_3",
         "q_26",
         "_id_4",
-        "qpstep_8",
+        "qpstep_4",
         "_id_7",
-        "lookahead_80",
+        "lookahead_50",
         "_id_8",
         "aq_mode_1",
         "_id_9",
-        "aq_strength_3",
+        "aq_strength_2",
         "_id_10",
-        "ipratio_1_4",
+        "ipratio_2_2",
         "_id_11",
-        "pbratio_1_8",
-        "two_pass"
+        "pbratio_1_3"
       ],
       "report": {
-        "jobId": "f4518",
+        "jobId": "c5f5a",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_420",
+            "interlaced",
+            "asm",
+            "strip",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_50",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_2",
+            "_id_10",
+            "ipratio_2_2",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 16.87524902690432,
+          "run_time": 13.624969520319738,
+          "file_size": 157.68068766613285
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_422",
+        "strip",
+        "lto",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_38",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_2",
+        "_id_10",
+        "ipratio_1_8",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "abbb5",
         "configuration": {
           "features": [
             "Root",
@@ -3653,25 +3294,101 @@
             "bit_depth_8",
             "_id_1",
             "format_422",
+            "strip",
+            "lto",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_38",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_2",
+            "_id_10",
+            "ipratio_1_8",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 20.948470250247077,
+          "run_time": 13.362049863499589,
+          "file_size": 162.83415858814033
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "asm",
+        "strip",
+        "lto",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_2",
+        "_id_9",
+        "aq_strength_2",
+        "_id_10",
+        "ipratio_2_2",
+        "_id_11",
+        "pbratio_1_8",
+        "two_pass"
+      ],
+      "report": {
+        "jobId": "c1964",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_420",
+            "interlaced",
             "asm",
             "strip",
             "lto",
-            "pic",
             "Runtime",
             "_id_2",
             "qp",
             "_id_3",
             "q_26",
             "_id_4",
-            "qpstep_8",
+            "qpstep_4",
             "_id_7",
-            "lookahead_80",
+            "lookahead_20",
             "_id_8",
-            "aq_mode_1",
+            "aq_mode_2",
             "_id_9",
-            "aq_strength_3",
+            "aq_strength_2",
             "_id_10",
-            "ipratio_1_4",
+            "ipratio_2_2",
             "_id_11",
             "pbratio_1_8",
             "two_pass"
@@ -3679,11 +3396,13 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 17.089959701879263,
-          "file_size": 220.2005904075104
+          "subjective_quality": 19.29959517376682,
+          "run_time": 12.814759272135117,
+          "file_size": 219.66384467907105
         },
         "hash": [],
         "group": "FixedAttributeValue"
@@ -3701,6 +3420,160 @@
         "asm",
         "strip",
         "lto",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_3",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_2_2",
+        "_id_11",
+        "pbratio_2_3",
+        "two_pass"
+      ],
+      "report": {
+        "jobId": "8d1b8",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_422",
+            "interlaced",
+            "asm",
+            "strip",
+            "lto",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_3",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_2_2",
+            "_id_11",
+            "pbratio_2_3",
+            "two_pass"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 19.29959517376682,
+          "run_time": 13.21886057795243,
+          "file_size": 199.33595573234322
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_422",
+        "interlaced",
+        "strip",
+        "lto",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_2",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_2_2",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "ab302",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_422",
+            "interlaced",
+            "strip",
+            "lto",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_2",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_2_2",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 30.192120766349017,
+          "run_time": 13.616914826784258,
+          "file_size": 198.7054818563347
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "asm",
+        "strip",
+        "lto",
         "pic",
         "Runtime",
         "_id_2",
@@ -3710,7 +3583,7 @@
         "_id_4",
         "qpstep_4",
         "_id_7",
-        "lookahead_50",
+        "lookahead_20",
         "_id_8",
         "aq_mode_1",
         "_id_9",
@@ -3718,10 +3591,11 @@
         "_id_10",
         "ipratio_1_8",
         "_id_11",
-        "pbratio_1_8"
+        "pbratio_1_8",
+        "two_pass"
       ],
       "report": {
-        "jobId": "a48c0",
+        "jobId": "b0c46",
         "configuration": {
           "features": [
             "Root",
@@ -3729,7 +3603,7 @@
             "_id_0",
             "bit_depth_8",
             "_id_1",
-            "format_422",
+            "format_420",
             "interlaced",
             "asm",
             "strip",
@@ -3743,7 +3617,7 @@
             "_id_4",
             "qpstep_4",
             "_id_7",
-            "lookahead_50",
+            "lookahead_20",
             "_id_8",
             "aq_mode_1",
             "_id_9",
@@ -3751,16 +3625,175 @@
             "_id_10",
             "ipratio_1_8",
             "_id_11",
-            "pbratio_1_8"
+            "pbratio_1_8",
+            "two_pass"
           ]
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 19.29959517376682,
-          "file_size": 151.95797225246716
+          "subjective_quality": 19.535148756121146,
+          "run_time": 12.841479213984147,
+          "file_size": 175.67150770576694
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "strip",
+        "lto",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_20",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_2",
+        "_id_10",
+        "ipratio_2_2",
+        "_id_11",
+        "pbratio_1_3",
+        "two_pass"
+      ],
+      "report": {
+        "jobId": "a54b1",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_420",
+            "interlaced",
+            "strip",
+            "lto",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_2",
+            "_id_10",
+            "ipratio_2_2",
+            "_id_11",
+            "pbratio_1_3",
+            "two_pass"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 17.796620448942228,
+          "run_time": 13.21886057795243,
+          "file_size": 220.2005904075104
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_10",
+        "_id_1",
+        "format_420",
+        "interlaced",
+        "asm",
+        "strip",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_32",
+        "_id_4",
+        "qpstep_8",
+        "_id_7",
+        "lookahead_80",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_2_2",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "0d103",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_10",
+            "_id_1",
+            "format_420",
+            "interlaced",
+            "asm",
+            "strip",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_32",
+            "_id_4",
+            "qpstep_8",
+            "_id_7",
+            "lookahead_80",
+            "_id_8",
+            "aq_mode_1",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_2_2",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 19.0640415914125,
+          "run_time": 12.366786971553047,
+          "file_size": 210.22246893161858
         },
         "hash": [],
         "group": "FixedAttributeValue"
@@ -3786,9 +3819,9 @@
         "_id_4",
         "qpstep_4",
         "_id_7",
-        "lookahead_80",
+        "lookahead_20",
         "_id_8",
-        "aq_mode_1",
+        "aq_mode_2",
         "_id_9",
         "aq_strength_1",
         "_id_10",
@@ -3797,7 +3830,7 @@
         "pbratio_1_3"
       ],
       "report": {
-        "jobId": "37f4b",
+        "jobId": "5b24e",
         "configuration": {
           "features": [
             "Root",
@@ -3818,7 +3851,82 @@
             "_id_4",
             "qpstep_4",
             "_id_7",
-            "lookahead_80",
+            "lookahead_20",
+            "_id_8",
+            "aq_mode_2",
+            "_id_9",
+            "aq_strength_1",
+            "_id_10",
+            "ipratio_1_8",
+            "_id_11",
+            "pbratio_1_3"
+          ]
+        },
+        "objectives": [
+          "subjective_quality",
+          "file_size",
+          "run_time"
+        ],
+        "results": {
+          "subjective_quality": 19.0640415914125,
+          "run_time": 13.249091666226175,
+          "file_size": 157.68068766613285
+        },
+        "hash": [],
+        "group": "FixedAttributeValue"
+      }
+    },
+    {
+      "selection": [
+        "Root",
+        "Compile",
+        "_id_0",
+        "bit_depth_8",
+        "_id_1",
+        "format_422",
+        "interlaced",
+        "strip",
+        "pic",
+        "Runtime",
+        "_id_2",
+        "qp",
+        "_id_3",
+        "q_26",
+        "_id_4",
+        "qpstep_4",
+        "_id_7",
+        "lookahead_50",
+        "_id_8",
+        "aq_mode_1",
+        "_id_9",
+        "aq_strength_1",
+        "_id_10",
+        "ipratio_1_8",
+        "_id_11",
+        "pbratio_1_3"
+      ],
+      "report": {
+        "jobId": "e9395",
+        "configuration": {
+          "features": [
+            "Root",
+            "Compile",
+            "_id_0",
+            "bit_depth_8",
+            "_id_1",
+            "format_422",
+            "interlaced",
+            "strip",
+            "pic",
+            "Runtime",
+            "_id_2",
+            "qp",
+            "_id_3",
+            "q_26",
+            "_id_4",
+            "qpstep_4",
+            "_id_7",
+            "lookahead_50",
             "_id_8",
             "aq_mode_1",
             "_id_9",
@@ -3831,11 +3939,13 @@
         },
         "objectives": [
           "subjective_quality",
-          "file_size"
+          "file_size",
+          "run_time"
         ],
         "results": {
-          "subjective_quality": 19.0640415914125,
-          "file_size": 157.68068766613285
+          "subjective_quality": 21.863201694138887,
+          "run_time": 13.620226443146581,
+          "file_size": 140.80813389305823
         },
         "hash": [],
         "group": "FixedAttributeValue"

@@ -3,6 +3,7 @@ package de.upb.spl.presentation;
 import de.upb.spl.ailibsintegration.SPLReasonerAlgorithm;
 import de.upb.spl.benchmarks.BenchmarkAgent;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
+import de.upb.spl.benchmarks.env.Bookkeeper;
 import de.upb.spl.eval.Evaluator;
 import de.upb.spl.reasoner.SPLReasoner;
 import jaicore.graphvisualizer.events.recorder.AlgorithmEventHistoryRecorder;
@@ -161,7 +162,7 @@ public class VisualSPLReasoner {
     public void start() {
         logger.info("Starting spl benchmark.");
         reasoners.stream().forEach(reasoner -> {
-            BenchmarkEnvironment billedEnv = env.openTab(reasoner.name());
+            BenchmarkEnvironment billedEnv =  new Bookkeeper.Bill(env, env.bill(reasoner.name()));
             SPLReasonerAlgorithm alg = reasoner.algorithm(billedEnv);
             alg.registerListener(eventRecorder);
             try {

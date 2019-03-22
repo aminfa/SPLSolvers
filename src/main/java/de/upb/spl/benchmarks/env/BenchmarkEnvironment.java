@@ -6,7 +6,7 @@ import de.upb.spl.benchmarks.BenchmarkBill;
 import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.hasco.FM2CM;
 import de.upb.spl.reasoner.SPLReasonerConfiguration;
-import de.upb.spl.benchmarks.BenchmarkReport;
+import de.upb.spl.benchmarks.ReportInterpreter;
 import fm.FeatureModel;
 import org.aeonbits.owner.ConfigFactory;
 import org.sat4j.core.VecInt;
@@ -40,7 +40,8 @@ public interface BenchmarkEnvironment {
 	    return false;
     }
 
-    BenchmarkReport reader(JobReport jobReport);
+    ReportInterpreter interpreter(JobReport jobReport);
+
 
 
 	default SPLReasonerConfiguration configuration(){
@@ -52,8 +53,6 @@ public interface BenchmarkEnvironment {
     default boolean isRaw() {
         return false;
     }
-
-    BenchmarkEnvironment openTab(String reasoner);
 
     BenchmarkBill bill(String reasonerName);
 }

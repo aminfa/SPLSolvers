@@ -5,7 +5,7 @@ import de.upb.spl.FeatureSelection;
 import de.upb.spl.reasoner.BinaryStringProblem;
 import de.upb.spl.reasoner.EAReasoner;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.benchmarks.env.BenchmarkHelper;
+import de.upb.spl.benchmarks.BenchmarkHelper;
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.algorithm.IBEA;
 import org.moeaframework.core.Initialization;

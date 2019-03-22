@@ -18,7 +18,7 @@ public interface SPLReasonerConfiguration extends Mutable {
     Integer getEvaluationPermits();
 
     @Key("de.upb.spl.videoEncoding.RAWSourceFile")
-    @DefaultValue("flower_garden")
+    @DefaultValue("grandma")
     String getVideoSourceFile();
 
 
@@ -125,6 +125,6 @@ public interface SPLReasonerConfiguration extends Mutable {
      * Replay
      */
     @Key("de.upb.spl.SPLReasoner.Replay.rerunSelection")
-    @DefaultValue("true")
+    @DefaultValue("false")
     Boolean getReplayRerunSelection();
 }

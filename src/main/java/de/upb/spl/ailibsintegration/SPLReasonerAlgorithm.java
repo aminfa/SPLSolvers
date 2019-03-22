@@ -2,6 +2,7 @@ package de.upb.spl.ailibsintegration;
 
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.BenchmarkEntry;
+import de.upb.spl.benchmarks.BenchmarkHelper;
 import de.upb.spl.benchmarks.env.*;
 import jaicore.basic.algorithm.AAlgorithm;
 import jaicore.basic.algorithm.AlgorithmExecutionCanceledException;
@@ -96,15 +97,11 @@ public abstract class SPLReasonerAlgorithm extends AAlgorithm<BenchmarkEnvironme
         }
         BenchmarkEntry log = getInput().currentTab().checkLog(nextEvalIndex);
 
-        BenchmarkEnvironment rawEnv = new RawResults(getInput());
-        double[] evaluation = BenchmarkHelper.evaluateFeatureSelection(rawEnv, log.selection());
-        FeatureSelectionPerformance reevaluatedPerformance = new FeatureSelectionPerformance(0, evaluation);
         nextEvalIndex++;
         if(nextEvalIndex > evals) {
             terminate();
         }
-
-        return new FeatureSelectionEvaluatedEvent(getId(), log.selection(), nextEvalIndex-1, reevaluatedPerformance);
+        return new FeatureSelectionEvaluatedEvent(getId(), nextEvalIndex-1, log);
     }
 
     /**

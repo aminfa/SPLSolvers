@@ -1,9 +1,8 @@
-package de.upb.spl.benchmarks.env;
+package de.upb.spl.benchmarks;
 
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
-import de.upb.spl.benchmarks.BenchmarkReport;
-import de.upb.spl.benchmarks.JobReport;
+import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.slf4j.Logger;
@@ -38,7 +37,7 @@ public final class BenchmarkHelper {
         double[] evaluation = new double[env.objectives().size()];
         for (int i = 0; i < evaluation.length; i++) {
             String objectiveName = env.objectives().get(i);
-            BenchmarkReport reportReader = env.reader(report);
+            ReportInterpreter reportReader = env.interpreter(report);
             if(raw) {
                 evaluation[i] = reportReader.rawResult(objectiveName).orElse(Double.NaN);
             } else {

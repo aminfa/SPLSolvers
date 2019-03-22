@@ -1,8 +1,6 @@
 package de.upb.spl.benchmarks.env;
 
 import de.upb.spl.FMSAT;
-import de.upb.spl.FeatureSelection;
-import de.upb.spl.benchmarks.BenchmarkReport;
 import de.upb.spl.hasco.FM2CM;
 import de.upb.spl.hasco.SimpleReduction;
 import fm.FeatureModel;

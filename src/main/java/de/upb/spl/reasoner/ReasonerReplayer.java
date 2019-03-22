@@ -6,7 +6,7 @@ import de.upb.spl.ailibsintegration.SPLReasonerAlgorithm;
 import de.upb.spl.benchmarks.BenchmarkEntry;
 import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.benchmarks.env.BenchmarkHelper;
+import de.upb.spl.benchmarks.BenchmarkHelper;
 import de.upb.spl.util.FileUtil;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

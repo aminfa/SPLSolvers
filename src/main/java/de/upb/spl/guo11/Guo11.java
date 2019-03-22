@@ -2,8 +2,8 @@ package de.upb.spl.guo11;
 
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
-import de.upb.spl.benchmarks.BenchmarkReport;
-import de.upb.spl.benchmarks.env.BenchmarkHelper;
+import de.upb.spl.benchmarks.ReportInterpreter;
+import de.upb.spl.benchmarks.BenchmarkHelper;
 import de.upb.spl.reasoner.*;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import fm.FeatureTreeNode;
@@ -98,7 +98,7 @@ public class Guo11 extends EAReasoner {
             Random generator = env.generator();
             List<FeatureTreeNode> featureOrder = FMUtil.featureStream(env.model()).collect(Collectors.toList());
             List<Solution> generatedSolutions = new ArrayList<>();
-            List<Future<BenchmarkReport>> reports =  new ArrayList<>();
+            List<Future<ReportInterpreter>> reports =  new ArrayList<>();
             for (int i = 0; i < p; i++) {
                 Solution solution = new Solution(1, 1);
                 generatedSolutions.add(solution);

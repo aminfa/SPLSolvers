@@ -8,7 +8,6 @@ import de.upb.spl.hierons.Hierons;
 import de.upb.spl.ibea.BasicIbea;
 import de.upb.spl.presentation.ParetoPresentation;
 import de.upb.spl.reasoner.EAReasoner;
-import de.upb.spl.reasoner.SPLReasoner;
 import de.upb.spl.sayyad.Sayyad;
 import fm.FeatureModelException;
 import org.junit.AfterClass;
@@ -82,7 +81,7 @@ public class EAReasonerTest {
 	}
 
 	public void testReasoner(EAReasoner reasoner) {
-	    BenchmarkEnvironment billedEnv = env.openTab(reasoner.name());
+	    BenchmarkEnvironment billedEnv = new Bookkeeper.Bill(env, env.bill(reasoner.name()));
         AbstractEvolutionaryAlgorithm alg = reasoner.runAlgorithm(billedEnv);
         Population population = alg.getPopulation();
         Population moPopulation = new NondominatedPopulation();

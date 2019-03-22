@@ -3,7 +3,7 @@ package de.upb.spl.benchmarks.env;
 import de.upb.spl.FMSAT;
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.BenchmarkBill;
-import de.upb.spl.benchmarks.BenchmarkReport;
+import de.upb.spl.benchmarks.ReportInterpreter;
 import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.hasco.FM2CM;
 import de.upb.spl.reasoner.SPLReasonerConfiguration;
@@ -55,8 +55,8 @@ public class BenchmarkEnvironmentDecoration implements BenchmarkEnvironment {
     }
 
     @Override
-    public BenchmarkReport reader(JobReport jobReport) {
-        return env.reader(jobReport);
+    public ReportInterpreter interpreter(JobReport jobReport) {
+        return env.interpreter(jobReport);
     }
 
     public SPLReasonerConfiguration configuration() {
@@ -69,11 +69,6 @@ public class BenchmarkEnvironmentDecoration implements BenchmarkEnvironment {
 
     public boolean isRaw() {
         return env.isRaw();
-    }
-
-    @Override
-    public BenchmarkEnvironment openTab(String reasoner) {
-        return env.openTab(reasoner);
     }
 
     @Override

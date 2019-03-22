@@ -3,7 +3,7 @@ package de.upb.spl.benchmarks.env;
 import de.upb.spl.FMSAT;
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.BenchmarkBill;
-import de.upb.spl.benchmarks.BenchmarkReport;
+import de.upb.spl.benchmarks.ReportInterpreter;
 import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.hasco.FM2CM;
 import fm.FeatureModel;
@@ -50,17 +50,12 @@ public class BaseEnv implements BenchmarkEnvironment {
     }
 
     @Override
-    public BenchmarkReport reader(JobReport jobReport) {
+    public ReportInterpreter interpreter(JobReport jobReport) {
         throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
     }
 
     @Override
     public BenchmarkBill currentTab() {
-        throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
-    }
-
-    @Override
-    public BenchmarkEnvironment openTab(String reasoner) {
         throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
     }
 

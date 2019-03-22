@@ -4,7 +4,7 @@ import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.BenchmarkAgent;
 import de.upb.spl.benchmarks.BenchmarkBill;
-import de.upb.spl.benchmarks.BenchmarkReport;
+import de.upb.spl.benchmarks.ReportInterpreter;
 import de.upb.spl.benchmarks.JobReport;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.concurrent.ConcurrentUtils;
@@ -25,6 +25,10 @@ public class VideoEncoderEnv extends BenchmarkEnvironmentDecoration {
 	final static String SPL_NAME = "video_encoder";
 
 	final Random generator = new Random();
+
+	public enum Objectives {
+        subjective_quality, run_time, file_size;
+    }
 
 	ExecutorService executorService = Executors.newFixedThreadPool(4);
 
@@ -65,8 +69,8 @@ public class VideoEncoderEnv extends BenchmarkEnvironmentDecoration {
 	}
 
     @Override
-    public BenchmarkReport reader(JobReport jobReport) {
-        return new VideoEncoderReport(jobReport);
+    public ReportInterpreter interpreter(JobReport jobReport) {
+        return new VideoEncoderReportInterpreter(jobReport);
     }
 
 	private class SubmitVideoEncoding implements Callable<JobReport> {
@@ -86,7 +90,7 @@ public class VideoEncoderEnv extends BenchmarkEnvironmentDecoration {
 		public JobReport call() throws Exception {
 			agent.jobs().offerJob(report);
 			agent.jobs().waitForResults(report);
-			BenchmarkReport summary = new VideoEncoderReport(report);
+			ReportInterpreter summary = new VideoEncoderReportInterpreter(report);
             if(checkResults(summary)) {
                 bill.logEvaluation(selection, report);
             }
@@ -94,7 +98,7 @@ public class VideoEncoderEnv extends BenchmarkEnvironmentDecoration {
 		}
 	}
 
-	private boolean checkResults(BenchmarkReport report) {
+	private boolean checkResults(ReportInterpreter report) {
 	    for(String objective : objectives()) {
 	        if(!report.readResult(objective).isPresent()) {
 	            return false;
@@ -289,10 +293,10 @@ public class VideoEncoderEnv extends BenchmarkEnvironmentDecoration {
 
 
 
-    public static class VideoEncoderReport implements BenchmarkReport {
+    public static class VideoEncoderReportInterpreter implements ReportInterpreter {
 		private final JobReport report;
 
-		VideoEncoderReport(JobReport report) {
+		VideoEncoderReportInterpreter(JobReport report) {
 			this.report = report;
 		}
 
@@ -319,8 +323,5 @@ public class VideoEncoderEnv extends BenchmarkEnvironmentDecoration {
 		    return Optional.empty();
         }
 
-		public JobReport getJobReport() {
-		    return report;
-        }
 	}
 }

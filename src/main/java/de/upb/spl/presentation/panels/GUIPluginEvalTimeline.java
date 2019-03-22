@@ -1,7 +1,8 @@
-package de.upb.spl.presentation;
+package de.upb.spl.presentation.panels;
 
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.ailibsintegration.FeatureSelectionEvaluatedEvent;
+import de.upb.spl.util.Iterators;
 import jaicore.basic.algorithm.events.AlgorithmEvent;
 import jaicore.graphvisualizer.events.graph.bus.AlgorithmEventSource;
 import jaicore.graphvisualizer.events.graph.bus.HandleAlgorithmEventException;
@@ -32,10 +33,13 @@ public class GUIPluginEvalTimeline implements IGUIPlugin {
     private final int objectiveIndex;
     private final BenchmarkEnvironment env;
     private final Map<String, XYChart.Series<Number, Number>> performanceSeries = new HashMap<>();
+    private final String objective;
+
 
     public GUIPluginEvalTimeline(BenchmarkEnvironment env, int objectiveIndex) {
         this.env = env;
         this.objectiveIndex = objectiveIndex;
+        objective = env.objectives().get(objectiveIndex);
         model = new Model();
         view = new View();
         controller = new Controller();
@@ -77,11 +81,16 @@ public class GUIPluginEvalTimeline implements IGUIPlugin {
                 addReasoner(event.getAlgorithmId());
             }
             XYChart.Series<Number, Number> series = performanceSeries.get(event.getAlgorithmId());
-            XYChart.Data<Number, Number> dataPoint = new XYChart.Data<>(event.getEvaluationIndex(), event.getScore().objectives()[objectiveIndex]);
-
-            Platform.runLater(() -> {
-                series.getData().add(dataPoint);
-            });
+            Optional<Double> performance = env.interpreter(event.getReport()).rawResult(objective);
+            if(!performance.isPresent()) {
+                logger.warn("Couldn't add data point for {} evaluation of {}. Performance is empty.", Iterators.ordinal(event.getEvaluationIndex()), event.getAlgorithmId());
+                return;
+            } else {
+                XYChart.Data<Number, Number> dataPoint = new XYChart.Data<>(event.getEvaluationIndex(), performance.get());
+                Platform.runLater(() -> {
+                    series.getData().add(dataPoint);
+                });
+            }
         }
 
         private void addReasoner(String reasonerName) {

@@ -46,8 +46,8 @@ public class AttributedFeatureModelEnv extends BenchmarkEnvironmentDecoration {
     }
 
     @Override
-    public BenchmarkReport reader(JobReport jobReport) {
-        return new AttributeValueReport(jobReport);
+    public ReportInterpreter interpreter(JobReport jobReport) {
+        return new AttributeValueReportInterpreter(jobReport);
     }
 
     protected FileBenchmarkEnv getBaseEnv() {
@@ -71,11 +71,11 @@ public class AttributedFeatureModelEnv extends BenchmarkEnvironmentDecoration {
         return Collections.singletonMap("features", selectedFeatures);
     }
 
-    class AttributeValueReport implements BenchmarkReport {
+    class AttributeValueReportInterpreter implements ReportInterpreter {
 
         private final JobReport report;
 
-        AttributeValueReport(JobReport report) {
+        AttributeValueReportInterpreter(JobReport report) {
             this.report = report;
         }
 
@@ -107,10 +107,6 @@ public class AttributedFeatureModelEnv extends BenchmarkEnvironmentDecoration {
             }
         }
 
-        @Override
-        public JobReport getJobReport() {
-            return report;
-        }
     }
 
 }

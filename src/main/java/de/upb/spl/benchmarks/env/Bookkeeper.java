@@ -2,7 +2,7 @@ package de.upb.spl.benchmarks.env;
 
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.BenchmarkBill;
-import de.upb.spl.benchmarks.BenchmarkReport;
+import de.upb.spl.benchmarks.ReportInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ public class Bookkeeper extends BenchmarkEnvironmentDecoration {
     private Map<String, BenchmarkBill> books = new HashMap<>();
 
     private final BenchmarkBill offBooksTab = new BenchmarkBill(null) {
-        public void logEvaluation(FeatureSelection selection, BenchmarkReport report) {
+        public void logEvaluation(FeatureSelection selection, ReportInterpreter report) {
             // log nothing.
         }
     };
@@ -39,21 +39,11 @@ public class Bookkeeper extends BenchmarkEnvironmentDecoration {
         });
     }
 
-    public BenchmarkEnvironment openTab(String clientName) {
-        logger.info("Opening a tab for {}.", clientName);
-        BenchmarkBill newBill = bill(clientName);
-        if(currentTab() == newBill) {
-            return this;
-        } else {
-            return new Billed(this, newBill);
-        }
-    }
-
-    private static class Billed extends BenchmarkEnvironmentDecoration {
+    public static class Bill extends BenchmarkEnvironmentDecoration {
 
         private final BenchmarkBill bill;
 
-        public Billed(BenchmarkEnvironment env, BenchmarkBill bill) {
+        public Bill(BenchmarkEnvironment env, BenchmarkBill bill) {
             super(env);
             this.bill = bill;
         }

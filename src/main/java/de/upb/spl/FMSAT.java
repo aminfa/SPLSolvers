@@ -23,6 +23,7 @@ import de.upb.spl.util.Iterators;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.function.IntPredicate;
 
 public class FMSAT {
 	private final Object2IntRBTreeMap<String> indexer;
@@ -549,26 +550,7 @@ public class FMSAT {
 
         @Override
         public Iterator<FeatureTreeNode> iterator() {
-
-            return new Iterator<FeatureTreeNode>() {
-                int index = 0;
-
-                @Override
-                public boolean hasNext() {
-                    return index < model.length;
-                }
-
-                @Override
-                public FeatureTreeNode next() {
-                    int literal = model[index];
-                    index ++;
-                    if(literal < 0) {
-                        literal = -literal;
-                    }
-                    FeatureTreeNode feature = FMUtil.find(fm, featureNames.get(literal-1));
-                    return feature;
-                }
-            };
+            return Arrays.stream(model).filter(i-> i > 0).mapToObj(i -> FMUtil.find(fm, featureNames.get(i-1))).iterator();
         }
 
         @Override

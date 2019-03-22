@@ -1,9 +1,10 @@
-package de.upb.spl.presentation;
+package de.upb.spl.presentation.panels;
 
 import de.upb.spl.ailibsintegration.FeatureSelectionEvaluatedEvent;
 import de.upb.spl.ailibsintegration.FeatureSelectionPerformance;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.util.FileUtil;
+import de.upb.spl.util.Iterators;
 import jaicore.basic.algorithm.events.AlgorithmEvent;
 import jaicore.graphvisualizer.events.graph.bus.AlgorithmEventSource;
 import jaicore.graphvisualizer.events.graph.bus.HandleAlgorithmEventException;
@@ -23,13 +24,16 @@ import javafx.scene.Parent;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
 public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginController, IGUIPluginView, IGUIPluginModel {
+
+    private final static Logger logger = LoggerFactory.getLogger(ReasonerPerformanceTimeline.class);
 
     private final BenchmarkEnvironment env;
 
@@ -172,8 +176,14 @@ public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginContr
         int index = event.getEvaluationIndex();
         for (int i = 0, size = env.objectives().size(); i < size; i++) {
             String objective = env.objectives().get(i);
-            XYChart.Data<Number, Number> data = new XYChart.Data<>(index, event.getScore().objectives()[i]);
-            insert(reasoner, objective, data);
+            Optional<Double> performance = env.interpreter(event.getReport()).rawResult(objective);
+            if(!performance.isPresent()) {
+                logger.warn("Couldn't add data point for {} evaluation of {}. Performance is empty.", Iterators.ordinal(event.getEvaluationIndex()), event.getAlgorithmId());
+                return;
+            } else {
+                XYChart.Data<Number, Number> data = new XYChart.Data<>(index, performance.get());
+                insert(reasoner, objective, data);
+            }
         }
     }
 
@@ -201,7 +211,6 @@ public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginContr
             }
             return true;
         }
-
     }
     private class ReasonerObjectiveTuple {
 
