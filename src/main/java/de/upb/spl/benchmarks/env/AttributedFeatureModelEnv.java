@@ -29,19 +29,13 @@ public class AttributedFeatureModelEnv extends BenchmarkEnvironmentDecoration {
 
     @Override
     public Future<JobReport> run(FeatureSelection selection, BenchmarkBill bill) {
-        Optional<JobReport> loggedReport = bill.checkLog(selection);
-        if(loggedReport.isPresent()) {
-            return ConcurrentUtils.constantFuture(loggedReport.get());
-        } else {
-            JobReport job = toReport(selection);
-            try {
-                executor.executeJob(job);
-                bill.logEvaluation(selection, job);
-                return ConcurrentUtils.constantFuture(job);
-            } catch (Exception e) {
-                logger.warn("Couldn't create attribute values for assemble={}.", selection, e);
-                throw new IllegalArgumentException("Attribute Feature model env.");
-            }
+        JobReport job = toReport(selection);
+        try {
+            executor.executeJob(job);
+            return ConcurrentUtils.constantFuture(job);
+        } catch (Exception e) {
+            logger.warn("Couldn't create attribute values for assemble={}.", selection, e);
+            throw new IllegalArgumentException("Attribute Feature model env.");
         }
     }
 

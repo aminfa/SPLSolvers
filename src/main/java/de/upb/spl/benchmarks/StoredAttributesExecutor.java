@@ -68,7 +68,7 @@ public class StoredAttributesExecutor implements  Runnable {
 		report.setResults(getJobResult(features, attributes));
 	}
 
-	private Collector<Double, ?, Double> aggregator(String aggregationMethod) {
+	public static Collector<Double, ?, Double> aggregator(String aggregationMethod) {
 	    if(aggregationMethod.endsWith("percentile")) {
 	        final double percentage;
             if(aggregationMethod.equals("5-percentile")) {

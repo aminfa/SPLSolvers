@@ -56,7 +56,7 @@ public class JobReport {
 		setConfigHashRoots(hashEntries);
 	}
 
-	public Map getConfiguration() {
+	public Map<String, ?> getConfiguration() {
 		return (Map) report.get("configuration");
 	}
 

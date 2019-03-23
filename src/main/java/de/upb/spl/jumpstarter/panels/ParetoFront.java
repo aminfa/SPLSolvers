@@ -1,4 +1,4 @@
-package de.upb.spl.presentation.panels;
+package de.upb.spl.jumpstarter.panels;
 
 import de.upb.spl.ailibsintegration.FeatureSelectionEvaluatedEvent;
 import de.upb.spl.ailibsintegration.FeatureSelectionPerformance;
@@ -31,10 +31,10 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
-public class BestCandidates   implements IGUIPlugin,  IGUIPluginController, IGUIPluginView, IGUIPluginModel {
+public class ParetoFront  implements IGUIPlugin,  IGUIPluginController, IGUIPluginView, IGUIPluginModel {
 
 
-    private final static Logger logger = LoggerFactory.getLogger(BestCandidates.class);
+    private final static Logger logger = LoggerFactory.getLogger(ParetoFront.class);
 
     private final BenchmarkEnvironment env;
 
@@ -53,14 +53,14 @@ public class BestCandidates   implements IGUIPlugin,  IGUIPluginController, IGUI
 
     private final static String NAME = "SPL Reasoner Performance Timeline";
 
-    private final static String FXML_RESOURCE = BestCandidates.class.getSimpleName() + ".fxml";
+    private final static String FXML_RESOURCE = ParetoFront.class.getSimpleName() + ".fxml";
 
     private final
     Map<ObjectiveTuple, Map<String, XYChart.Series<Number, Number>>> chartData = new LinkedHashMap<>();
 
     private Insertion currentInsertion = new Insertion();
 
-    public BestCandidates(BenchmarkEnvironment env) {
+    public ParetoFront(BenchmarkEnvironment env) {
         this.env = env;
         /*
          * Load node from fxml resource:

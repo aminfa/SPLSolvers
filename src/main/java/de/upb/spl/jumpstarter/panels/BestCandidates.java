@@ -1,4 +1,4 @@
-package de.upb.spl.presentation.panels;
+package de.upb.spl.jumpstarter.panels;
 
 import de.upb.spl.ailibsintegration.FeatureSelectionEvaluatedEvent;
 import de.upb.spl.ailibsintegration.FeatureSelectionPerformance;
@@ -21,7 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import org.slf4j.Logger;
@@ -31,33 +31,36 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
-public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginController, IGUIPluginView, IGUIPluginModel {
+public class BestCandidates   implements IGUIPlugin,  IGUIPluginController, IGUIPluginView, IGUIPluginModel {
 
-    private final static Logger logger = LoggerFactory.getLogger(ReasonerPerformanceTimeline.class);
+
+    private final static Logger logger = LoggerFactory.getLogger(BestCandidates.class);
 
     private final BenchmarkEnvironment env;
 
     private final Parent rootNode;
 
     @FXML
-    private AreaChart<Number, Number> chart;
+    private ScatterChart<Number, Number> chart;
 
     @FXML
-    private ComboBox<String> compareSelection;
+    private ComboBox<String> XAxisSelection;
 
-    private String selectedComparisson = "";
+    @FXML
+    private ComboBox<String> YAxisSelection;
+
+    private ObjectiveTuple currentObjectives = new ObjectiveTuple("", "");
 
     private final static String NAME = "SPL Reasoner Performance Timeline";
 
-    private final static String FXML_RESOURCE = ReasonerPerformanceTimeline.class.getSimpleName() + ".fxml";
+    private final static String FXML_RESOURCE = BestCandidates.class.getSimpleName() + ".fxml";
 
-//    private final Map<String, List<MarkedDataPoint>> data = new ConcurrentHashMap<>();
-
-    private final Map<ReasonerObjectiveTuple, XYChart.Series<Number, Number>> chartData = new LinkedHashMap<>();
+    private final
+    Map<ObjectiveTuple, Map<String, XYChart.Series<Number, Number>>> chartData = new LinkedHashMap<>();
 
     private Insertion currentInsertion = new Insertion();
 
-    public ReasonerPerformanceTimeline(BenchmarkEnvironment env) {
+    public BestCandidates(BenchmarkEnvironment env) {
         this.env = env;
         /*
          * Load node from fxml resource:
@@ -71,31 +74,69 @@ public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginContr
             throw new RuntimeException("Unexpected error while setting up gui: " + NAME, e);
         }
 
-        compareSelection.valueProperty().addListener((observable, oldValue, newValue) -> {
+        fillData();
+        fillComboBoxes();
+
+        XAxisSelection.valueProperty().addListener((observable, oldValue, newValue) -> {
             if(oldValue != null && oldValue.equals(newValue)) {
                 return;
             }
-            selectedComparisson = newValue;
-            chart.getData().clear();
-            chartData.forEach((tuple, series) -> {
-                if(tuple.objective.equals(newValue)) {
-                    chart.getData().add(series);
-                }
-            });
+            currentObjectives.setX(newValue);
+            reAddSeries();
         });
-        compareAlgorithms();
-
+        YAxisSelection.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(oldValue != null && oldValue.equals(newValue)) {
+                return;
+            }
+            currentObjectives.setY(newValue);
+            reAddSeries();
+        });
     }
 
-    void compareAlgorithms() {
+    private void reAddSeries() {
+        Platform.runLater(() -> {
+            chart.getData().clear();
+            chartData.get(currentObjectives).forEach((reasoner, series) -> {
+                chart.getData().add(series);
+            });
+        });
+    }
+
+
+    private void fillData() {
+        runAndWait(() -> {
+            for (int i = 0, size = env.objectives().size(); i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    ObjectiveTuple tuple = new ObjectiveTuple(env.objectives().get(i), env.objectives().get(j));
+                    Map<String,XYChart.Series<Number, Number>> reasonerData = new LinkedHashMap<>();
+                    chartData.put(tuple, reasonerData);
+                }
+            }
+        });
+    }
+
+    private void fillComboBoxes() {
         runAndWait(() ->
         {
-            List<String> selections = compareSelection.getItems();
+            List<String> selections = XAxisSelection.getItems();
             selections.clear();
             selections.addAll(env.objectives());
             if(selections.size() > 0) {
-                compareSelection.setValue(selections.get(0));
+                String currentXAxis = selections.get(0);
+                XAxisSelection.setValue(currentXAxis);
+                currentObjectives.setX(currentXAxis);
             }
+            selections = YAxisSelection.getItems();
+            selections.clear();
+            selections.addAll(env.objectives());
+            String currentYAxis = "";
+            if(selections.size() > 1) {
+                currentYAxis = selections.get(1);
+            } else {
+                currentYAxis = selections.get(0);
+            }
+            currentObjectives.setY(currentYAxis);
+            YAxisSelection.setValue(currentYAxis);
         });
     }
 
@@ -111,21 +152,20 @@ public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginContr
         }
     }
 
-    private void insert(String category, String objective, XYChart.Data<Number, Number> data) {
-        ReasonerObjectiveTuple tuple = new ReasonerObjectiveTuple(category, objective);
-        XYChart.Series<Number, Number> series = chartData.get(tuple);
+    private void insert(String category, ObjectiveTuple tuple, XYChart.Data<Number, Number> data) {
+        XYChart.Series<Number, Number> series = chartData.get(tuple).get(category);
         if(series == null) {
-            series = newSeries(tuple);
+            series = newSeries(tuple, category);
         }
         insertIntoView(series, data);
     }
 
-    private XYChart.Series<Number, Number> newSeries(ReasonerObjectiveTuple tuple) {
+    private XYChart.Series<Number, Number> newSeries(ObjectiveTuple tuple, String reasoner) {
         // defining a series
         XYChart.Series<Number, Number> performanceSeries = new XYChart.Series<>();
-        performanceSeries.setName(tuple.reasoner);
-        chartData.put(tuple, performanceSeries);
-        if(selectedComparisson.equals(tuple.objective)) {
+        performanceSeries.setName(reasoner);
+        chartData.get(tuple).put(reasoner, performanceSeries);
+        if(currentObjectives.equals(tuple)) {
             Platform.runLater(() -> {
                 List<XYChart.Series<Number, Number>> seriesList = chart.getData();
                 if (seriesList != null) {
@@ -175,14 +215,19 @@ public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginContr
         String reasoner = event.getAlgorithmId();
         int index = event.getEvaluationIndex();
         for (int i = 0, size = env.objectives().size(); i < size; i++) {
-            String objective = env.objectives().get(i);
-            Optional<Double> performance = env.interpreter(event.getReport()).rawResult(objective);
-            if(!performance.isPresent()) {
-                logger.warn("Couldn't add data point for {} evaluation of {}. Performance is empty.", Iterators.ordinal(event.getEvaluationIndex()), event.getAlgorithmId());
-                return;
-            } else {
-                XYChart.Data<Number, Number> data = new XYChart.Data<>(index, performance.get());
-                insert(reasoner, objective, data);
+            String objectivex = env.objectives().get(i);
+            for (int j = 0; j < size; j++) {
+                String objectivey = env.objectives().get(j);
+                ObjectiveTuple tuple = new ObjectiveTuple(env.objectives().get(i), env.objectives().get(j));
+                Optional<Double> performancex = env.interpreter(event.getReport()).rawResult(objectivex);
+                Optional<Double> performancey = env.interpreter(event.getReport()).rawResult(objectivey);
+                if(!performancex.isPresent() || !performancey.isPresent()) {
+                    logger.warn("Couldn't add data point for {} evaluation of {}. Performance is empty.", Iterators.ordinal(event.getEvaluationIndex()), event.getAlgorithmId());
+                    return;
+                } else {
+                    XYChart.Data<Number, Number> data = new XYChart.Data<>(performancex.get(), performancey.get());
+                    insert(reasoner, tuple,  data);
+                }
             }
         }
     }
@@ -212,33 +257,50 @@ public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginContr
             return true;
         }
     }
-    private class ReasonerObjectiveTuple {
 
-        final String reasoner, objective;
+    private class ObjectiveTuple {
 
-        private ReasonerObjectiveTuple(String reasoner, String objective) {
-            this.reasoner = Objects.requireNonNull(reasoner);
-            this.objective = Objects.requireNonNull(objective);
+        String objective1, objective2;
+
+        private ObjectiveTuple(String objective1, String objective2) {
+            this.objective1 = Objects.requireNonNull(objective1);
+            this.objective2 = Objects.requireNonNull(objective2);
 
         }
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof ReasonerObjectiveTuple)) return false;
+            if (!(o instanceof ObjectiveTuple)) return false;
 
-            ReasonerObjectiveTuple that = (ReasonerObjectiveTuple) o;
+            ObjectiveTuple that = (ObjectiveTuple) o;
 
-            if (!reasoner.equals(that.reasoner)) return false;
-            return objective.equals(that.objective);
+            if (!objective1.equals(that.objective1)) return false;
+            return objective2.equals(that.objective2);
         }
         @Override
         public int hashCode() {
-            int result = reasoner.hashCode();
-            result = 31 * result + objective.hashCode();
+            int result = objective1.hashCode();
+            result = 31 * result + objective2.hashCode();
             return result;
         }
 
+        public String getX() {
+
+            return objective1;
+        }
+
+        public void setX(String objective1) {
+            this.objective1 = objective1;
+        }
+
+        public String getY() {
+            return objective2;
+        }
+
+        public void setY(String objective2) {
+            this.objective2 = objective2;
+        }
     }
 
     private class MarkedDataPoint {

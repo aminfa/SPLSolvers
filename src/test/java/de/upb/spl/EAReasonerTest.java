@@ -6,7 +6,7 @@ import de.upb.spl.guo11.Guo11;
 import de.upb.spl.henard.Henard;
 import de.upb.spl.hierons.Hierons;
 import de.upb.spl.ibea.BasicIbea;
-import de.upb.spl.presentation.ParetoPresentation;
+import de.upb.spl.jumpstarter.ParetoPresentation;
 import de.upb.spl.reasoner.EAReasoner;
 import de.upb.spl.sayyad.Sayyad;
 import fm.FeatureModelException;
@@ -51,7 +51,7 @@ public class EAReasonerTest {
 		VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent, "/Users/aminfaez/Documents/BA/x264_1");
 //		VideoEncoderExecutor.fixedAttributesExecutor(agent);
 		// Load the XML file and creates the listFeatures model
-		env = new VideoEncoderEnv(agent);
+		env = new VideoEncoderBlackBox(agent);
         rawEnv = new RawResults(env);
 	}
 

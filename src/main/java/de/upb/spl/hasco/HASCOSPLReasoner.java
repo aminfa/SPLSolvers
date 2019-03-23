@@ -113,9 +113,6 @@ public class HASCOSPLReasoner implements SPLReasoner {
         @Override
         protected void proceed() throws InterruptedException, TimeoutException, AlgorithmExecutionCanceledException, AlgorithmException {
             hasco.nextWithException();
-//            if(hasco.getState() == AlgorithmState.inactive) {
-//                terminate();
-//            }
         }
 
         @Override

@@ -8,7 +8,9 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public final class BenchmarkHelper {
     private final static Logger logger = LoggerFactory.getLogger(BenchmarkHelper.class);
@@ -19,10 +21,16 @@ public final class BenchmarkHelper {
             return failedEvaluation(env);
         }
         JobReport report;
-        try {
-            report = env.run(selection).get();
-        } catch (InterruptedException | ExecutionException e) {
-            logger.warn("Couldn't runAndGetPopulation benchmark for " + selection + ".", e);
+        Future<JobReport> futureReport = env.run(selection);
+        if(futureReport!=null) {
+            try {
+                report = env.run(selection).get();
+            } catch (InterruptedException | ExecutionException e) {
+                logger.warn("Couldn't runAndGetPopulation benchmark for " + selection + ".", e);
+                report = null;
+            }
+        } else {
+            logger.warn("Returned Future was null. Selection: " + selection);
             report = null;
         }
 

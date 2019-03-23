@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import de.upb.spl.*;
 import de.upb.spl.benchmarks.*;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.benchmarks.env.VideoEncoderEnv;
-import de.upb.spl.presentation.ParetoPresentation;
+import de.upb.spl.benchmarks.env.VideoEncoderBlackBox;
+import de.upb.spl.jumpstarter.ParetoPresentation;
 import fm.FeatureModel;
 import fm.FeatureModelException;
 import fm.XMLFeatureModel;
@@ -41,7 +41,7 @@ public class GuoTest {
 		VideoEncoderExecutor.randomExecutor(agent);
 		// Load the XML file and creates the listFeatures model
 		video_encoder.loadModel();
-		video_encoding_env = new VideoEncoderEnv(agent);
+		video_encoding_env = new VideoEncoderBlackBox(agent);
 	}
 
 	@Test

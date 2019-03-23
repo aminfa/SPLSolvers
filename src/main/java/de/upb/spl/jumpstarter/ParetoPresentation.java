@@ -1,4 +1,4 @@
-package de.upb.spl.presentation;
+package de.upb.spl.jumpstarter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -1,17 +1,14 @@
-package de.upb.spl.presentation;
+package de.upb.spl.jumpstarter;
 
-import de.upb.spl.benchmarks.VideoEncoderExecutor;
-import de.upb.spl.benchmarks.env.AttributedFeatureModelEnv;
-import de.upb.spl.benchmarks.env.Bookkeeper;
-import de.upb.spl.benchmarks.env.VideoEncoderEnv;
+import de.upb.spl.benchmarks.env.*;
 import de.upb.spl.eval.ReasonerRecorder;
 import de.upb.spl.guo11.Guo11;
 import de.upb.spl.hasco.HASCOSPLReasoner;
 import de.upb.spl.henard.Henard;
 import de.upb.spl.hierons.Hierons;
 import de.upb.spl.ibea.BasicIbea;
-import de.upb.spl.presentation.panels.ParetoFront;
-import de.upb.spl.presentation.panels.ReasonerPerformanceTimeline;
+import de.upb.spl.jumpstarter.panels.ParetoFront;
+import de.upb.spl.jumpstarter.panels.ReasonerPerformanceTimeline;
 import de.upb.spl.reasoner.SPLReasoner;
 import de.upb.spl.sayyad.Sayyad;
 import hasco.gui.statsplugin.HASCOModelStatisticsPlugin;
@@ -23,19 +20,12 @@ import jaicore.search.model.travesaltree.JaicoreNodeInfoGenerator;
 
 import java.util.concurrent.ExecutionException;
 
-public class RunAll extends VisualSPLReasoner{
-
-//    @Env()
-    public Bookkeeper videoEncodingEnv() {
-        VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(),  System.getProperty("user.home") + "/Documents/BA/x264_1");
-        return new Bookkeeper(new VideoEncoderEnv(agent()));
-    }
+public class RunDrupal extends VisualSPLReasoner{
 
 
     @Env()
-    public Bookkeeper setupAttributeEnvironment() {
-        return new Bookkeeper(
-                new AttributedFeatureModelEnv("src/main/resources", "video_encoder"));
+    public BenchmarkEnvironment setupAttributeEnvironment() {
+        return new Bookkeeper(new DrupalBlackBox());
     }
 
     @Reasoner(order = 1)
@@ -133,6 +123,6 @@ public class RunAll extends VisualSPLReasoner{
     }
 
     public static void main(String... args) {
-        new RunAll().setup(RunAll.class);
+        new RunDrupal().setup(RunDrupal.class);
     }
 }

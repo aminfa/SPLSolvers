@@ -17,24 +17,22 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class VideoEncoderEnv extends BenchmarkEnvironmentDecoration {
+public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
 
-	private final static Logger logger = LoggerFactory.getLogger(BenchmarkEnvironment.class);
+	private final static Logger logger = LoggerFactory.getLogger(VideoEncoderBlackBox.class);
 
 	final String testVideo;
 	final static String SPL_NAME = "video_encoder";
-
-	final Random generator = new Random();
 
 	public enum Objectives {
         subjective_quality, run_time, file_size;
     }
 
-	ExecutorService executorService = Executors.newFixedThreadPool(4);
+	ExecutorService executorService = Executors.newCachedThreadPool();
 
 	final BenchmarkAgent agent;
 
-	public VideoEncoderEnv(BenchmarkAgent agent) {
+	public VideoEncoderBlackBox(BenchmarkAgent agent) {
         this(
                 new FileBenchmarkEnv(
                         new File(FileUtil.getPathOfResource(SPL_NAME + ".xml")).getParent(),
@@ -44,7 +42,7 @@ public class VideoEncoderEnv extends BenchmarkEnvironmentDecoration {
 	}
 
 
-    public VideoEncoderEnv(BenchmarkEnvironment env, BenchmarkAgent agent) {
+    public VideoEncoderBlackBox(BenchmarkEnvironment env, BenchmarkAgent agent) {
 	    super(env);
         this.testVideo = this.configuration().getVideoSourceFile();
         this.agent = Objects.requireNonNull(agent);
@@ -53,18 +51,13 @@ public class VideoEncoderEnv extends BenchmarkEnvironmentDecoration {
 
 	@Override
 	public Future<JobReport> run(FeatureSelection selection, BenchmarkBill bill) {
-        Optional<JobReport> loggedReport = bill.checkLog(selection);
-        if(loggedReport.isPresent()) {
-            return ConcurrentUtils.constantFuture(loggedReport.get());
-        } else {
-            try {
-                JobReport report = toReport(selection, bill.getClientName());
-                return executorService.submit(new SubmitVideoEncoding(agent, report, selection, bill));
-            } catch(Exception ex) {
-                logger.warn("Couldnt runAndGetPopulation benchmark for assemble {}. Exception message: {}", selection, ex.getMessage());
-                logger.trace("Exception: ", ex);
-                return null;
-            }
+        try {
+            JobReport report = toReport(selection, bill.getClientName());
+            return executorService.submit(new SubmitVideoEncoding(report));
+        } catch(Exception ex) {
+            logger.warn("Couldnt runAndGetPopulation benchmark for assemble {}. Exception message: {}", selection, ex.getMessage());
+            logger.trace("Exception: ", ex);
+            return null;
         }
 	}
 
@@ -76,24 +69,15 @@ public class VideoEncoderEnv extends BenchmarkEnvironmentDecoration {
 	private class SubmitVideoEncoding implements Callable<JobReport> {
 
 		final JobReport report;
-		final BenchmarkAgent agent;
-		final FeatureSelection selection;
-		final BenchmarkBill bill;
-		SubmitVideoEncoding(BenchmarkAgent agent, JobReport report, FeatureSelection selection, BenchmarkBill bill) {
+
+		SubmitVideoEncoding(JobReport report) {
 			this.report = report;
-			this.agent = agent;
-			this.selection = selection;
-			this.bill = bill;
 		}
 
 		@Override
 		public JobReport call() throws Exception {
 			agent.jobs().offerJob(report);
 			agent.jobs().waitForResults(report);
-			ReportInterpreter summary = new VideoEncoderReportInterpreter(report);
-            if(checkResults(summary)) {
-                bill.logEvaluation(selection, report);
-            }
             return report;
 		}
 	}
@@ -285,12 +269,6 @@ public class VideoEncoderEnv extends BenchmarkEnvironmentDecoration {
 
 		return rootConfiguration;
 	}
-
-	@Override
-	public Random generator() {
-		return generator;
-	}
-
 
 
     public static class VideoEncoderReportInterpreter implements ReportInterpreter {

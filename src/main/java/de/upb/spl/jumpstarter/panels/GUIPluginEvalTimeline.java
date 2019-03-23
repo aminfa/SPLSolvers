@@ -1,4 +1,4 @@
-package de.upb.spl.presentation.panels;
+package de.upb.spl.jumpstarter.panels;
 
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.ailibsintegration.FeatureSelectionEvaluatedEvent;

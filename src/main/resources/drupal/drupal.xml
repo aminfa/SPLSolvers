@@ -1,0 +1,82 @@
+<!-- This model was extracted from the work of A. B. Sanchez et al.: Variability Testing in the Wild: The Drupal Case Study  -->
+<feature_model name="Drupal">
+<meta>
+<data name="description">This feature model represents the drupal framework module configuration variability.</data>
+<data name="creator">Ana B. Sanchez</data>
+<data name="website">isa.us.es/</data>
+<data name="reference">https://doi.org/10.1007/s10270-015-0459-z</data>
+</meta>
+<feature_tree>
+:r Drupal(Drupal)
+	:m Node(Node)
+		:o Blog(Blog)
+		:o Forum(Forum)
+	:o Path(Path)
+	:m System(System)
+	:o Image(Image)
+	:m Filter(Filter)
+	:m Field(Field)
+		:m Text(Text)
+		:m Field SQL storage(Field_SQL_storage)
+		:o Options(Options)
+	:o Field UI(Field_UI)
+	:o File(File)
+	:o Comment(Comment)
+	:o Views(Views)
+		:o Views UI(Views_UI)
+	:o Libraries API(Libraries_API)
+	:o IMCE(IMCE)
+	:o CTools(Ctools)
+	:o Ctools access ruleset(Ctools_access_ruleset)
+	:o Views content(Views_content)
+	:o Ctools custom content(Ctools_custom_content)
+	:m User(User)
+	:o Token(Token)
+	:o Taxonomy(Taxonomy)
+	:o Date(Date)
+		:m Date API(Date_API)
+		:o Date views(Date_views)
+		:o Date popup(Date_popup)
+	:o WebForm(WebForm)
+	:o Link(Link)
+	:o Entity API(Entity_API)
+		:o Entity tokens(Entity_tokens)
+	:o CKEditor(CKEditor)
+	:o Captcha(Captcha)
+		:o Image Captcha(Image_Captcha)
+	:o Features(Features)
+	:o Panels(Panels)
+		:o Panel nodes(Panel_nodes)
+		:o Panels IPE(Panels_IPE)
+	:o Pathauto(Pathauto)
+	:o JQuery Update(JQuery_Update)
+	:o Google Analytics(Google_Analytics)
+	:o Rules(Rules)
+		:o Rules scheduler(Rules_scheduler)
+		:o Rules UI(Rules_UI)
+	:o Backup migrate(Backup_migrate)
+</feature_tree>
+<constraints>
+c1:~Forum or Taxonomy
+c2:~Forum or Options
+c3:~Forum or Comment
+c4:~Image or File
+c5:~Views or Ctools
+c6:~Views_UI or Ctools
+c7:~Views_content or Views
+c8:~Taxonomy or Options
+c9:~Date_views or Ctools
+c10:~Date_views or Views
+c11:~Panels or Ctools
+c12:~Panels_IPE or Ctools
+c13:~Panel_nodes or Ctools
+c14:~Pathauto or Token
+c15:~Pathauto or Path
+c16:~Rules or Entity_API
+c17:~Rules or Entity_tokens
+c18:~Rules_scheduler or Entity_API
+c19:~Rules_scheduler or Entity_tokens
+c20:~Rules_UI or Entity_API
+c21:~Rules_UI or Entity_tokens
+</constraints>
+</feature_model>

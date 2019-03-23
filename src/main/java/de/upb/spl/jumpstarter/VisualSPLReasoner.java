@@ -1,4 +1,4 @@
-package de.upb.spl.presentation;
+package de.upb.spl.jumpstarter;
 
 import de.upb.spl.ailibsintegration.SPLReasonerAlgorithm;
 import de.upb.spl.benchmarks.BenchmarkAgent;
@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
 
 public class VisualSPLReasoner {
 

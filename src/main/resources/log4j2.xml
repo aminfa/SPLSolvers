@@ -10,19 +10,19 @@
             <AppenderRef ref="Console" />
         </Root>
         <Logger name="jaicore.graphvisualizer.events" level="warn" additivity="false">
-            <appender-ref ref="Console"/>
+            <AppenderRef ref="Console" />
         </Logger>
         <Logger name="jaicore.search.algorithms.standard" level="warn" additivity="false">
-            <appender-ref ref="Console"/>
+            <AppenderRef ref="Console" />
         </Logger>
         <Logger name="jaicore" level="warn" additivity="false">
-            <appender-ref ref="Console"/>
+            <AppenderRef ref="Console" />
         </Logger>
         <!--<Logger name="hasco.core.isRefinementCompletedPredicate" level="warn" additivity="false">-->
             <!--<appender-ref ref="Console"/>-->
         <!--</Logger>-->
         <Logger name="hasco.core.HASCO" level="info" additivity="false">
-            <appender-ref ref="Console"/>
+            <AppenderRef ref="Console" />
         </Logger>
     </Loggers>
 </Configuration>

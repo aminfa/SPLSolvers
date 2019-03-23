@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class VideoEncoderEnvTest {
+public class VideoEncoderBlackBoxTest {
 
 	@Test
 	public void run() {

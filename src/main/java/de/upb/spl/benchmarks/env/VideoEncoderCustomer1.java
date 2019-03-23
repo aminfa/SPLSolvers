@@ -8,7 +8,7 @@ import java.util.*;
 public class VideoEncoderCustomer1 extends BenchmarkEnvironmentDecoration {
 
 
-    String fileSizeObjective = VideoEncoderEnv.Objectives.file_size.name();
+    String fileSizeObjective = VideoEncoderBlackBox.Objectives.file_size.name();
     List<String> objectives = (List<String>) Collections.singletonList(fileSizeObjective);
 
     public static final Map<String, Double> VIDEO_QUALITY_THRESHOLD = new HashMap<>();
@@ -26,8 +26,8 @@ public class VideoEncoderCustomer1 extends BenchmarkEnvironmentDecoration {
     public VideoEncoderCustomer1(BenchmarkEnvironment env, double thresholdDelta) {
         super(env);
         qualityThreshold = VIDEO_QUALITY_THRESHOLD.getOrDefault(env.configuration().getVideoSourceFile(), 90.) + thresholdDelta;
-        assert env.objectives().contains(VideoEncoderEnv.Objectives.file_size.name());
-        assert env.objectives().contains(VideoEncoderEnv.Objectives.subjective_quality.name());
+        assert env.objectives().contains(VideoEncoderBlackBox.Objectives.file_size.name());
+        assert env.objectives().contains(VideoEncoderBlackBox.Objectives.subjective_quality.name());
     }
 
     public List<String> objectives() {
@@ -39,7 +39,7 @@ public class VideoEncoderCustomer1 extends BenchmarkEnvironmentDecoration {
         return new ReportInterpreter() {
             @Override
             public Optional<Double> readResult(String objective) {
-                Optional<Double> quality = baseInterpreter.rawResult(VideoEncoderEnv.Objectives.subjective_quality.name());
+                Optional<Double> quality = baseInterpreter.rawResult(VideoEncoderBlackBox.Objectives.subjective_quality.name());
                 if(!quality.isPresent()) {
                     return Optional.empty();
                 } else {
