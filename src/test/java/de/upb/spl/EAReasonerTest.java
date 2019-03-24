@@ -2,6 +2,7 @@ package de.upb.spl;
 
 import de.upb.spl.benchmarks.*;
 import de.upb.spl.benchmarks.env.*;
+import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
 import de.upb.spl.guo11.Guo11;
 import de.upb.spl.henard.Henard;
 import de.upb.spl.hierons.Hierons;

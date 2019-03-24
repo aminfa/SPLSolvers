@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import de.upb.spl.*;
 import de.upb.spl.benchmarks.*;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.benchmarks.env.VideoEncoderBlackBox;
+import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
 import de.upb.spl.jumpstarter.ParetoPresentation;
 import fm.FeatureModel;
 import fm.FeatureModelException;

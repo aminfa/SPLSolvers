@@ -1,4 +1,4 @@
-package de.upb.spl.eval;
+package de.upb.spl.finish;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ReasonerRecorder extends Evaluator {
+public class ReasonerRecorder extends Finisher {
 
     private final static Logger logger = LoggerFactory.getLogger(ReasonerRecorder.class);
     private final String reasonerName, recordFile;
@@ -44,5 +44,13 @@ public class ReasonerRecorder extends Evaluator {
         }
         FileUtil.writeStringToFile(recordFile, gson.toJson(record));
         logger.info("Recorded replay for {} in {}.", reasonerName, recordFile);
+    }
+
+    @Override
+    public String toString() {
+        return "Record " +
+                "reasoner='" + reasonerName + '\'' +
+                ", recordFile='" + recordFile + '\'' +
+                '.';
     }
 }

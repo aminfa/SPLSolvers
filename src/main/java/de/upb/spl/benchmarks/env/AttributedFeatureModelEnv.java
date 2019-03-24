@@ -19,10 +19,10 @@ public class AttributedFeatureModelEnv extends BenchmarkEnvironmentDecoration {
 
 
     public AttributedFeatureModelEnv(String resourceFolder, String splName) {
-        this(new FileBenchmarkEnv(resourceFolder, splName));
+        this(new FMAttributes(resourceFolder, splName));
     }
 
-    public AttributedFeatureModelEnv(FileBenchmarkEnv env) {
+    public AttributedFeatureModelEnv(FMAttributes env) {
         super(env);
         this.executor = new StoredAttributesExecutor(null, attributes());
     }
@@ -44,8 +44,8 @@ public class AttributedFeatureModelEnv extends BenchmarkEnvironmentDecoration {
         return new AttributeValueReportInterpreter(jobReport);
     }
 
-    protected FileBenchmarkEnv getBaseEnv() {
-        return (FileBenchmarkEnv) super.getBaseEnv();
+    protected FMAttributes getBaseEnv() {
+        return (FMAttributes) super.getBaseEnv();
     }
 
     public Map attributes() {

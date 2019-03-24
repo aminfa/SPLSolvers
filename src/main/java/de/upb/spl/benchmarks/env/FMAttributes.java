@@ -1,10 +1,5 @@
 package de.upb.spl.benchmarks.env;
 
-import de.upb.spl.FMSAT;
-import de.upb.spl.hasco.FM2CM;
-import de.upb.spl.hasco.SimpleReduction;
-import fm.FeatureModel;
-import fm.XMLFeatureModel;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.sat4j.core.VecInt;
@@ -15,36 +10,33 @@ import de.upb.spl.util.FileUtil;
 import java.io.File;
 import java.util.*;
 
-public final class FileBenchmarkEnv extends BenchmarkEnvironmentDecoration {
+public final class FMAttributes extends BenchmarkEnvironmentDecoration {
 
-    private final static Logger logger = LoggerFactory.getLogger(FileBenchmarkEnv.class);
+    private final static Logger logger = LoggerFactory.getLogger(FMAttributes.class);
     private final static String SUB_FOLDER_NAME = "attributes";
     private String splName;
 
     private Optional<List<String>> objectives = Optional.empty();
     private Optional<List<VecInt>> richSeeds = Optional.empty();
     private Optional<Map> attributeValues = Optional.empty();
+
     private Random generator;
-    private Optional<FeatureModel> fm;
-    private Optional<FMSAT> fmsat;
-    private Optional<FM2CM> cm;
 
 
-    public FileBenchmarkEnv(String resourceFolder, String splName) {
-        this(new BaseEnv(), resourceFolder, splName);
+
+    public FMAttributes(String resourceFolder, String splName) {
+        this(new FMXML(resourceFolder + File.separator + splName + ".xml"), resourceFolder, splName);
     }
 
-    public FileBenchmarkEnv(BenchmarkEnvironment env, String resourceFolder, String splName) {
+    public FMAttributes(BenchmarkEnvironment env, String resourceFolder, String splName) {
         super(env);
         this.splName = splName;
         logger.info("Creating environemt for spl-name={} in resource-folder={}.", splName, resourceFolder);
-
-        String modelFile = resourceFolder + File.separator + splName + ".xml";
-        logger.info("Loading feature model from: {}.", modelFile);
-        String componentModelFile = resourceFolder + File.separator + splName + ".json";
-        logger.info("Loading component model from: {}.", componentModelFile);
-        String dimacsFile = resourceFolder + File.separator + splName + ".dimacs";
-        logger.info("Loading sat formula from from: {}.", dimacsFile);
+//
+//        String componentModelFile = resourceFolder + File.separator + splName + ".json";
+//        logger.info("Loading component model from: {}.", componentModelFile);
+//        String dimacsFile = resourceFolder + File.separator + splName + ".dimacs";
+//        logger.info("Loading sat formula from from: {}.", dimacsFile);
 
         String attributeValuesFile = resourceFolder + File.separator + SUB_FOLDER_NAME + File.separator + splName + ".attributes.json";
         logger.info("Loading attribute values from: {}.", attributeValuesFile);
@@ -53,34 +45,7 @@ public final class FileBenchmarkEnv extends BenchmarkEnvironmentDecoration {
         String richSeedFile = resourceFolder + File.separator + SUB_FOLDER_NAME + File.separator + splName + ".richseed.json";
         logger.info("Loading rich seed from: {}.", richSeedFile);
 
-        try {
-            // Load the XML file and creates the listFeatures model
-            FeatureModel fm = new XMLFeatureModel(modelFile, XMLFeatureModel.USE_VARIABLE_NAME_AS_ID);
-            fm.loadModel();
-            this.fm = Optional.of(fm);
-        } catch (Exception e) {
-            logger.warn("Error loading feature model at {}: {}", modelFile, e);
-            this.fm = Optional.empty();
-        }
 
-        if(fm.isPresent()) {
-            this.fmsat = Optional.of(FMSAT.transform(fm.get()));
-        } else {
-            try {
-                // TODO load dimacs
-            } catch (Exception e) {
-            }
-        }
-
-
-        if(fm.isPresent()) {
-            this.cm = Optional.of(new SimpleReduction(fm.get()));
-        } else {
-            try {
-                // TODO load component model
-            } catch (Exception e) {
-            }
-        }
 
         JSONParser parser = new JSONParser();
         JSONObject attributeValues;
@@ -137,19 +102,6 @@ public final class FileBenchmarkEnv extends BenchmarkEnvironmentDecoration {
         return attributeValues.get();
     }
 
-    @Override
-    public FeatureModel model() {
-        return fm.get();
-    }
-
-    public FM2CM componentModel() {
-        return cm.get();
-    }
-
-    @Override
-    public FMSAT sat() {
-        return fmsat.get();
-    }
 
     @Override
     public List<String> objectives() {

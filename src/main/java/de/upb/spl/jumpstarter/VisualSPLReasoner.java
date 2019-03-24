@@ -4,7 +4,7 @@ import de.upb.spl.ailibsintegration.SPLReasonerAlgorithm;
 import de.upb.spl.benchmarks.BenchmarkAgent;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.Bookkeeper;
-import de.upb.spl.eval.Evaluator;
+import de.upb.spl.finish.Finisher;
 import de.upb.spl.reasoner.SPLReasoner;
 import jaicore.graphvisualizer.events.recorder.AlgorithmEventHistoryRecorder;
 import jaicore.graphvisualizer.plugin.IGUIPlugin;
@@ -13,9 +13,13 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.misc.Signal;
+import sun.misc.SignalHandler;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class VisualSPLReasoner {
 
@@ -33,7 +37,7 @@ public class VisualSPLReasoner {
 
     private List<SPLReasoner> reasoners = new ArrayList<>();
 
-    private List<Evaluator> evaluators = new ArrayList<>();
+    private List<Runnable> finishers = new ArrayList<Runnable>();
 
     public final void setup(Class<? extends VisualSPLReasoner> runnerClass) {
         Optional<Method> agentCreator = Arrays.stream(runnerClass.getMethods())
@@ -110,14 +114,15 @@ public class VisualSPLReasoner {
                 });
 
         Arrays.stream(runnerClass.getMethods())
-                .filter(m -> m.isAnnotationPresent(Collect.class))
-                .filter(m->m.getAnnotation(Collect.class).enabled())
+                .filter(m -> m.isAnnotationPresent(Finish.class))
+                .filter(m->m.getAnnotation(Finish.class).enabled())
+                .sorted(Comparator.comparingInt(m->m.getAnnotation(Finish.class).order()))
                 .forEach(m-> {
                     try {
                         Object collector = m.invoke(this);
-                        if(collector instanceof Evaluator) {
-                            Evaluator evaluator = (Evaluator) collector;
-                            addEvaluator(evaluator);
+                        if(collector instanceof Runnable) {
+                            Runnable finisher = (Runnable) collector;
+                            addFinisher(finisher);
                         } else {
                             logger.error("Collector not recognized: " + collector.getClass().getName());
                         }
@@ -127,7 +132,19 @@ public class VisualSPLReasoner {
                     }
                 });
 
+        this.addSignalHandler();
+
         this.start();
+        this.finish();
+    }
+
+    private void addSignalHandler() {
+        try {
+            Signal signal = new Signal("USR2");
+            Signal.handle(signal, new FinisherSignalHandler());
+        } catch(Exception ex) {
+            logger.warn("Couldn't add finisher signal handler for signalr `SIGUSR2`: {}.", ex.getMessage());
+        }
     }
 
 
@@ -154,8 +171,8 @@ public class VisualSPLReasoner {
     }
 
 
-    protected void addEvaluator(Evaluator evaluator) {
-        evaluators.add(evaluator);
+    protected void addFinisher(Runnable finisher) {
+        finishers.add(finisher);
     }
 
     public void start() {
@@ -174,9 +191,20 @@ public class VisualSPLReasoner {
         });
 //        ExecutorService evaluatorService
         logger.info("Benchmark finished. Starting evaluations.");
-        evaluators.forEach(Runnable::run);
     }
 
+    public void finish() {
+        logger.info("Performing finishers.");
+        for(Runnable finisher : finishers) {
+            try {
+                logger.info("Running finisher: " + finisher.toString());
+                CompletableFuture<Void> finishFuture = CompletableFuture.runAsync(finisher);
+                finishFuture.get(10, TimeUnit.MINUTES);
+            } catch(Exception ex) {
+                logger.error("Error while running finisher: " , ex);
+            }
+        }
+    }
 
     private void addTab(IGUIPlugin plugin) {
         if (plugin == null) {
@@ -204,4 +232,11 @@ public class VisualSPLReasoner {
     }
 
 
+    private class FinisherSignalHandler implements SignalHandler {
+
+        public void handle(Signal signal) {
+            logger.info("Received signal:  {}", signal);
+            finish();
+        }
+    }
 }

@@ -44,7 +44,6 @@ public class Guo11 extends EAReasoner {
         Problem(BenchmarkEnvironment env) {
             super(1, FMUtil.listFeatures(env.model()));
             this.env = env;
-            PRNG.setRandom(env().generator());
         }
 
         @Override

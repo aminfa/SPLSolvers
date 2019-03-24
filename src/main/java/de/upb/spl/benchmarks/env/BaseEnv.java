@@ -14,6 +14,7 @@ import java.util.Random;
 import java.util.concurrent.Future;
 
 public class BaseEnv implements BenchmarkEnvironment {
+
     @Override
     public FeatureModel model() {
         throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");

@@ -3,7 +3,7 @@ package de.upb.spl.jumpstarter;
 import de.upb.spl.benchmarks.VideoEncoderExecutor;
 import de.upb.spl.benchmarks.env.AttributedFeatureModelEnv;
 import de.upb.spl.benchmarks.env.Bookkeeper;
-import de.upb.spl.benchmarks.env.VideoEncoderBlackBox;
+import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
 import de.upb.spl.guo11.Guo11;
 import de.upb.spl.hasco.HASCOSPLReasoner;
 import de.upb.spl.hierons.Hierons;

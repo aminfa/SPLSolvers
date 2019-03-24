@@ -3,8 +3,9 @@ package de.upb.spl.jumpstarter;
 import de.upb.spl.benchmarks.VideoEncoderExecutor;
 import de.upb.spl.benchmarks.env.AttributedFeatureModelEnv;
 import de.upb.spl.benchmarks.env.Bookkeeper;
-import de.upb.spl.benchmarks.env.VideoEncoderBlackBox;
-import de.upb.spl.eval.ReasonerRecorder;
+import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
+import de.upb.spl.finish.ReasonerRecorder;
+import de.upb.spl.finish.Shutdown;
 import de.upb.spl.guo11.Guo11;
 import de.upb.spl.hasco.HASCOSPLReasoner;
 import de.upb.spl.henard.Henard;
@@ -44,7 +45,7 @@ public class RunAll extends VisualSPLReasoner{
         return guo11;
     }
 
-    @Collect
+    @Finish
     public ReasonerRecorder recordGUO() {
         return new ReasonerRecorder(env(), Guo11.NAME, "recordings/" + Guo11.NAME + ".json");
     }
@@ -55,7 +56,7 @@ public class RunAll extends VisualSPLReasoner{
         return basicIbea;
     }
 
-    @Collect
+    @Finish
     public ReasonerRecorder recordBaiscIbea() {
         return new ReasonerRecorder(env(), BasicIbea.NAME, "recordings/" + BasicIbea.NAME + ".json");
     }
@@ -67,7 +68,7 @@ public class RunAll extends VisualSPLReasoner{
         return sayyad;
     }
 
-    @Collect
+    @Finish
     public ReasonerRecorder recordSayyad() {
         return new ReasonerRecorder(env(), Sayyad.NAME, "recordings/" + Sayyad.NAME + ".json");
     }
@@ -79,7 +80,7 @@ public class RunAll extends VisualSPLReasoner{
         return henard;
     }
 
-    @Collect
+    @Finish
     public ReasonerRecorder recordHenard() {
         return new ReasonerRecorder(env(), Henard.NAME, "recordings/" + Henard.NAME + ".json");
     }
@@ -91,20 +92,25 @@ public class RunAll extends VisualSPLReasoner{
         return hierons;
     }
 
-    @Collect
+    @Finish
     public ReasonerRecorder recordHierons() {
         return new ReasonerRecorder(env(), Hierons.NAME, "recordings/" + Hierons.NAME + ".json");
     }
 
-    @Reasoner(order = 0)
-    public SPLReasoner hasco() {
-        HASCOSPLReasoner hasco = new HASCOSPLReasoner();
-        return hasco;
-    }
+//    @Reasoner(order = 0)
+//    public SPLReasoner hasco() {
+//        HASCOSPLReasoner hasco = new HASCOSPLReasoner();
+//        return hasco;
+//    }
 
-    @Collect
+    @Finish
     public ReasonerRecorder recordHasco() {
         return new ReasonerRecorder(env(), HASCOSPLReasoner.NAME, "recordings/" + HASCOSPLReasoner.NAME + ".json");
+    }
+
+    @Finish(order=10)
+    public Runnable shutdownAfter() {
+        return new Shutdown();
     }
 
     @GUI(order = -1)
@@ -126,6 +132,7 @@ public class RunAll extends VisualSPLReasoner{
     public IGUIPlugin paretoFront() {
         return new ParetoFront(env());
     }
+
 
     @GUI(enabled = false)
     public IGUIPlugin hascoStatics() {

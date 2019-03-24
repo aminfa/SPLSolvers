@@ -1,4 +1,4 @@
-package de.upb.spl.benchmarks.env;
+package de.upb.spl.benchmarks.drupal;
 
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
@@ -59,13 +59,13 @@ public class DrupalBlackBox extends DrupalFiles {
             case Changes:
                 return aggregator("sum");
             case TestCases:
-                return aggregator("sum");
+                return aggregator("20-percentile");
             case Developers:
                 return aggregator("5-percentile");
             case Installations:
                 return aggregator("min");
             case TestAssertions:
-                return aggregator("sum");
+                return aggregator("20-percentile");
             case MinorFaults:
             case NormalFaults:
             case MajorFaults:
@@ -94,6 +94,8 @@ public class DrupalBlackBox extends DrupalFiles {
                 }
             }
             return integrationFaultCount;
+        } else if(objective == Objective.FeatureCount) {
+            return selectedModuleIndices.size();
         } else {
             return selectedModuleIndices.stream()
                     .map(attributes.get(objective)::get)
@@ -151,6 +153,7 @@ public class DrupalBlackBox extends DrupalFiles {
                     break;
                 case TestAssertions:
                 case Installations:
+                case FeatureCount:
                     maximize = true;
                     break;
             }

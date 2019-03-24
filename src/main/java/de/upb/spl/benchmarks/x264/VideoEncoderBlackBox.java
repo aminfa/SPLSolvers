@@ -1,4 +1,4 @@
-package de.upb.spl.benchmarks.env;
+package de.upb.spl.benchmarks.x264;
 
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
@@ -6,8 +6,11 @@ import de.upb.spl.benchmarks.BenchmarkAgent;
 import de.upb.spl.benchmarks.BenchmarkBill;
 import de.upb.spl.benchmarks.ReportInterpreter;
 import de.upb.spl.benchmarks.JobReport;
+import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
+import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
+import de.upb.spl.benchmarks.env.FMAttributes;
+import de.upb.spl.benchmarks.env.FMXML;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.concurrent.ConcurrentUtils;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +37,8 @@ public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
 
 	public VideoEncoderBlackBox(BenchmarkAgent agent) {
         this(
-                new FileBenchmarkEnv(
+                new FMAttributes(
+                        new FMXML(SPL_NAME + ".xml"),
                         new File(FileUtil.getPathOfResource(SPL_NAME + ".xml")).getParent(),
                         SPL_NAME),
                 agent

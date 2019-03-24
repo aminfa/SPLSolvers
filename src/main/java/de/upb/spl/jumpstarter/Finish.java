@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Collect {
+public @interface Finish {
     boolean enabled() default true;
+    int order() default 0;
 }

@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public class FeatureSelectionPerformance implements Comparable<FeatureSelectionPerformance> {
 
-    private final int violatedConstraints;
-    private final double[] objectives;
+    protected final int violatedConstraints;
+    protected final double[] objectives;
 
     public FeatureSelectionPerformance(int violatedConstrains, double[] objectives) {
         this.violatedConstraints = violatedConstrains;
@@ -84,7 +84,7 @@ public class FeatureSelectionPerformance implements Comparable<FeatureSelectionP
 
     public String toString() {
         if(violatedConstraints > 0)
-            return "# Violated constraints: " + violatedConstraints;
+            return "[ #Violated-constraints: " + violatedConstraints + " ]";
         else {
             return Arrays.toString(objectives);
         }

@@ -1,12 +1,12 @@
-package de.upb.spl.eval;
+package de.upb.spl.finish;
 
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 
-public abstract class Evaluator implements Runnable {
+public abstract class Finisher implements Runnable {
 
     private BenchmarkEnvironment env;
 
-    public Evaluator(BenchmarkEnvironment env) {
+    public Finisher(BenchmarkEnvironment env) {
         this.env = env;
     }
 

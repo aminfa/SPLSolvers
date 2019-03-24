@@ -5,6 +5,7 @@ import de.upb.spl.ailibsintegration.SPLReasonerAlgorithm;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -124,6 +125,7 @@ public abstract class EAReasoner implements SPLReasoner {
 
         protected SPLEvoAlgorithm(BenchmarkEnvironment env) {
             super(env, name);
+            PRNG.setRandom(env.generator());
         }
 
         public AbstractEvolutionaryAlgorithm getEA() {

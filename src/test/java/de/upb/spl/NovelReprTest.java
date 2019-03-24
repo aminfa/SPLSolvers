@@ -1,6 +1,6 @@
 package de.upb.spl;
 
-import de.upb.spl.benchmarks.env.FileBenchmarkEnv;
+import de.upb.spl.benchmarks.env.FMAttributes;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.hierons.NovelRepresentation;
 import de.upb.spl.sayyad.Sayyad;
@@ -22,7 +22,7 @@ public class NovelReprTest {
 
     @BeforeClass
     public static void setEnv() {
-        env = new FileBenchmarkEnv(
+        env = new FMAttributes(
                 "src/main/resources",
                 "Eshop");
     }

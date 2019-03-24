@@ -1,7 +1,11 @@
-package de.upb.spl.benchmarks.env;
+package de.upb.spl.benchmarks.drupal;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
+import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
+import de.upb.spl.benchmarks.env.FMAttributes;
+import de.upb.spl.benchmarks.env.FMXML;
 import de.upb.spl.util.FileUtil;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -24,6 +28,7 @@ public class DrupalFiles extends BenchmarkEnvironmentDecoration {
     private final static Logger logger = LoggerFactory.getLogger(DrupalFiles.class);
 
     public enum Objective {
+        FeatureCount,
         Size ,
         CC ,
         TestCases ,
@@ -52,8 +57,9 @@ public class DrupalFiles extends BenchmarkEnvironmentDecoration {
 
     public DrupalFiles() {
         this(
-                new FileBenchmarkEnv(
-                        new File(FileUtil.getPathOfResource("drupal/drupal.xml")).getParent(),
+                new FMAttributes(
+                        new FMXML("drupal/feature-model.xml"),
+                        new File(FileUtil.getPathOfResource("drupal/feature-model.xml")).getParent(),
                         SPL_NAME)
         );
     }
@@ -123,7 +129,7 @@ public class DrupalFiles extends BenchmarkEnvironmentDecoration {
             }
             index++;
         }
-        return new int[0][];
+        return integrationFaultArr;
     }
 
     public List<String> objectives() {

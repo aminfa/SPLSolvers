@@ -26,7 +26,7 @@ public class FeatureComponentEvaluator implements IObjectEvaluator<ComponentInst
     public FeatureSelectionPerformance evaluate(ComponentInstance object) throws TimeoutException, InterruptedException, ObjectEvaluationFailedException {
         try {
             FeatureSelection selection = fm2CM.transform(object);
-            return new FeatureSelectionPerformance(BasicIbea.evaluateAndCountViolatedConstraints(env, selection, NAME));
+            return new CountingPerformance(BasicIbea.evaluateAndCountViolatedConstraints(env, selection, NAME));
         } catch (Exception ex) {
             throw new ObjectEvaluationFailedException(ex, "Couldn't evaluate ComponentInstance");
         }

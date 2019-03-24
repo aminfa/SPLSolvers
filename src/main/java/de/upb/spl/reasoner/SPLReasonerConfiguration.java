@@ -14,7 +14,7 @@ public interface SPLReasonerConfiguration extends Mutable {
      */
 
     @Key("de.upb.spl.SPLReasoner.evaluations")
-    @DefaultValue("1000")
+    @DefaultValue("100")
     Integer getEvaluationPermits();
 
     @Key("de.upb.spl.videoEncoding.RAWSourceFile")
@@ -110,7 +110,7 @@ public interface SPLReasonerConfiguration extends Mutable {
     Boolean getHascoRandomSearch();
 
     @Key("de.upb.spl.SPLReasoner.Hasco.randomSearchSamples")
-    @DefaultValue("1")
+    @DefaultValue("3")
     Integer getHascoRandomSearchSamples();
 
     @Key("de.upb.spl.SPLReasoner.Hasco.evalTimeout")
