@@ -4,7 +4,6 @@ import de.upb.spl.ailibsintegration.SPLReasonerAlgorithm;
 import de.upb.spl.benchmarks.BenchmarkAgent;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.Bookkeeper;
-import de.upb.spl.finish.Finisher;
 import de.upb.spl.reasoner.SPLReasoner;
 import jaicore.graphvisualizer.events.recorder.AlgorithmEventHistoryRecorder;
 import jaicore.graphvisualizer.plugin.IGUIPlugin;
@@ -13,8 +12,6 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.Signal;
-import sun.misc.SignalHandler;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -132,19 +129,23 @@ public class VisualSPLReasoner {
                     }
                 });
 
-        this.addSignalHandler();
+        this.addFinishersToShutdownHook();
 
         this.start();
         this.finish();
     }
 
-    private void addSignalHandler() {
-        try {
-            Signal signal = new Signal("USR2");
-            Signal.handle(signal, new FinisherSignalHandler());
-        } catch(Exception ex) {
-            logger.warn("Couldn't add finisher signal handler for signalr `SIGUSR2`: {}.", ex.getMessage());
-        }
+    private void addFinishersToShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread()
+        {
+            public void run()
+            {
+                logger.info("Received shutdown signal:  {}.");
+                if(!finished) {
+                    finish();
+                }
+            }
+        });
     }
 
 
@@ -193,8 +194,11 @@ public class VisualSPLReasoner {
         logger.info("Benchmark finished. Starting evaluations.");
     }
 
+    boolean finished = false;
+
     public void finish() {
         logger.info("Performing finishers.");
+        finished = true;
         for(Runnable finisher : finishers) {
             try {
                 logger.info("Running finisher: " + finisher.toString());
@@ -232,11 +236,4 @@ public class VisualSPLReasoner {
     }
 
 
-    private class FinisherSignalHandler implements SignalHandler {
-
-        public void handle(Signal signal) {
-            logger.info("Received signal:  {}", signal);
-            finish();
-        }
-    }
 }
