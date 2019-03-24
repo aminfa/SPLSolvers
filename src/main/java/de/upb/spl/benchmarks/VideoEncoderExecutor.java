@@ -105,7 +105,7 @@ public class VideoEncoderExecutor implements Runnable{
         JSONObject attributeValues;
 	    try {
             attributeValues = (JSONObject) parser.parse(
-                    FileUtil.readResourceAsString("attributes/video_encoder.attributes.json"));
+                    FileUtil.readResourceAsString("x264/video_encoder.attributes.json"));
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

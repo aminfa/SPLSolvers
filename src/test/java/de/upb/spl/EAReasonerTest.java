@@ -35,7 +35,7 @@ public class EAReasonerTest {
 	static BenchmarkEnvironment rawEnv;
 	static BenchmarkAgent agent;
 
-	final static String spl = "video_encoder";
+	final static String spl = "Eshop";
 
 	private static Map<String, Population> results = new HashMap<>();
 
@@ -52,13 +52,13 @@ public class EAReasonerTest {
 		VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent, "/Users/aminfaez/Documents/BA/x264_1");
 //		VideoEncoderExecutor.fixedAttributesExecutor(agent);
 		// Load the XML file and creates the listFeatures model
-		env = new VideoEncoderBlackBox(agent);
+		env = new Bookkeeper(new VideoEncoderBlackBox(agent));
         rawEnv = new RawResults(env);
 	}
 
     @BeforeClass
 	public static void setupAttributeEnvironment() {
-        env = new AttributedFeatureModelEnv("src/main/resources", spl);
+        env = new Bookkeeper(new AttributedFeatureModelEnv("src/main/resources", spl));
         rawEnv = new RawResults(env);
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-class JobApplication implements Predicate<JobReport> {
+public class JobApplication implements Predicate<JobReport> {
 	private final String workerId;
 	private final String group;
 	private final List<List<String>> cache;

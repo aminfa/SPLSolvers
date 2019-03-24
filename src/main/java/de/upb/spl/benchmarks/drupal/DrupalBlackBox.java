@@ -23,7 +23,7 @@ import static de.upb.spl.benchmarks.StoredAttributesExecutor.aggregator;
 /**
  * This class contains the black box function that evaluates a feature selection based on the drupal feature attributes.
  */
-public class DrupalBlackBox extends DrupalFiles {
+public class DrupalBlackBox extends DrupalModel {
 
     private final static Logger logger = LoggerFactory.getLogger(DrupalBlackBox.class);
 
@@ -32,6 +32,21 @@ public class DrupalBlackBox extends DrupalFiles {
         JobReport report = toReport(selection, bill.getClientName());
         evaluate(report);
         return ConcurrentUtils.constantFuture(report);
+    }
+
+    private JobReport toReport(FeatureSelection selection, String clientName) {
+        JobReport report = new JobReport();
+        report.setGroup("drupal");
+        report.setClient(clientName);
+        List<String> selectedModules = selection.stream().map(FMUtil::id).collect(Collectors.toList());
+        selectedModules.sort(String::compareTo);
+        String hash = DigestUtils.sha256Hex(JSONArray.toJSONString(selectedModules));
+        JSONObject configuration = new JSONObject();
+        configuration.put("selected_modules", selectedModules);
+        configuration.put("modules_hash", hash);
+        report.setConfiguration(configuration,"modules_hash");
+        report.setObjectives(objectives());
+        return report;
     }
 
     private void evaluate(JobReport report) {
@@ -49,6 +64,32 @@ public class DrupalBlackBox extends DrupalFiles {
         report.setResults(evaluationResults);
     }
 
+    private double evaluate(Objective objective, List<Integer> selectedModuleIndices) {
+        if(objective == Objective.IntegrationFaults) {
+            int integrationFaultCount = 0;
+            for (int[] integrationFault : integrationFaults) {
+                boolean integrationFaultExists = true;
+                for (int i = 0; i < integrationFault.length; i++) {
+                    int moduleIndex = integrationFault[i];
+                    if(!selectedModuleIndices.contains(moduleIndex)) {
+                        integrationFaultExists = false;
+                        break;
+                    }
+                }
+                if(integrationFaultExists) {
+                    integrationFaultCount++;
+                }
+            }
+            return integrationFaultCount;
+        } else if(objective == Objective.ModuleCount) {
+            return selectedModuleIndices.size();
+        } else {
+            return selectedModuleIndices.stream()
+                    .map(attributes.get(objective)::get)
+                    .map(Number::doubleValue)
+                    .collect(getAttributeAggregator(objective));
+        }
+    }
 
     private Collector<Double, ?, Double> getAttributeAggregator(Objective objective) {
         switch (objective) {
@@ -75,48 +116,6 @@ public class DrupalBlackBox extends DrupalFiles {
             default:
                 throw new IllegalArgumentException("Objective " + objective.name() + " isn't a feature attribute.");
         }
-    }
-
-    private double evaluate(Objective objective, List<Integer> selectedModuleIndices) {
-        if(objective == Objective.IntegrationFaults) {
-            int integrationFaultCount = 0;
-            for (int[] integrationFault : integrationFaults) {
-                boolean integrationFaultExists = true;
-                for (int i = 0; i < integrationFault.length; i++) {
-                    int moduleIndex = integrationFault[i];
-                    if(!selectedModuleIndices.contains(moduleIndex)) {
-                        integrationFaultExists = false;
-                        break;
-                    }
-                }
-                if(integrationFaultExists) {
-                    integrationFaultCount++;
-                }
-            }
-            return integrationFaultCount;
-        } else if(objective == Objective.FeatureCount) {
-            return selectedModuleIndices.size();
-        } else {
-            return selectedModuleIndices.stream()
-                    .map(attributes.get(objective)::get)
-                    .map(Number::doubleValue)
-                    .collect(getAttributeAggregator(objective));
-        }
-    }
-
-    private JobReport toReport(FeatureSelection selection, String clientName) {
-        JobReport report = new JobReport();
-        report.setGroup("drupal");
-        report.setClient(clientName);
-        List<String> selectedModules = selection.stream().map(FMUtil::id).collect(Collectors.toList());
-        selectedModules.sort(String::compareTo);
-        String hash = DigestUtils.sha256Hex(JSONArray.toJSONString(selectedModules));
-        JSONObject configuration = new JSONObject();
-        configuration.put("selected_modules", selectedModules);
-        configuration.put("modules_hash", hash);
-        report.setConfiguration(configuration,"modules_hash");
-        report.setObjectives(objectives());
-        return report;
     }
 
     @Override
@@ -153,7 +152,7 @@ public class DrupalBlackBox extends DrupalFiles {
                     break;
                 case TestAssertions:
                 case Installations:
-                case FeatureCount:
+                case ModuleCount:
                     maximize = true;
                     break;
             }

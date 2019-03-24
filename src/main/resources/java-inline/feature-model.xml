@@ -1,0 +1,52 @@
+<!-- This model was extracted from the work of A. B. Sanchez et al.: Variability Testing in the Wild: The Drupal Case Study  -->
+<feature_model name="JAVA Inline Variablity Model">
+<meta>
+<data name="description">This feature model encodes the variability of java inlining options.</data>
+<data name="creator">Amin Faez</data>
+<data name="website">upb.de/</data>
+</meta>
+<feature_tree>
+:r Java Inline Variability(root)
+	:g (FreqInlineSize) [1,1]
+		: FreqInlineSize 160(FIS_160)
+		: FreqInlineSize 325(FIS_325)
+		: FreqInlineSize 700(FIS_700)
+		: FreqInlineSize 1400(FIS_1400)
+		: FreqInlineSize 2800(FIS_2800)
+	:g (InlineSmallCode) [1,1]
+		: InlineSmallCode 500(ISC_500)
+		: InlineSmallCode 1000(ISC_1000)
+		: InlineSmallCode 2000(ISC_2000)
+		: InlineSmallCode 4000(ISC_4000)
+		: InlineSmallCode 8000(ISC_8000)
+	:g (MaxInlineLevel) [1,1]
+		: MaxInlineLevel 9(MIL_9)
+		: MaxInlineLevel 18(MIL_18)
+		: MaxInlineLevel 36(MIL_36)
+		: MaxInlineLevel 72(MIL_72)
+		: MaxInlineLevel 144(MIL_144)
+	:g (MaxInlineSize)[1,1]
+		: MaxInlineSize 20(MIS_20)
+		: MaxInlineSize 35(MIS_35)
+		: MaxInlineSize 70(MIS_70)
+		: MaxInlineSize 140(MIS_140)
+		: MaxInlineSize 280(MIS_280)
+	:g (MaxRecursiveInlineLevel) [1,1]
+		: MaxRecursiveInlineLevel 1(MRL_1)
+		: MaxRecursiveInlineLevel 10(MRL_10)
+		: MaxRecursiveInlineLevel 100(MRL_100)
+		: MaxRecursiveInlineLevel 1000(MRL_1000)
+		: MaxRecursiveInlineLevel 10000(MRL_10000)
+	:g (MinInliningThreshold) [1,1]
+		: MinInliningThreshold 1(MIT_1)
+		: MinInliningThreshold 30(MIT_30)
+		: MinInliningThreshold 50(MIT_50)
+		: MinInliningThreshold 100(MIT_100)
+		: MinInliningThreshold 250(MIT_250)
+	:m ReservedCodeCacheSize 2500k(ReservedCodeCacheSize)
+	:m CodeCacheMinimumFreeSpace 100k(CodeCacheMinimumFreeSpace)
+
+</feature_tree>
+<constraints>
+</constraints>
+</feature_model>

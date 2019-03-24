@@ -1,9 +1,8 @@
-package de.upb.spl.benchmarks.jmh;
+package de.upb.spl.benchmarks.inline;
 
 import de.upb.spl.util.Cache;
 import jmh.Hanoi;
 import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.results.Result;
 import org.openjdk.jmh.results.RunResult;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
@@ -11,26 +10,24 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
 import org.openjdk.jmh.runner.options.VerboseMode;
-import jmh.Recursion;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class Chromosome  {
+public class InlineConfigurationSample {
 
     private final static Cache<Options> baseOpts = new Cache<>(
             () ->
             new OptionsBuilder()
                 .include(Hanoi.class.getName())
-                .warmupTime(TimeValue.milliseconds(1))
-                .measurementTime(TimeValue.seconds(2))
-                .warmupIterations(6)
-                .measurementIterations(3)
-                .mode(Mode.Throughput)
+                .warmupTime(TimeValue.seconds(1))
+                .measurementTime(TimeValue.seconds(10))
+                .warmupIterations(0)
+                .measurementIterations(5)
+                .mode(Mode.SingleShotTime)
                 .forks(1)
-                .verbosity(VerboseMode.NORMAL)
+                .verbosity(VerboseMode.SILENT)
                 .build());
 
     // Current score is not yet computed.
@@ -39,12 +36,20 @@ public class Chromosome  {
     // These are current HotSpot defaults.
     int freqInlineSize = 325;
     int inlineSmallCode = 1000;
+
+    // Maximum number of nested calls that are inlined
     int maxInlineLevel = 9;
+
+    // Maximum bytecode size of a method to be inlined
     int maxInlineSize = 35;
+
+
     int maxRecursiveInlineLevel = 1;
+
+    // Minimum invocation count a method needs to have to be inlined
     int minInliningThreshold = 250;
 
-    public Chromosome() {
+    public InlineConfigurationSample() {
     }
 
     public double score() {
@@ -71,7 +76,7 @@ public class Chromosome  {
             score = Optional.of(runResults.getPrimaryResult().getScore());
         } catch (RunnerException e) {
             // Something went wrong, the solution is defective
-            score = Optional.of(0.);
+            score = Optional.of(1000.);
         }
 
         return score.get();
@@ -84,7 +89,13 @@ public class Chromosome  {
                 " -XX:MaxInlineLevel=" + maxInlineLevel +
                 " -XX:MaxInlineSize=" + maxInlineSize +
                 " -XX:MaxRecursiveInlineLevel=" + maxRecursiveInlineLevel +
-                " -XX:MinInliningThreshold=" + minInliningThreshold;
+                " -XX:MinInliningThreshold=" + minInliningThreshold
+                +
+//                " -XX:+PrintCodeCache" +
+                " -XX:+UseCodeCacheFlushing" +
+                " -XX:ReservedCodeCacheSize=2500k" +
+                " -XX:CodeCacheMinimumFreeSpace=100k"
+                ;
     }
 
     public int getFreqInlineSize() {
@@ -133,5 +144,25 @@ public class Chromosome  {
 
     public void setMinInliningThreshold(int minInliningThreshold) {
         this.minInliningThreshold = minInliningThreshold;
+    }
+
+    public Map<String, Integer> dumpMap() {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("FreqInlineSize", freqInlineSize );
+        map.put("InlineSmallCode", inlineSmallCode );
+        map.put("MaxInlineLevel", maxInlineLevel );
+        map.put("MaxInlineSize", maxInlineSize );
+        map.put("MaxRecursiveInlineLevel", maxRecursiveInlineLevel );
+        map.put("MinInliningThreshold", minInliningThreshold);
+        return map;
+    }
+
+    public void loadMap(Map<String, Integer> map) {
+        freqInlineSize = map.get("FreqInlineSize");
+        inlineSmallCode = map.get("InlineSmallCode");
+        maxInlineLevel = map.get("MaxInlineLevel");
+        maxInlineSize = map.get("MaxInlineSize");
+        maxRecursiveInlineLevel = map.get("MaxRecursiveInlineLevel");
+        minInliningThreshold = map.get("MinInliningThreshold");
     }
 }

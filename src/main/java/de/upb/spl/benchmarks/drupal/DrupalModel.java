@@ -21,14 +21,14 @@ import java.util.stream.Collectors;
 /**
  * Base class for Drupal Black box
  */
-public class DrupalFiles extends BenchmarkEnvironmentDecoration {
+public class DrupalModel extends BenchmarkEnvironmentDecoration {
 
     private static final String SPL_NAME = "drupal";
 
-    private final static Logger logger = LoggerFactory.getLogger(DrupalFiles.class);
+    private final static Logger logger = LoggerFactory.getLogger(DrupalModel.class);
 
     public enum Objective {
-        FeatureCount,
+        ModuleCount,
         Size ,
         CC ,
         TestCases ,
@@ -52,10 +52,11 @@ public class DrupalFiles extends BenchmarkEnvironmentDecoration {
     protected final List<String> modulesList;
 
     protected final Map<Objective, List<Number>> attributes;
+
     protected final int[][] integrationFaults;
 
 
-    public DrupalFiles() {
+    public DrupalModel() {
         this(
                 new FMAttributes(
                         new FMXML("drupal/feature-model.xml"),
@@ -65,7 +66,7 @@ public class DrupalFiles extends BenchmarkEnvironmentDecoration {
     }
 
 
-    public DrupalFiles(BenchmarkEnvironment env) {
+    public DrupalModel(BenchmarkEnvironment env) {
         super(env);
         try {
             modulesList = loadModuleList();

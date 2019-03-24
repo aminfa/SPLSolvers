@@ -38,8 +38,8 @@ public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
 	public VideoEncoderBlackBox(BenchmarkAgent agent) {
         this(
                 new FMAttributes(
-                        new FMXML(FileUtil.getPathOfResource(SPL_NAME + ".xml")),
-                        new File(FileUtil.getPathOfResource(SPL_NAME + ".xml")).getParent(),
+                        new FMXML(FileUtil.getPathOfResource("x264/feature-model.xml")),
+                        new File(FileUtil.getPathOfResource("x264/feature-model.xml")).getParent(),
                         SPL_NAME),
                 agent
         );
