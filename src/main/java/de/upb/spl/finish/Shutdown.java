@@ -20,7 +20,7 @@ public class Shutdown implements Runnable {
         String operatingSystem = System.getProperty("os.name");
 
         if ("Linux".equals(operatingSystem) || "Mac OS X".equals(operatingSystem)) {
-            shutdownCommand = "sudo shutdown -h +3";
+            shutdownCommand = "sudo shutdown -h +0";
         }
         else if ("Windows".equals(operatingSystem)) {
             shutdownCommand = "shutdown.exe -s -t 5";
@@ -33,6 +33,7 @@ public class Shutdown implements Runnable {
         int exitCode = p.waitFor();
         if(exitCode == 0) {
             String input = Streams.InReadString(p.getInputStream());
+            input += "\nerror: " + Streams.InReadString(p.getErrorStream());
             System.out.println("Shutdown command:\n" + input);
         } else {
             String error = Streams.InReadString(p.getErrorStream());

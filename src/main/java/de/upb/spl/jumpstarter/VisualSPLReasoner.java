@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 public class VisualSPLReasoner {
 
@@ -35,6 +36,8 @@ public class VisualSPLReasoner {
     private List<SPLReasoner> reasoners = new ArrayList<>();
 
     private List<Runnable> finishers = new ArrayList<Runnable>();
+
+    private boolean parallelExecution = false;
 
     public final void setup(Class<? extends VisualSPLReasoner> runnerClass) {
         Optional<Method> agentCreator = Arrays.stream(runnerClass.getMethods())
@@ -57,6 +60,7 @@ public class VisualSPLReasoner {
                 .filter(m->m.getAnnotation(Env.class).enabled())
                 .findFirst();
         if(envCreator.isPresent()) {
+            parallelExecution = envCreator.get().getAnnotation(Env.class).parallel();
             try {
                 BenchmarkEnvironment env = (BenchmarkEnvironment) envCreator.get().invoke(this);
                 this.env = env;
@@ -178,7 +182,8 @@ public class VisualSPLReasoner {
 
     public void start() {
         logger.info("Starting spl benchmark.");
-        reasoners.stream().forEach(reasoner -> {
+        Stream<SPLReasoner> splReasonerStream = parallelExecution ? reasoners.parallelStream() : reasoners.stream();
+        splReasonerStream.forEach(reasoner -> {
             BenchmarkEnvironment billedEnv =  new Bookkeeper.Bill(env, env.bill(reasoner.name()));
             SPLReasonerAlgorithm alg = reasoner.algorithm(billedEnv);
             alg.registerListener(eventRecorder);

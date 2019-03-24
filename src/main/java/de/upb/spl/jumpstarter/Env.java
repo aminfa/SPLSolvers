@@ -9,4 +9,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @interface Env {
     boolean enabled() default true;
+    boolean parallel() default true;
 }
