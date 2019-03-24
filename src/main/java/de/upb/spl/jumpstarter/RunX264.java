@@ -42,16 +42,16 @@ public class RunX264 extends VisualSPLReasoner{
         return new ReasonerRecorder(env(), Guo11.NAME, "recordings/" + Guo11.NAME + ".json");
     }
 
-    @Reasoner(order = 1, enabled = true)
-    public SPLReasoner ibea() throws ExecutionException, InterruptedException {
-        BasicIbea basicIbea = new BasicIbea();
-        return basicIbea;
-    }
-
-    @Finish
-    public ReasonerRecorder recordBaiscIbea() {
-        return new ReasonerRecorder(env(), BasicIbea.NAME, "recordings/" + BasicIbea.NAME + ".json");
-    }
+//    @Reasoner(order = 1, enabled = true)
+//    public SPLReasoner ibea() throws ExecutionException, InterruptedException {
+//        BasicIbea basicIbea = new BasicIbea();
+//        return basicIbea;
+//    }
+//
+//    @Finish
+//    public ReasonerRecorder recordBaiscIbea() {
+//        return new ReasonerRecorder(env(), BasicIbea.NAME, "recordings/" + BasicIbea.NAME + ".json");
+//    }
 
 
     @Reasoner(order = 2)

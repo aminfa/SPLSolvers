@@ -20,7 +20,7 @@ public class Shutdown implements Runnable {
         String operatingSystem = System.getProperty("os.name");
 
         if ("Linux".equals(operatingSystem) || "Mac OS X".equals(operatingSystem)) {
-            shutdownCommand = "sudo shutdown -h +0";
+            shutdownCommand = "sudo shutdown +3";
         }
         else if ("Windows".equals(operatingSystem)) {
             shutdownCommand = "shutdown.exe -s -t 5";
