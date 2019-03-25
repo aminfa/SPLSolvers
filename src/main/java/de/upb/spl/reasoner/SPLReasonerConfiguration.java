@@ -12,13 +12,12 @@ public interface SPLReasonerConfiguration extends Mutable {
     /*
      * Universal
      */
-
     @Key("de.upb.spl.SPLReasoner.evaluations")
-    @DefaultValue("35")
+    @DefaultValue("60")
     Integer getEvaluationPermits();
 
     @Key("de.upb.spl.videoEncoding.RAWSourceFile")
-    @DefaultValue("stockholm")
+    @DefaultValue("touchdown_pass")
     String getVideoSourceFile();
 
 

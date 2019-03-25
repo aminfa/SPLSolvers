@@ -51,7 +51,7 @@ public class ParetoFront  implements IGUIPlugin,  IGUIPluginController, IGUIPlug
 
     private ObjectiveTuple currentObjectives = new ObjectiveTuple("", "");
 
-    private final static String NAME = "SPL Reasoner Performance Timeline";
+    private final static String NAME = "Solution Pareto Front";
 
     private final static String FXML_RESOURCE = ParetoFront.class.getSimpleName() + ".fxml";
 

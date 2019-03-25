@@ -47,7 +47,7 @@ public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginContr
 
     private String selectedComparisson = "";
 
-    private final static String NAME = "SPL Reasoner Performance Timeline";
+    private final String name;
 
     private final static String FXML_RESOURCE = ReasonerPerformanceTimeline.class.getSimpleName() + ".fxml";
 
@@ -59,6 +59,7 @@ public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginContr
 
     public ReasonerPerformanceTimeline(BenchmarkEnvironment env) {
         this.env = env;
+        this.name =  "SPL Reasoner Performance Timeline";
         /*
          * Load node from fxml resource:
          */
@@ -68,7 +69,7 @@ public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginContr
             loader.setController(this);
             rootNode = loader.load();
         } catch (IOException e) {
-            throw new RuntimeException("Unexpected error while setting up gui: " + NAME, e);
+            throw new RuntimeException("Unexpected error while setting up gui: " + name, e);
         }
 
         compareSelection.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -161,7 +162,7 @@ public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginContr
 
     @Override
     public String getTitle() {
-        return NAME;
+        return name;
     }
 
     @Override

@@ -99,7 +99,7 @@ public class RunJavaInline extends VisualSPLReasoner{
         return new ReasonerRecorder(env(), HASCOSPLReasoner.NAME, "recordings/" + HASCOSPLReasoner.NAME + ".json");
     }
 
-    @Finish(order = 1000, enabled = false)
+    @Finish(order = 1000)
     public Shutdown shutdownHook() {
         return new Shutdown();
     }

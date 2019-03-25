@@ -18,6 +18,8 @@ public class VideoEncoderCustomer1 extends BenchmarkEnvironmentDecoration {
 
     static {
         VIDEO_QUALITY_THRESHOLD.put("grandma", 90.);
+        VIDEO_QUALITY_THRESHOLD.put("stockholm", 80.);
+        VIDEO_QUALITY_THRESHOLD.put("touchdown_pass", 75.);
     }
 
     private final double qualityThreshold;
