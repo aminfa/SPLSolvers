@@ -29,7 +29,7 @@ public class RunDrupal extends VisualSPLReasoner{
         return new Bookkeeper(new DrupalBlackBox());
     }
 
-    @Reasoner(order = 1)
+//    @Reasoner(order = 1)
     public SPLReasoner guo() {
         Guo11 guo11 = new Guo11();
         return guo11;
@@ -40,7 +40,7 @@ public class RunDrupal extends VisualSPLReasoner{
         return new ReasonerRecorder(env(), Guo11.NAME, "recordings/" + Guo11.NAME + ".json");
     }
 
-    @Reasoner(order = 1, enabled = true)
+//    @Reasoner(order = 1, enabled = true)
     public SPLReasoner ibea() throws ExecutionException, InterruptedException {
         BasicIbea basicIbea = new BasicIbea();
         return basicIbea;
@@ -52,7 +52,7 @@ public class RunDrupal extends VisualSPLReasoner{
     }
 
 
-    @Reasoner(order = 2)
+//    @Reasoner(order = 2)
     public SPLReasoner sayyad() {
         Sayyad sayyad = new Sayyad();
         return sayyad;
@@ -64,7 +64,7 @@ public class RunDrupal extends VisualSPLReasoner{
     }
 
 
-    @Reasoner(order = 3)
+//    @Reasoner(order = 3)
     public SPLReasoner henard()  {
         Henard henard = new Henard();
         return henard;
@@ -76,7 +76,7 @@ public class RunDrupal extends VisualSPLReasoner{
     }
 
 
-    @Reasoner(order = 4)
+//    @Reasoner(order = 4)
     public SPLReasoner hierons() {
         Hierons hierons = new Hierons();
         return hierons;
@@ -87,7 +87,7 @@ public class RunDrupal extends VisualSPLReasoner{
         return new ReasonerRecorder(env(), Hierons.NAME, "recordings/" + Hierons.NAME + ".json");
     }
 
-    @Reasoner(order = 0)
+    @Reasoner(order = -1)
     public SPLReasoner hasco() {
         HASCOSPLReasoner hasco = new HASCOSPLReasoner();
         return hasco;

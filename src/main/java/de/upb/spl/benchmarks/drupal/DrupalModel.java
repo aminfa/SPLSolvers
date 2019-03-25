@@ -59,7 +59,7 @@ public class DrupalModel extends BenchmarkEnvironmentDecoration {
     public DrupalModel() {
         this(
                 new FMAttributes(
-                        new FMXML("drupal/feature-model.xml"),
+                        new FMXML(FileUtil.getPathOfResource("drupal/feature-model.xml")),
                         new File(FileUtil.getPathOfResource("drupal/feature-model.xml")).getParent(),
                         SPL_NAME)
         );

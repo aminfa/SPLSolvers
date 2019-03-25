@@ -26,7 +26,7 @@ public class RunReplay extends VisualSPLReasoner{
     }
 
 
-    @Env()
+//    @Env()
     public Bookkeeper setupAttributeEnvironment() {
         return new Bookkeeper(
                 new AttributedFeatureModelEnv("src/main/resources", "video_encoder"));
@@ -38,18 +38,18 @@ public class RunReplay extends VisualSPLReasoner{
         return replayer;
     }
 
-//    @Reasoner(order = 0)
+    @Reasoner(order = 0)
     public SPLReasoner replayGUO() {
         ReasonerReplayer replayer = new ReasonerReplayer("replays/" + Guo11.NAME + ".json");
         return replayer;
     }
 
-//    @Reasoner(order = 1)
+    @Reasoner(order = 1)
     public SPLReasoner replaySayyad() {
         ReasonerReplayer replayer = new ReasonerReplayer("replays/" + Sayyad.NAME + ".json");
         return replayer;
     }
-//    @Reasoner(order = 1)
+    @Reasoner(order = 1)
     public SPLReasoner replayHernard() {
         ReasonerReplayer replayer = new ReasonerReplayer("replays/" + Henard.NAME + ".json");
         return replayer;
