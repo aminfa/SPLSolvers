@@ -43,6 +43,7 @@ public class VisualSPLReasoner {
     private List<Runnable> exitFinishers = new ArrayList<Runnable>();
 
     private boolean parallelExecution = false;
+    private boolean guiEnabled = true;
 
     public final void setup(Class<? extends VisualSPLReasoner> runnerClass) {
         Optional<Method> agentCreator = Arrays.stream(runnerClass.getMethods())
@@ -85,31 +86,31 @@ public class VisualSPLReasoner {
             System.exit(1);
         }
 
-
-        new JFXPanel();
-
-        Arrays.stream(runnerClass.getMethods())
-                .filter(m -> m.isAnnotationPresent(GUI.class))
-                .filter(m->m.getAnnotation(GUI.class).enabled())
-                .sorted(Comparator.comparingInt(m->m.getAnnotation(GUI.class).order()))
-                .forEach(m-> {
-                    GUI gui = m.getAnnotation(GUI.class);
-                    IGUIPlugin plugin;
-                    try {
-                        plugin = (IGUIPlugin) m.invoke(this);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        return;
-                    }
-                    if(gui.main()){
-                        setMain(plugin);
-                    } else {
-                        addTab(plugin);
-                    }
-                });
-
         this.dumpSetting();
-        this.createUI();
+        guiEnabled = (runnerClass.isAnnotationPresent(GUI.class) && runnerClass.getAnnotation(GUI.class).enabled());
+        if(guiEnabled) {
+            new JFXPanel();
+            Arrays.stream(runnerClass.getMethods())
+                    .filter(m -> m.isAnnotationPresent(GUI.class))
+                    .filter(m->m.getAnnotation(GUI.class).enabled())
+                    .sorted(Comparator.comparingInt(m->m.getAnnotation(GUI.class).order()))
+                    .forEach(m-> {
+                        GUI gui = m.getAnnotation(GUI.class);
+                        IGUIPlugin plugin;
+                        try {
+                            plugin = (IGUIPlugin) m.invoke(this);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            return;
+                        }
+                        if(gui.main()){
+                            setMain(plugin);
+                        } else {
+                            addTab(plugin);
+                        }
+                    });
+            this.createUI();
+        }
 
         Arrays.stream(runnerClass.getMethods())
                 .filter(m -> m.isAnnotationPresent(Reasoner.class))
@@ -185,6 +186,7 @@ public class VisualSPLReasoner {
             main = tabs.remove(0);
         }
         if(main == null) {
+            guiEnabled = false;
             return;
         }
 
@@ -212,7 +214,9 @@ public class VisualSPLReasoner {
         splReasonerStream.forEach(reasoner -> {
             BenchmarkEnvironment billedEnv =  bookkeeper.billedEnvironment(reasoner.name());
             SPLReasonerAlgorithm alg = reasoner.algorithm(billedEnv);
-            alg.registerListener(eventRecorder);
+            if(guiEnabled) {
+                alg.registerListener(eventRecorder);
+            }
             try {
                 logger.info("Starting reasoner {}.", reasoner.name());
                 alg.call();

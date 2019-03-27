@@ -31,7 +31,7 @@ public class DrupalWeightedFaults extends BenchmarkEnvironmentDecoration {
 
         @Override
         public Optional<Double> readResult(String objective) {
-            return rawResult(objective);
+            return rawResult(objective).map(result -> result * -1);
         }
 
         @Override

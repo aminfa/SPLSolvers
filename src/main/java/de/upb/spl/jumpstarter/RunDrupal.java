@@ -23,6 +23,7 @@ import jaicore.search.model.travesaltree.JaicoreNodeInfoGenerator;
 
 import java.util.concurrent.ExecutionException;
 
+@GUI(enabled = false)
 public class RunDrupal extends VisualSPLReasoner{
 
 

@@ -36,7 +36,7 @@
         <!--<Logger name="hasco.core.isRefinementCompletedPredicate" level="warn" additivity="false">-->
             <!--<appender-ref ref="Console"/>-->
         <!--</Logger>-->
-        <Logger name="hasco.core.HASCO" level="info" additivity="false">
+        <Logger name="hasco.core.HASCO" level="warn" additivity="false">
             <AppenderRef ref="Console" />
         </Logger>
     </Loggers>
