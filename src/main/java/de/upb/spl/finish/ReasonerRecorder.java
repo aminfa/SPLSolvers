@@ -47,7 +47,7 @@ public class ReasonerRecorder extends Finisher {
                 logObj.put("report", log.report().getJsonObj());
                 logs.add(logObj);
             }
-            String recordFile = String.format("%1$s/%2$tY-%2$tm-%2$tD--%2$tH.%2$tM-%3$s.json", recordHome, date, bill.getReasonerName());
+            String recordFile = String.format("%1$s/%2$tY-%2$tm-%2$td--%2$tH.%2$tM--%3$s.json", recordHome, date, bill.getReasonerName());
             FileUtil.writeStringToFile(recordFile, gson.toJson(record));
             logger.info("Recorded replay for {} in {}.", bill.getReasonerName(), recordFile);
         }
@@ -56,5 +56,9 @@ public class ReasonerRecorder extends Finisher {
     @Override
     public String toString() {
         return "Record";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(String.format("%1$s/%2$tY-%2$tm-%2$td--%2$tH.%2$tM--%3$s.json", "a", new Date(), "b"));
     }
 }
