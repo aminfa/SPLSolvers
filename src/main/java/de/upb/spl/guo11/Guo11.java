@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class Guo11 extends EAReasoner {
 
-	private final static Logger logger = LoggerFactory.getLogger("GUO_11");
+	private final static Logger logger = LoggerFactory.getLogger(Guo11.class);
     public final static String NAME = "GUO_11";
 
     public Guo11() {

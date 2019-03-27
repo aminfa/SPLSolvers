@@ -2,6 +2,7 @@ package de.upb.spl.jumpstarter;
 
 import de.upb.spl.benchmarks.drupal.DrupalBlackBox;
 import de.upb.spl.benchmarks.drupal.DrupalFilteredObjectives;
+import de.upb.spl.benchmarks.drupal.DrupalModel;
 import de.upb.spl.benchmarks.drupal.DrupalWeightedFaults;
 import de.upb.spl.benchmarks.env.*;
 import de.upb.spl.finish.ReasonerRecorder;
@@ -29,7 +30,11 @@ public class RunDrupal extends VisualSPLReasoner{
 
     @Env()
     public BenchmarkEnvironment setupAttributeEnvironment() {
-        return new DrupalFilteredObjectives(new DrupalBlackBox());
+        BenchmarkEnvironment env = new DrupalFilteredObjectives(new DrupalBlackBox());
+//        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.Size);
+//        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.CC);
+//        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.Changes);
+        return env;
     }
 
     @Reasoner(order = 1)
