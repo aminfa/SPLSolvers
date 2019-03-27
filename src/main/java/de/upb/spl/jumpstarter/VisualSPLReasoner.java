@@ -14,7 +14,10 @@ import javafx.embed.swing.JFXPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -37,6 +40,7 @@ public class VisualSPLReasoner {
     private List<SPLReasoner> reasoners = new ArrayList<>();
 
     private List<Runnable> finishers = new ArrayList<Runnable>();
+    private List<Runnable> exitFinishers = new ArrayList<Runnable>();
 
     private boolean parallelExecution = false;
 
@@ -104,7 +108,7 @@ public class VisualSPLReasoner {
                     }
                 });
 
-
+        this.dumpSetting();
         this.createUI();
 
         Arrays.stream(runnerClass.getMethods())
@@ -126,11 +130,12 @@ public class VisualSPLReasoner {
                 .filter(m->m.getAnnotation(Finish.class).enabled())
                 .sorted(Comparator.comparingInt(m->m.getAnnotation(Finish.class).order()))
                 .forEach(m-> {
+                    boolean runOnExit = m.getAnnotation(Finish.class).runOnExit();
                     try {
                         Object collector = m.invoke(this);
                         if(collector instanceof Runnable) {
                             Runnable finisher = (Runnable) collector;
-                            addFinisher(finisher);
+                            addFinisher(finisher, runOnExit);
                         } else {
                             logger.error("Collector not recognized: " + collector.getClass().getName());
                         }
@@ -143,7 +148,17 @@ public class VisualSPLReasoner {
         this.addFinishersToShutdownHook();
 
         this.start();
-        this.finish();
+        this.finish(false);
+    }
+
+    private void dumpSetting() {
+        ByteArrayOutputStream config = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(config);
+        env.configuration().list(out);
+        out.close();
+        logger.info("Run properties: \n {}", config.toString());
+        logger.info("Runner = {}", this.getClass().getName());
+
     }
 
     private void addFinishersToShutdownHook() {
@@ -153,7 +168,7 @@ public class VisualSPLReasoner {
             {
                 logger.info("Received shutdown signal:  {}.");
                 if(!finished) {
-                    finish();
+                    finish(true);
                 }
             }
         });
@@ -183,8 +198,11 @@ public class VisualSPLReasoner {
     }
 
 
-    protected void addFinisher(Runnable finisher) {
+    protected void addFinisher(Runnable finisher, boolean runOnExit) {
         finishers.add(finisher);
+        if(runOnExit) {
+            exitFinishers.add(finisher);
+        }
     }
 
     public void start() {
@@ -209,10 +227,10 @@ public class VisualSPLReasoner {
 
     boolean finished = false;
 
-    public void finish() {
+    public void finish(boolean exit) {
         logger.info("Performing finishers.");
         finished = true;
-        for(Runnable finisher : finishers) {
+        for(Runnable finisher : (exit? exitFinishers : finishers)) {
             try {
                 logger.info("Running finisher: " + finisher.toString());
                 CompletableFuture<Void> finishFuture = CompletableFuture.runAsync(finisher);

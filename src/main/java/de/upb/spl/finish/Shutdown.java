@@ -33,8 +33,8 @@ public class Shutdown implements Runnable {
         int exitCode = p.waitFor();
         if(exitCode == 0) {
             String input = Streams.InReadString(p.getInputStream());
-            input += "\nerror: " + Streams.InReadString(p.getErrorStream());
-            System.out.println("Shutdown command:\n" + input);
+            input += "\n" + Streams.InReadString(p.getErrorStream());
+            System.out.println("Shutdown command: " + input);
         } else {
             String error = Streams.InReadString(p.getErrorStream());
             throw new RuntimeException("Error running Shutdown command:\n" + error);

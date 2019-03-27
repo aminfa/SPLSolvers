@@ -4,6 +4,9 @@ import jmetal.encodings.variable.Int;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Mutable;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
 @Config.LoadPolicy(Config.LoadType.MERGE)
 @Config.Sources({ "file:splreasoners.properties",
         "classpath:de/upb/spl/splreasoners.properties"})
@@ -141,5 +144,9 @@ public interface SPLReasonerConfiguration extends Mutable {
     @Key("de.upb.spl.SPLReasoner.Record.home")
     @DefaultValue("recordings")
     String getRecordHome();
+
+
+    void list(PrintStream out);
+    void list(PrintWriter out);
 
 }

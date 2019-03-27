@@ -4,11 +4,26 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %c{1} - %msg%n"/>
         </Console>
+        <File name="RunnerFile" fileName="logs/${date:yyyy-MM-dd--HH.mm}-runner.log">
+            <PatternLayout>
+                <Pattern>%d %p  %-5level %c{1} - %msg%n</Pattern>
+            </PatternLayout>
+        </File>
+        <File name="BenchmarkFile" fileName="logs/${date:yyyy-MM-dd--HH.mm}-benchmark.log">
+            <PatternLayout>
+                <Pattern>%d %p  %-5level %c{1} - %msg%n</Pattern>
+            </PatternLayout>
+        </File>
     </Appenders>
     <Loggers>
         <Root level="debug"  additivity="false">
             <AppenderRef ref="Console" />
+            <AppenderRef ref="BenchmarkFile"/>
         </Root>
+        <Logger name="de.upb.spl.jumpstarter"  level="debug"  additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RunnerFile"/>
+        </Logger>
         <Logger name="jaicore.graphvisualizer.events" level="warn" additivity="false">
             <AppenderRef ref="Console" />
         </Logger>

@@ -74,7 +74,7 @@ public class RunJavaInline extends VisualSPLReasoner{
         return new ReasonerRecorder(bookkeeper());
     }
 
-    @Finish(order = 1000)
+    @Finish(order = 1000, runOnExit = false)
     public Shutdown shutdownHook() {
         return new Shutdown();
     }
