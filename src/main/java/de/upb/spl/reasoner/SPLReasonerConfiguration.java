@@ -52,7 +52,7 @@ public interface SPLReasonerConfiguration extends Mutable {
     String getBasicIbeaIndicator();
 
     @Key("de.upb.spl.SPLReasoner.ibea.p.bitflip")
-    @DefaultValue("0.001")
+    @DefaultValue("0.01")
     Double getBasicIbeaBitFlipProbability();
 
     @Key("de.upb.spl.SPLReasoner.ibea.p.singlePointCO")

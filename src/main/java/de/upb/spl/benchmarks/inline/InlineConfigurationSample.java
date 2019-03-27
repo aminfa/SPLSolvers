@@ -55,7 +55,7 @@ public class InlineConfigurationSample {
 
     int warmups = 4;
 
-    String target = "jmh.Factorial";
+    String target = "jmh.Hanoi";
 
     public InlineConfigurationSample() {
     }
@@ -189,10 +189,10 @@ public class InlineConfigurationSample {
         freqInlineSize = intMap.get("FreqInlineSize").intValue();
         inlineSmallCode = intMap.get("InlineSmallCode").intValue();
         maxInlineLevel = intMap.get("MaxInlineLevel").intValue();
-        maxInlineSize = intMap.get("Ma‰xInlineSize").intValue();
+        maxInlineSize = intMap.get("MaxInlineSize").intValue();
         maxRecursiveInlineLevel = intMap.get("MaxRecursiveInlineLevel").intValue();
         minInliningThreshold = intMap.get("MinInliningThreshold").intValue();
-        setWarmups(intMap.get("warumups").intValue());
+        setWarmups(intMap.get("warmups").intValue());
         Map<String, String> stringMap = map;
         target = stringMap.get("target");
     }
