@@ -43,7 +43,7 @@ public class DrupalModel extends BenchmarkEnvironmentDecoration {
         IntegrationFaults
     }
 
-    private static final List<String> OBJECTIVES_LIST = Arrays.stream(Objective.class.getEnumConstants())
+    public static final List<String> OBJECTIVES_LIST = Arrays.stream(Objective.class.getEnumConstants())
                                                     .map(Enum::name)
                                                     .collect(Collectors.toList());
 

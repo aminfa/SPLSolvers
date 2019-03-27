@@ -1,6 +1,8 @@
 package de.upb.spl.jumpstarter;
 
 import de.upb.spl.benchmarks.drupal.DrupalBlackBox;
+import de.upb.spl.benchmarks.drupal.DrupalFilteredObjectives;
+import de.upb.spl.benchmarks.drupal.DrupalWeightedFaults;
 import de.upb.spl.benchmarks.env.*;
 import de.upb.spl.finish.ReasonerRecorder;
 import de.upb.spl.guo11.Guo11;
@@ -26,7 +28,7 @@ public class RunDrupal extends VisualSPLReasoner{
 
     @Env()
     public BenchmarkEnvironment setupAttributeEnvironment() {
-        return new BookkeeperEnv(new DrupalBlackBox());
+        return new DrupalFilteredObjectives(new DrupalBlackBox());
     }
 
     @Reasoner(order = 1)
@@ -81,6 +83,11 @@ public class RunDrupal extends VisualSPLReasoner{
     }
 
     @GUI(main = true)
+    public IGUIPlugin timelineFaults() {
+        return new ReasonerPerformanceTimeline(new DrupalWeightedFaults(env()));
+    }
+
+    @GUI(main = false, order = 0)
     public IGUIPlugin graph() {
         return new GraphViewPlugin();
     }

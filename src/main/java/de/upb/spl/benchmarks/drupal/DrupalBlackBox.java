@@ -137,22 +137,22 @@ public class DrupalBlackBox extends DrupalModel {
             }
             boolean maximize;
             switch (Objective.valueOf(objective)) {
-                case Size:
-                case CC:
-                case Developers:
-                case Changes:
                 case MinorFaults:
                 case NormalFaults:
                 case MajorFaults:
                 case CriticalFaults:
                 case IntegrationFaults:
-                default:
-                    maximize = false;
-                    break;
+                case Developers:
+                case Size:
+                case CC:
+                case Changes:
                 case TestAssertions:
                 case Installations:
                 case ModuleCount:
                     maximize = true;
+                    break;
+                default:
+                    maximize = false;
                     break;
             }
             if(maximize) {
