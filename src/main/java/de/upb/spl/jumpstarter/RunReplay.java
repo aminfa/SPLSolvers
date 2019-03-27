@@ -2,7 +2,7 @@ package de.upb.spl.jumpstarter;
 
 import de.upb.spl.benchmarks.VideoEncoderExecutor;
 import de.upb.spl.benchmarks.env.AttributedFeatureModelEnv;
-import de.upb.spl.benchmarks.env.Bookkeeper;
+import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
 import de.upb.spl.benchmarks.x264.VideoEncoderCustomer1;
 import de.upb.spl.guo11.Guo11;
@@ -20,15 +20,15 @@ import jaicore.graphvisualizer.plugin.IGUIPlugin;
 public class RunReplay extends VisualSPLReasoner{
 
     @Env()
-    public Bookkeeper videoEncodingEnv() {
+    public BookkeeperEnv videoEncodingEnv() {
         VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(), System.getProperty("user.home") + "/Documents/BA/x264_1");
-        return new Bookkeeper(new VideoEncoderBlackBox(agent()));
+        return new BookkeeperEnv(new VideoEncoderBlackBox(agent()));
     }
 
 
 //    @Env()
-    public Bookkeeper setupAttributeEnvironment() {
-        return new Bookkeeper(
+    public BookkeeperEnv setupAttributeEnvironment() {
+        return new BookkeeperEnv(
                 new AttributedFeatureModelEnv("src/main/resources", "video_encoder"));
     }
 

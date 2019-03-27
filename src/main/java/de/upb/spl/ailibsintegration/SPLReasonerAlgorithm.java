@@ -36,7 +36,7 @@ public abstract class SPLReasonerAlgorithm extends AAlgorithm<BenchmarkEnvironme
     }
 
     @Override
-    public final AlgorithmEvent nextWithException() throws InterruptedException, AlgorithmExecutionCanceledException, TimeoutException, AlgorithmException {
+    public final AlgorithmEvent nextWithException() throws InterruptedException, AlgorithmExecutionCanceledException, AlgorithmException {
         switch(getState()) {
             case created:
                 try {
@@ -57,7 +57,7 @@ public abstract class SPLReasonerAlgorithm extends AAlgorithm<BenchmarkEnvironme
     }
 
     @Override
-    public final FeatureSelection call() throws InterruptedException, AlgorithmExecutionCanceledException, TimeoutException, AlgorithmException {
+    public final FeatureSelection call() throws InterruptedException, AlgorithmExecutionCanceledException, AlgorithmException {
         while (hasNext()) {
             next();
         }

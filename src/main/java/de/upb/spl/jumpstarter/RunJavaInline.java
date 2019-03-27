@@ -1,10 +1,8 @@
 package de.upb.spl.jumpstarter;
 
-import de.upb.spl.benchmarks.VideoEncoderExecutor;
-import de.upb.spl.benchmarks.env.Bookkeeper;
+import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.benchmarks.inline.InlineBenchmarkExecutor;
 import de.upb.spl.benchmarks.inline.InlineBlackBox;
-import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
 import de.upb.spl.finish.ReasonerRecorder;
 import de.upb.spl.finish.Shutdown;
 import de.upb.spl.guo11.Guo11;
@@ -25,9 +23,9 @@ import jaicore.search.model.travesaltree.JaicoreNodeInfoGenerator;
 public class RunJavaInline extends VisualSPLReasoner{
 
     @Env(parallel = false)
-    public Bookkeeper videoEncodingEnv() {
+    public BookkeeperEnv videoEncodingEnv() {
         InlineBenchmarkExecutor executor1 = new InlineBenchmarkExecutor(agent());
-        return new Bookkeeper(new InlineBlackBox(agent()));
+        return new BookkeeperEnv(new InlineBlackBox(agent()));
     }
 
     @Reasoner(order = 1)
@@ -36,20 +34,10 @@ public class RunJavaInline extends VisualSPLReasoner{
         return guo11;
     }
 
-    @Finish
-    public ReasonerRecorder recordGUO() {
-        return new ReasonerRecorder(env(), Guo11.NAME, "recordings/" + Guo11.NAME + ".json");
-    }
-
 //    @Reasoner(order = 1, enabled = true)
 //    public SPLReasoner ibea() throws ExecutionException, InterruptedException {
 //        BasicIbea basicIbea = new BasicIbea();
 //        return basicIbea;
-//    }
-//
-//    @Finish
-//    public ReasonerRecorder recordBaiscIbea() {
-//        return new ReasonerRecorder(env(), BasicIbea.NAME, "recordings/" + BasicIbea.NAME + ".json");
 //    }
 
 
@@ -59,21 +47,11 @@ public class RunJavaInline extends VisualSPLReasoner{
         return sayyad;
     }
 
-    @Finish
-    public ReasonerRecorder recordSayyad() {
-        return new ReasonerRecorder(env(), Sayyad.NAME, "recordings/" + Sayyad.NAME + ".json");
-    }
-
 
     @Reasoner(order = 3)
     public SPLReasoner henard()  {
         Henard henard = new Henard();
         return henard;
-    }
-
-    @Finish
-    public ReasonerRecorder recordHenard() {
-        return new ReasonerRecorder(env(), Henard.NAME, "recordings/" + Henard.NAME + ".json");
     }
 
 
@@ -83,10 +61,6 @@ public class RunJavaInline extends VisualSPLReasoner{
         return hierons;
     }
 
-    @Finish
-    public ReasonerRecorder recordHierons() {
-        return new ReasonerRecorder(env(), Hierons.NAME, "recordings/" + Hierons.NAME + ".json");
-    }
 
     @Reasoner(order = 0)
     public SPLReasoner hasco() {
@@ -94,9 +68,10 @@ public class RunJavaInline extends VisualSPLReasoner{
         return hasco;
     }
 
+
     @Finish
-    public ReasonerRecorder recordHasco() {
-        return new ReasonerRecorder(env(), HASCOSPLReasoner.NAME, "recordings/" + HASCOSPLReasoner.NAME + ".json");
+    public ReasonerRecorder record() {
+        return new ReasonerRecorder(bookkeeper());
     }
 
     @Finish(order = 1000)

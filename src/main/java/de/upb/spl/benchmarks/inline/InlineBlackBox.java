@@ -57,8 +57,8 @@ public class InlineBlackBox extends BenchmarkEnvironmentDecoration {
     }
 
     @Override
-    public Future<JobReport> run(FeatureSelection selection, BenchmarkBill bill) {
-        JobReport report = toReport(selection, bill.getClientName());
+    public Future<JobReport> run(FeatureSelection selection) {
+        JobReport report = toReport(selection);
         Submission submission = new Submission(report);
         return executor.submit(submission);
     }
@@ -80,10 +80,9 @@ public class InlineBlackBox extends BenchmarkEnvironmentDecoration {
     }
 
 
-    private JobReport toReport(FeatureSelection selection, String clientName) {
+    private JobReport toReport(FeatureSelection selection) {
         JobReport report = new JobReport();
         report.setGroup(SPL_NAME);
-        report.setClient(clientName);
         int FreqInlineSize = -1,
             InlineSmallCode = -1,
             MaxInlineLevel = -1,
@@ -164,8 +163,10 @@ public class InlineBlackBox extends BenchmarkEnvironmentDecoration {
         } else
             sample.setMinInliningThreshold(MinInliningThreshold);
 
+        sample.setWarmups(configuration().getInlineBenchmarkWarmups());
+        sample.setTarget(configuration().getInlineBenchmarkTarget());
 
-        Map<String, Integer> inlineConfiguration = sample.dumpMap();
+        Map inlineConfiguration = sample.dumpMap();
         String hash = DigestUtils.sha256Hex(JSONObject.toJSONString(inlineConfiguration));
         JSONObject configuration = new JSONObject();
         configuration.put("inline_config", inlineConfiguration);

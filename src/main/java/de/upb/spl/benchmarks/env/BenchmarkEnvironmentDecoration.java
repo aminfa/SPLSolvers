@@ -17,6 +17,15 @@ import java.util.concurrent.Future;
 public class BenchmarkEnvironmentDecoration implements BenchmarkEnvironment {
     private final BenchmarkEnvironment env;
 
+    public <I> I getDecoration(Class<? extends BenchmarkEnvironment> clazz) {
+        if(clazz.isInstance(env)) {
+            return (I) env;
+        } else if(env instanceof BenchmarkEnvironmentDecoration) {
+            return ((BenchmarkEnvironmentDecoration) env).getDecoration(clazz);
+        } else {
+            return null;
+        }
+    }
 
     public BenchmarkEnvironmentDecoration(BenchmarkEnvironment env) {
         this.env = env;
@@ -42,8 +51,8 @@ public class BenchmarkEnvironmentDecoration implements BenchmarkEnvironment {
         return env.richSeeds();
     }
 
-    public Future<JobReport> run(FeatureSelection selection, BenchmarkBill bill) {
-        return env.run(selection, bill);
+    public Future<JobReport> run(FeatureSelection selection) {
+        return env.run(selection);
     }
 
     public Random generator() {
@@ -69,11 +78,6 @@ public class BenchmarkEnvironmentDecoration implements BenchmarkEnvironment {
 
     public boolean isRaw() {
         return env.isRaw();
-    }
-
-    @Override
-    public BenchmarkBill bill(String reasonerName) {
-        return env.bill(reasonerName);
     }
 
     protected BenchmarkEnvironment getBaseEnv() {

@@ -41,7 +41,7 @@ public class BaseEnv implements BenchmarkEnvironment {
     }
 
     @Override
-    public Future<JobReport> run(FeatureSelection selection, BenchmarkBill bill) {
+    public Future<JobReport> run(FeatureSelection selection) {
         throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
     }
 
@@ -57,11 +57,6 @@ public class BaseEnv implements BenchmarkEnvironment {
 
     @Override
     public BenchmarkBill currentTab() {
-        throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
-    }
-
-    @Override
-    public BenchmarkBill bill(String reasonerName) {
         throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
     }
 }

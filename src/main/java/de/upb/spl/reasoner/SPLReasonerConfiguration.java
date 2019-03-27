@@ -16,10 +16,18 @@ public interface SPLReasonerConfiguration extends Mutable {
     @DefaultValue("100")
     Integer getEvaluationPermits();
 
-    @Key("de.upb.spl.videoEncoding.RAWSourceFile")
+    @Key("de.upb.spl.benchmark.videoEncoding.RAWSourceFile")
     @DefaultValue("touchdown_pass")
     String getVideoSourceFile();
 
+
+    @Key("de.upb.spl.benchmark.inline.warumups")
+    @DefaultValue("2")
+    Integer getInlineBenchmarkWarmups();
+
+    @Key("de.upb.spl.benchmark.inline.target")
+    @DefaultValue("jmh.Hanoi")
+    String getInlineBenchmarkTarget();
 
     /*
      * Guo
@@ -126,4 +134,12 @@ public interface SPLReasonerConfiguration extends Mutable {
     @Key("de.upb.spl.SPLReasoner.Replay.rerunSelection")
     @DefaultValue("false")
     Boolean getReplayRerunSelection();
+
+    /*
+     * Record
+     */
+    @Key("de.upb.spl.SPLReasoner.Record.home")
+    @DefaultValue("recordings")
+    String getRecordHome();
+
 }

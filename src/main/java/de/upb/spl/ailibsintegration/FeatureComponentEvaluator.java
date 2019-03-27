@@ -23,10 +23,10 @@ public class FeatureComponentEvaluator implements IObjectEvaluator<ComponentInst
     }
 
     @Override
-    public FeatureSelectionPerformance evaluate(ComponentInstance object) throws TimeoutException, InterruptedException, ObjectEvaluationFailedException {
+    public FeatureSelectionPerformance evaluate(ComponentInstance object) throws InterruptedException, ObjectEvaluationFailedException {
         try {
             FeatureSelection selection = fm2CM.transform(object);
-            return new CountingPerformance(BasicIbea.evaluateAndCountViolatedConstraints(env, selection, NAME));
+            return new ParetoPerformance(BasicIbea.evaluateAndCountViolatedConstraints(env, selection, NAME));
         } catch (Exception ex) {
             throw new ObjectEvaluationFailedException(ex, "Couldn't evaluate ComponentInstance");
         }

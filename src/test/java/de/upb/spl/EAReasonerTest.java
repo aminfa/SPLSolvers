@@ -19,6 +19,7 @@ import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.*;
 import org.moeaframework.core.variable.BinaryVariable;
 
+import java.awt.print.Book;
 import java.io.File;
 import java.io.IOException;
 import java.util.DoubleSummaryStatistics;
@@ -31,7 +32,7 @@ import java.util.stream.StreamSupport;
 
 public class EAReasonerTest {
 
-	static BenchmarkEnvironment env;
+	static BookkeeperEnv env;
 	static BenchmarkEnvironment rawEnv;
 	static BenchmarkAgent agent;
 
@@ -52,13 +53,13 @@ public class EAReasonerTest {
 		VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent, "/Users/aminfaez/Documents/BA/x264_1");
 //		VideoEncoderExecutor.fixedAttributesExecutor(agent);
 		// Load the XML file and creates the listFeatures model
-		env = new Bookkeeper(new VideoEncoderBlackBox(agent));
+		env = new BookkeeperEnv(new VideoEncoderBlackBox(agent));
         rawEnv = new RawResults(env);
 	}
 
     @BeforeClass
 	public static void setupAttributeEnvironment() {
-        env = new Bookkeeper(new AttributedFeatureModelEnv("src/main/resources", spl));
+        env = new BookkeeperEnv(new AttributedFeatureModelEnv("src/main/resources", spl));
         rawEnv = new RawResults(env);
     }
 
@@ -82,7 +83,7 @@ public class EAReasonerTest {
 	}
 
 	public void testReasoner(EAReasoner reasoner) {
-	    BenchmarkEnvironment billedEnv = new Bookkeeper.Bill(env, env.bill(reasoner.name()));
+	    BenchmarkEnvironment billedEnv = env.billedEnvironment(reasoner.name());
         AbstractEvolutionaryAlgorithm alg = reasoner.runAlgorithm(billedEnv);
         Population population = alg.getPopulation();
         Population moPopulation = new NondominatedPopulation();

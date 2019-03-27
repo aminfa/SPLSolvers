@@ -69,12 +69,16 @@ public class InlineBenchmarkExecutor implements Runnable {
     }
 
     private void executeJob(JobReport report) {
-        Map<String, Integer> inlineConfig = (Map<String, Integer>) report.getConfiguration().get("inline_config");
+        Map inlineConfig = (Map) report.getConfiguration().get("inline_config");
         InlineConfigurationSample sample = new InlineConfigurationSample();
         sample.loadMap(inlineConfig);
-        double runtime = sample.score();
+        Optional<Double> runtime = sample.score();
         Map<String, Double> results = new HashMap<>();
-        results.put("runtime", runtime);
+        if(runtime.isPresent()) {
+            results.put("runtime", runtime.get());
+        } else {
+            results.put("runtime", null);
+        }
         report.setResults(results);
     }
 }

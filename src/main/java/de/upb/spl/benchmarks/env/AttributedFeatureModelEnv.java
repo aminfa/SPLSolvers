@@ -28,7 +28,7 @@ public class AttributedFeatureModelEnv extends BenchmarkEnvironmentDecoration {
     }
 
     @Override
-    public Future<JobReport> run(FeatureSelection selection, BenchmarkBill bill) {
+    public Future<JobReport> run(FeatureSelection selection) {
         JobReport job = toReport(selection);
         try {
             executor.executeJob(job);

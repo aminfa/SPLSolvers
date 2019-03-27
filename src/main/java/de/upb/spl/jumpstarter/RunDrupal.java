@@ -26,19 +26,15 @@ public class RunDrupal extends VisualSPLReasoner{
 
     @Env()
     public BenchmarkEnvironment setupAttributeEnvironment() {
-        return new Bookkeeper(new DrupalBlackBox());
+        return new BookkeeperEnv(new DrupalBlackBox());
     }
 
-//    @Reasoner(order = 1)
+    @Reasoner(order = 1)
     public SPLReasoner guo() {
         Guo11 guo11 = new Guo11();
         return guo11;
     }
 
-    @Finish
-    public ReasonerRecorder recordGUO() {
-        return new ReasonerRecorder(env(), Guo11.NAME, "recordings/" + Guo11.NAME + ".json");
-    }
 
 //    @Reasoner(order = 1, enabled = true)
     public SPLReasoner ibea() throws ExecutionException, InterruptedException {
@@ -46,45 +42,25 @@ public class RunDrupal extends VisualSPLReasoner{
         return basicIbea;
     }
 
-    @Finish
-    public ReasonerRecorder recordBaiscIbea() {
-        return new ReasonerRecorder(env(), BasicIbea.NAME, "recordings/" + BasicIbea.NAME + ".json");
-    }
 
 
-//    @Reasoner(order = 2)
+    @Reasoner(order = 2)
     public SPLReasoner sayyad() {
         Sayyad sayyad = new Sayyad();
         return sayyad;
     }
 
-    @Finish
-    public ReasonerRecorder recordSayyad() {
-        return new ReasonerRecorder(env(), Sayyad.NAME, "recordings/" + Sayyad.NAME + ".json");
-    }
 
-
-//    @Reasoner(order = 3)
+    @Reasoner(order = 3)
     public SPLReasoner henard()  {
         Henard henard = new Henard();
         return henard;
     }
 
-    @Finish
-    public ReasonerRecorder recordHenard() {
-        return new ReasonerRecorder(env(), Henard.NAME, "recordings/" + Henard.NAME + ".json");
-    }
-
-
-//    @Reasoner(order = 4)
+    @Reasoner(order = 4)
     public SPLReasoner hierons() {
         Hierons hierons = new Hierons();
         return hierons;
-    }
-
-    @Finish
-    public ReasonerRecorder recordHierons() {
-        return new ReasonerRecorder(env(), Hierons.NAME, "recordings/" + Hierons.NAME + ".json");
     }
 
     @Reasoner(order = -1)
@@ -93,9 +69,10 @@ public class RunDrupal extends VisualSPLReasoner{
         return hasco;
     }
 
+
     @Finish
-    public ReasonerRecorder recordHasco() {
-        return new ReasonerRecorder(env(), HASCOSPLReasoner.NAME, "recordings/" + HASCOSPLReasoner.NAME + ".json");
+    public ReasonerRecorder record() {
+        return new ReasonerRecorder(bookkeeper());
     }
 
     @GUI(order = -1)

@@ -123,11 +123,4 @@ public class JobReport {
 		report.put("objectives", objectives);
 	}
 
-    public void setClient(String clientName) {
-	    report.put("client", clientName);
-    }
-
-    public String getClientName() {
-	    return (String) report.get("client");
-    }
 }

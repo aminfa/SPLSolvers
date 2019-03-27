@@ -28,16 +28,15 @@ public class DrupalBlackBox extends DrupalModel {
     private final static Logger logger = LoggerFactory.getLogger(DrupalBlackBox.class);
 
     @Override
-    public Future<JobReport> run(FeatureSelection selection, BenchmarkBill bill) {
-        JobReport report = toReport(selection, bill.getClientName());
+    public Future<JobReport> run(FeatureSelection selection) {
+        JobReport report = toReport(selection);
         evaluate(report);
         return ConcurrentUtils.constantFuture(report);
     }
 
-    private JobReport toReport(FeatureSelection selection, String clientName) {
+    private JobReport toReport(FeatureSelection selection) {
         JobReport report = new JobReport();
         report.setGroup("drupal");
-        report.setClient(clientName);
         List<String> selectedModules = selection.stream().map(FMUtil::id).collect(Collectors.toList());
         selectedModules.sort(String::compareTo);
         String hash = DigestUtils.sha256Hex(JSONArray.toJSONString(selectedModules));
@@ -100,13 +99,13 @@ public class DrupalBlackBox extends DrupalModel {
             case Changes:
                 return aggregator("sum");
             case TestCases:
-                return aggregator("20-percentile");
+                return aggregator("mean");
             case Developers:
-                return aggregator("5-percentile");
+                return aggregator("max");
             case Installations:
-                return aggregator("min");
+                return aggregator("mean");
             case TestAssertions:
-                return aggregator("20-percentile");
+                return aggregator("mean");
             case MinorFaults:
             case NormalFaults:
             case MajorFaults:

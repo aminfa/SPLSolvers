@@ -54,9 +54,9 @@ public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
 
 
 	@Override
-	public Future<JobReport> run(FeatureSelection selection, BenchmarkBill bill) {
+	public Future<JobReport> run(FeatureSelection selection) {
         try {
-            JobReport report = toReport(selection, bill.getClientName());
+            JobReport report = toReport(selection);
             return executorService.submit(new SubmitVideoEncoding(report));
         } catch(Exception ex) {
             logger.warn("Couldnt runAndGetPopulation benchmark for assemble {}. Exception message: {}", selection, ex.getMessage());
@@ -95,10 +95,9 @@ public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
 	    return true;
     }
 
-	public JobReport toReport(FeatureSelection selection, String clientName) {
+	public JobReport toReport(FeatureSelection selection) {
 		JobReport report = new JobReport();
 		report.setGroup("x264");
-		report.setClient(clientName);
 		report.setConfiguration(toConfiguration(selection),"compile_hash", "runtime_hash");
 		report.setObjectives(objectives());
 		return report;

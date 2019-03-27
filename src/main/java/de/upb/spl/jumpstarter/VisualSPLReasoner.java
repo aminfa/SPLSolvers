@@ -3,7 +3,8 @@ package de.upb.spl.jumpstarter;
 import de.upb.spl.ailibsintegration.SPLReasonerAlgorithm;
 import de.upb.spl.benchmarks.BenchmarkAgent;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.benchmarks.env.Bookkeeper;
+import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
+import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.reasoner.SPLReasoner;
 import jaicore.graphvisualizer.events.recorder.AlgorithmEventHistoryRecorder;
 import jaicore.graphvisualizer.plugin.IGUIPlugin;
@@ -25,7 +26,7 @@ public class VisualSPLReasoner {
 
     private BenchmarkAgent agent;
 
-    private BenchmarkEnvironment env;
+    private BenchmarkEnvironmentDecoration env;
 
     private AlgorithmEventHistoryRecorder eventRecorder;
 
@@ -62,8 +63,14 @@ public class VisualSPLReasoner {
         if(envCreator.isPresent()) {
             parallelExecution = envCreator.get().getAnnotation(Env.class).parallel();
             try {
-                BenchmarkEnvironment env = (BenchmarkEnvironment) envCreator.get().invoke(this);
-                this.env = env;
+                BenchmarkEnvironmentDecoration env = (BenchmarkEnvironmentDecoration) envCreator.get().invoke(this);
+                BookkeeperEnv bookkeeperEnv = ((BenchmarkEnvironmentDecoration)env).getDecoration(BookkeeperEnv.class);
+                if(bookkeeperEnv == null) {
+                    logger.warn("Benchmark environment doesn't have a book keeper. Creating a new book keeper.");
+                    this.env = new BookkeeperEnv(env);
+                } else {
+                    this.env = env;
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -183,8 +190,9 @@ public class VisualSPLReasoner {
     public void start() {
         logger.info("Starting spl benchmark.");
         Stream<SPLReasoner> splReasonerStream = parallelExecution ? reasoners.parallelStream() : reasoners.stream();
+        BookkeeperEnv bookkeeper = bookkeeper();
         splReasonerStream.forEach(reasoner -> {
-            BenchmarkEnvironment billedEnv =  new Bookkeeper.Bill(env, env.bill(reasoner.name()));
+            BenchmarkEnvironment billedEnv =  bookkeeper.billedEnvironment(reasoner.name());
             SPLReasonerAlgorithm alg = reasoner.algorithm(billedEnv);
             alg.registerListener(eventRecorder);
             try {
@@ -238,6 +246,10 @@ public class VisualSPLReasoner {
 
     public BenchmarkEnvironment env() {
         return env;
+    }
+
+    public BookkeeperEnv bookkeeper() {
+        return ((BenchmarkEnvironmentDecoration)env()).getDecoration(BookkeeperEnv.class);
     }
 
 

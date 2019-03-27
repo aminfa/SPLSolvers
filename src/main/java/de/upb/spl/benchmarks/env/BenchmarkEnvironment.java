@@ -27,12 +27,7 @@ public interface BenchmarkEnvironment {
 
 	List<VecInt> richSeeds();
 
-    default Future<JobReport> run(FeatureSelection selection) {
-        return run(selection, currentTab());
-    }
-
-    Future<JobReport> run(FeatureSelection selection, BenchmarkBill bill);
-
+    Future<JobReport> run(FeatureSelection selection);
 
 	Random generator();
 
@@ -41,7 +36,6 @@ public interface BenchmarkEnvironment {
     }
 
     ReportInterpreter interpreter(JobReport jobReport);
-
 
 
 	default SPLReasonerConfiguration configuration(){
@@ -53,6 +47,4 @@ public interface BenchmarkEnvironment {
     default boolean isRaw() {
         return false;
     }
-
-    BenchmarkBill bill(String reasonerName);
 }

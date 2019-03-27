@@ -46,7 +46,7 @@ public class BenchmarkBill implements Iterable<BenchmarkEntry> {
         return evalLogs.get(index);
     }
 
-    public String getClientName() {
+    public String getReasonerName() {
         return clientName;
     }
 
