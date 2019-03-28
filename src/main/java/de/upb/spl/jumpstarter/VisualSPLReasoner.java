@@ -82,6 +82,8 @@ public class VisualSPLReasoner {
             System.exit(1);
         }
 
+        logger.info("Benchmark environment: {}", env);
+
         this.dumpSetting();
 
         if(runnerClass.isAnnotationPresent(GUI.class)) {

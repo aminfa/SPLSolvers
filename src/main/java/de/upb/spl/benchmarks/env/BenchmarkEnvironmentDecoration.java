@@ -87,6 +87,8 @@ public class BenchmarkEnvironmentDecoration implements BenchmarkEnvironment {
         return env;
     }
 
-
-
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + " - " +getBaseEnv().toString();
+    }
 }

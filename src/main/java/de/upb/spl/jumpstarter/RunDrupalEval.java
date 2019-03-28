@@ -26,13 +26,15 @@ public class RunDrupalEval extends VisualSPLReasoner{
 
     @Env
     public BenchmarkEnvironment setupDrupal() {
-        BenchmarkEnvironment env = new DrupalFilteredObjectives(new DrupalBlackBox());
+        BenchmarkEnvironment env = new DrupalBlackBox();
+//        env = new DrupalFilteredObjectives(env);
 //        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.Size);
 //        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.CC);
 //        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.Changes);
+//        env = new DrupalWeightedFaults(env);
         env = new ConfiguredEnv(env);
-        env.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "1000");
-        env.configuration().setProperty("de.upb.spl.eval.solutionCount", "100");
+        env.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "100");
+        env.configuration().setProperty("de.upb.spl.eval.solutionCount", "10");
         return env;
     }
 
