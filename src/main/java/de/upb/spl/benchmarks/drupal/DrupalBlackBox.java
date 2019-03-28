@@ -27,6 +27,8 @@ public class DrupalBlackBox extends DrupalModel {
 
     private final static Logger logger = LoggerFactory.getLogger(DrupalBlackBox.class);
 
+    public static final String GROUP = "drupal";
+
     @Override
     public Future<JobReport> run(FeatureSelection selection) {
         JobReport report = toReport(selection);
@@ -36,7 +38,7 @@ public class DrupalBlackBox extends DrupalModel {
 
     private JobReport toReport(FeatureSelection selection) {
         JobReport report = new JobReport();
-        report.setGroup("drupal");
+        report.setGroup(GROUP);
         List<String> selectedModules = selection.stream().map(FMUtil::id).collect(Collectors.toList());
         selectedModules.sort(String::compareTo);
         String hash = DigestUtils.sha256Hex(JSONArray.toJSONString(selectedModules));
@@ -95,13 +97,13 @@ public class DrupalBlackBox extends DrupalModel {
             case CC:
                 return aggregator("mean");
             case Size:
-                return aggregator("sum");
+                return aggregator("15-percentile");
             case Changes:
                 return aggregator("sum");
             case TestCases:
                 return aggregator("mean");
             case Developers:
-                return aggregator("max");
+                return aggregator("mean");
             case Installations:
                 return aggregator("mean");
             case TestAssertions:
@@ -137,20 +139,20 @@ public class DrupalBlackBox extends DrupalModel {
             }
             boolean maximize;
             switch (Objective.valueOf(objective)) {
-                case MinorFaults:
-                case NormalFaults:
-                case MajorFaults:
-                case CriticalFaults:
-                case IntegrationFaults:
                 case Developers:
-                case Size:
-                case CC:
-                case Changes:
                 case TestAssertions:
                 case Installations:
                 case ModuleCount:
                     maximize = true;
                     break;
+                case Size:
+                case CC:
+                case Changes:
+                case MinorFaults:
+                case NormalFaults:
+                case MajorFaults:
+                case CriticalFaults:
+                case IntegrationFaults:
                 default:
                     maximize = false;
                     break;
@@ -175,6 +177,11 @@ public class DrupalBlackBox extends DrupalModel {
                 }
             }
             return Optional.empty();
+        }
+
+        @Override
+        public String group() {
+            return GROUP;
         }
 
     }

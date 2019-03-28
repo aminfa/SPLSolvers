@@ -10,4 +10,5 @@ public interface ReportInterpreter {
 	    return readResult(objective);
     }
 
+    String group();
 }

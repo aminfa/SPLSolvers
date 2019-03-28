@@ -37,10 +37,7 @@ public interface BenchmarkEnvironment {
 
     ReportInterpreter interpreter(JobReport jobReport);
 
-
-	default SPLReasonerConfiguration configuration(){
-	    return ConfigFactory.create(SPLReasonerConfiguration.class);
-    }
+	SPLReasonerConfiguration configuration();
 
     BenchmarkBill currentTab();
 

@@ -53,7 +53,7 @@ public class EAReasonerTest {
 		VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent, "/Users/aminfaez/Documents/BA/x264_1");
 //		VideoEncoderExecutor.fixedAttributesExecutor(agent);
 		// Load the XML file and creates the listFeatures model
-		env = new BookkeeperEnv(new VideoEncoderBlackBox(agent));
+		env = new BookkeeperEnv(new ConfiguredEnv(new VideoEncoderBlackBox(agent)));
         rawEnv = new RawResults(env);
 	}
 
@@ -83,7 +83,7 @@ public class EAReasonerTest {
 	}
 
 	public void testReasoner(EAReasoner reasoner) {
-	    BenchmarkEnvironment billedEnv = env.billedEnvironment(reasoner.name());
+	    BenchmarkEnvironment billedEnv = env.billedEnvironment(env, reasoner.name());
         AbstractEvolutionaryAlgorithm alg = reasoner.runAlgorithm(billedEnv);
         Population population = alg.getPopulation();
         Population moPopulation = new NondominatedPopulation();

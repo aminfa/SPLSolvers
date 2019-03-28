@@ -26,6 +26,7 @@ public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
 
 	final String testVideo;
 	final static String SPL_NAME = "video_encoder";
+	final static String GROUP = "x264";
 
 	public enum Objectives {
         subjective_quality, run_time, file_size;
@@ -37,10 +38,7 @@ public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
 
 	public VideoEncoderBlackBox(BenchmarkAgent agent) {
         this(
-                new FMAttributes(
-                        new FMXML(FileUtil.getPathOfResource("x264/feature-model.xml")),
-                        new File(FileUtil.getPathOfResource("x264/feature-model.xml")).getParent(),
-                        SPL_NAME),
+                new VideoEncoderBaseInterpreter(),
                 agent
         );
 	}
@@ -64,11 +62,6 @@ public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
             return null;
         }
 	}
-
-    @Override
-    public ReportInterpreter interpreter(JobReport jobReport) {
-        return new VideoEncoderReportInterpreter(jobReport);
-    }
 
 	private class SubmitVideoEncoding implements Callable<JobReport> {
 
@@ -97,7 +90,7 @@ public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
 
 	public JobReport toReport(FeatureSelection selection) {
 		JobReport report = new JobReport();
-		report.setGroup("x264");
+		report.setGroup(GROUP);
 		report.setConfiguration(toConfiguration(selection),"compile_hash", "runtime_hash");
 		report.setObjectives(objectives());
 		return report;
@@ -273,36 +266,4 @@ public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
 		return rootConfiguration;
 	}
 
-
-    public static class VideoEncoderReportInterpreter implements ReportInterpreter {
-		private final JobReport report;
-
-		VideoEncoderReportInterpreter(JobReport report) {
-			this.report = report;
-		}
-
-		@Override
-		public Optional<Double> readResult(String objective) {
-            Optional<Double> raw = rawResult(objective);
-            if(!raw.isPresent()) {
-                return raw;
-            }
-            if(objective.equals("subjective_quality")) {
-                return Optional.of(-1 * raw.get());
-            }
-            return raw;
-		}
-
-		@Override
-        public Optional<Double> rawResult(String objective) {
-            if(report.getResults().isPresent()) {
-                Map results = report.getResults().get();
-                if(results.containsKey(objective)){
-                    return Optional.of(((Number) results.get(objective) ).doubleValue());
-                }
-            }
-		    return Optional.empty();
-        }
-
-	}
 }

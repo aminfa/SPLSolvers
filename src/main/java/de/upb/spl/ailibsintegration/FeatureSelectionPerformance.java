@@ -62,8 +62,6 @@ public class FeatureSelectionPerformance implements Comparable<FeatureSelectionP
                 double otherObj = other.objectives[i];
                 c = Double.compare(thisObj, otherObj);
                 if(c == 0) {
-                    negative = true;
-                    positive = true;
                 } else if(c < 0) {
                     negative = true;
                 } else {

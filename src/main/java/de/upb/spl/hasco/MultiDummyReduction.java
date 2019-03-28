@@ -10,13 +10,14 @@ import hasco.model.ComponentInstance;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static de.upb.spl.FMUtil.*;
-import static de.upb.spl.FMUtil.id;
 
-public class SimpleReduction extends FM2CM {
+public class MultiDummyReduction extends FM2CM {
 
-    public SimpleReduction(FeatureModel fm) {
+    private final AtomicInteger dummyCounter = new AtomicInteger(0);
+    public MultiDummyReduction(FeatureModel fm) {
         super(fm);
         createComponents();
         createInterfaces();
@@ -49,15 +50,15 @@ public class SimpleReduction extends FM2CM {
             ComponentInstance instance = unvisited.removeFirst();
             for(ComponentInstance child : instance.getSatisfactionOfRequiredInterfaces().values()) {
                 String childComponentName = child.getComponent().getName();
-                if(childComponentName.equals(HASCOSPLReasoner.DUMMY_COMPONENT)) {
+                if(childComponentName.startsWith(HASCOSPLReasoner.DUMMY_COMPONENT)) {
                     continue;
                 } else {
-                    FeatureTreeNode childFeature = find(fm, childComponentName);
-                    if(childFeature == null) {
+                    FeatureTreeNode feature = find(fm, childComponentName);
+                    if(feature == null) {
                         throw new IllegalArgumentException("Component name was not recognized: " + childComponentName);
                     }
-                    if(selection.add(childFeature)) {
-                        unvisited.add(child);
+                    if(selection.add(feature)) {
+                        traverseComponentInstance(selection, child);
                     }
                 }
             }
@@ -115,7 +116,7 @@ public class SimpleReduction extends FM2CM {
                     String optionalInterface = createParentChildInterfaceName(feature, child);
                     component.addRequiredInterface(optionalInterface, optionalInterface);
                     childComponent.addProvidedInterface(optionalInterface);
-                    getDummy().addProvidedInterface(optionalInterface);
+                    createDummy().addProvidedInterface(optionalInterface);
                 }
             } else {
                 /*
@@ -131,7 +132,7 @@ public class SimpleReduction extends FM2CM {
                         component.addRequiredInterface(optionalInterface, optionalInterface);
                         Component childComponent = get(child);
                         childComponent.addProvidedInterface(optionalInterface);
-                        getDummy().addProvidedInterface(optionalInterface);
+                        createDummy().addProvidedInterface(optionalInterface);
                     } else {
                         /*
                          * Mandatory child
@@ -145,6 +146,24 @@ public class SimpleReduction extends FM2CM {
                 }
             }
         }
+
+        for(CrossTreeConstraint ctc : FMUtil.crossTreeConstraints(getFM())) {
+            if(ctc.implication) {
+                String mandatoryInterface = createParentChildInterfaceName(ctc.feature1, ctc.feature2);
+                if(FMUtil.crosstreePremises(getFM(), ctc.feature1).contains(ctc.feature2)) {
+                    continue; // no recursive interfaces
+                }
+                get(ctc.feature1).addRequiredInterface(mandatoryInterface, mandatoryInterface);
+                get(ctc.feature2).addProvidedInterface(mandatoryInterface);
+            }
+        }
+    }
+
+    private Component createDummy() {
+        int dummyId = dummyCounter.getAndIncrement();
+        Component c = new Component(HASCOSPLReasoner.DUMMY_COMPONENT + "_" + dummyId);
+        addDummy(c);
+        return c;
     }
 
 }

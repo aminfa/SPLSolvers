@@ -3,26 +3,18 @@ package de.upb.spl.benchmarks.inline;
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.BenchmarkAgent;
-import de.upb.spl.benchmarks.BenchmarkBill;
 import de.upb.spl.benchmarks.JobReport;
-import de.upb.spl.benchmarks.ReportInterpreter;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
-import de.upb.spl.benchmarks.env.FMAttributes;
-import de.upb.spl.benchmarks.env.FMXML;
-import de.upb.spl.util.FileUtil;
 import fm.FeatureTreeNode;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.concurrent.ConcurrentUtils;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,9 +22,8 @@ import java.util.concurrent.Future;
 
 public class InlineBlackBox extends BenchmarkEnvironmentDecoration {
 
-    private static final List<String> OBJECTIVES = Collections.singletonList("runtime");
-
-    private static final String SPL_NAME = "java-inline";
+    public static final String SPL_NAME = "java-inline";
+    public static final String GROUP = SPL_NAME;
 
     private final static Logger logger = LoggerFactory.getLogger(InlineBlackBox.class);
 
@@ -48,11 +39,7 @@ public class InlineBlackBox extends BenchmarkEnvironmentDecoration {
 
     public InlineBlackBox(BenchmarkAgent agent) {
         this(
-                new FMAttributes(
-                        new FMXML(FileUtil.getPathOfResource("java-inline/feature-model.xml")),
-                        new File(FileUtil.getPathOfResource("java-inline/feature-model.xml"))
-                                .getParent(),
-                        SPL_NAME),
+                new InlineBaseInterpreter(),
                 agent);
     }
 
@@ -82,7 +69,7 @@ public class InlineBlackBox extends BenchmarkEnvironmentDecoration {
 
     private JobReport toReport(FeatureSelection selection) {
         JobReport report = new JobReport();
-        report.setGroup(SPL_NAME);
+        report.setGroup(GROUP);
         int FreqInlineSize = -1,
             InlineSmallCode = -1,
             MaxInlineLevel = -1,
@@ -176,33 +163,5 @@ public class InlineBlackBox extends BenchmarkEnvironmentDecoration {
         return report;
     }
 
-    public List<String> objectives() {
-        return OBJECTIVES;
-    }
-
-    @Override
-    public ReportInterpreter interpreter(JobReport jobReport) {
-        return new InlineConfigurationReportInterpreter(jobReport);
-    }
-
-    public static class InlineConfigurationReportInterpreter implements ReportInterpreter {
-        private final JobReport report;
-
-        InlineConfigurationReportInterpreter(JobReport report) {
-            this.report = report;
-        }
-
-        @Override
-        public Optional<Double> readResult(String objective) {
-            if(report.getResults().isPresent()) {
-                Map results = report.getResults().get();
-                if(results.containsKey(objective)){
-                    return Optional.of(((Number) results.get(objective) ).doubleValue());
-                }
-            }
-            return Optional.empty();
-        }
-
-    }
 
 }

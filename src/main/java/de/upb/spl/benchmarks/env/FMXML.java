@@ -2,6 +2,7 @@ package de.upb.spl.benchmarks.env;
 
 import de.upb.spl.FMSAT;
 import de.upb.spl.hasco.FM2CM;
+import de.upb.spl.hasco.MultiDummyReduction;
 import de.upb.spl.hasco.SimpleReduction;
 import de.upb.spl.util.Cache;
 import fm.FeatureModel;
@@ -39,7 +40,7 @@ public class FMXML extends BenchmarkEnvironmentDecoration {
             this.fm = Optional.empty();
         }
         this.fmsat = new Cache<>(() -> FMSAT.transform(fm.get()));
-        this.cm = new Cache<>(() ->  new SimpleReduction(fm.get()));
+        this.cm = new Cache<>(() ->  new MultiDummyReduction(fm.get()));
     }
 
 

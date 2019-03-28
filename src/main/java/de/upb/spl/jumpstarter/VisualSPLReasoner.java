@@ -5,7 +5,9 @@ import de.upb.spl.benchmarks.BenchmarkAgent;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
 import de.upb.spl.benchmarks.env.BookkeeperEnv;
+import de.upb.spl.benchmarks.env.ConfiguredEnv;
 import de.upb.spl.reasoner.SPLReasoner;
+import de.upb.spl.util.Cache;
 import jaicore.graphvisualizer.events.recorder.AlgorithmEventHistoryRecorder;
 import jaicore.graphvisualizer.plugin.IGUIPlugin;
 import jaicore.graphvisualizer.window.AlgorithmVisualizationWindow;
@@ -17,17 +19,17 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class VisualSPLReasoner {
 
     private final static Logger logger = LoggerFactory.getLogger(VisualSPLReasoner.class);
 
-    private BenchmarkAgent agent;
+    private Cache<BenchmarkAgent> agent;
 
     private BenchmarkEnvironmentDecoration env;
 
@@ -53,12 +55,12 @@ public class VisualSPLReasoner {
         if(agentCreator.isPresent()) {
             try {
                 BenchmarkAgent agent = (BenchmarkAgent) agentCreator.get().invoke(this);
-                this.agent = agent;
+                this.agent = Cache.of(agent);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         } else {
-            agent = new BenchmarkAgent(10000);
+            agent = new Cache<>(() -> new BenchmarkAgent(10000));
         }
 
         Optional<Method> envCreator = Arrays.stream(runnerClass.getMethods())
@@ -69,13 +71,7 @@ public class VisualSPLReasoner {
             parallelExecution = envCreator.get().getAnnotation(Env.class).parallel();
             try {
                 BenchmarkEnvironmentDecoration env = (BenchmarkEnvironmentDecoration) envCreator.get().invoke(this);
-                BookkeeperEnv bookkeeperEnv = ((BenchmarkEnvironmentDecoration)env).getDecoration(BookkeeperEnv.class);
-                if(bookkeeperEnv == null) {
-                    logger.warn("Benchmark environment doesn't have a book keeper. Creating a new book keeper.");
-                    this.env = new BookkeeperEnv(env);
-                } else {
-                    this.env = env;
-                }
+                setEnvironment(env);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -87,7 +83,10 @@ public class VisualSPLReasoner {
         }
 
         this.dumpSetting();
-        guiEnabled = (runnerClass.isAnnotationPresent(GUI.class) && runnerClass.getAnnotation(GUI.class).enabled());
+
+        if(runnerClass.isAnnotationPresent(GUI.class)) {
+            guiEnabled = runnerClass.getAnnotation(GUI.class).enabled();
+        }
         if(guiEnabled) {
             new JFXPanel();
             Arrays.stream(runnerClass.getMethods())
@@ -118,8 +117,26 @@ public class VisualSPLReasoner {
                 .sorted(Comparator.comparingInt(m->m.getAnnotation(Reasoner.class).order()))
                 .forEach(m-> {
                     try {
-                        SPLReasoner reasoner = (SPLReasoner) m.invoke(this);
-                        addReasoner(reasoner);
+                        Object candidates =  m.invoke(this);
+                        List<SPLReasoner> reasonerList;
+                        if(candidates instanceof SPLReasoner[]) {
+                            reasonerList = Arrays.stream((SPLReasoner[])candidates).collect(Collectors.toList());
+                        } else if(candidates instanceof List) {
+                            reasonerList = new ArrayList<>();
+                            for(Object obj :  (List) candidates) {
+                                if(obj instanceof SPLReasoner) {
+                                    reasonerList.add((SPLReasoner) obj);
+                                } else {
+                                    logger.warn("Type of reasoner was not recognized: {}", obj.getClass().getName());
+                                }
+                            }
+                        } else if(candidates instanceof SPLReasoner) {
+                            reasonerList = Collections.singletonList((SPLReasoner)candidates);
+                        } else {
+                            logger.warn("Type of reasoner was not recognized: {}", candidates.getClass().getName());
+                            return;
+                        }
+                        reasonerList.forEach(this::addReasoner);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         return;
@@ -133,13 +150,28 @@ public class VisualSPLReasoner {
                 .forEach(m-> {
                     boolean runOnExit = m.getAnnotation(Finish.class).runOnExit();
                     try {
-                        Object collector = m.invoke(this);
-                        if(collector instanceof Runnable) {
-                            Runnable finisher = (Runnable) collector;
-                            addFinisher(finisher, runOnExit);
-                        } else {
-                            logger.error("Collector not recognized: " + collector.getClass().getName());
+                        Object candidates = m.invoke(this);
+                        List<Runnable> finishers;
+                        if(candidates instanceof Runnable[]) {
+                            finishers = Arrays.stream((Runnable[])candidates).collect(Collectors.toList());
+                        } else if(candidates instanceof  List) {
+                            finishers = new ArrayList<>();
+                            for(Object obj :  (List) candidates) {
+                                if(obj instanceof Runnable) {
+                                    finishers.add((Runnable) obj);
+                                } else {
+                                    logger.warn("Type of finisher was not recognized: {}", obj.getClass().getName());
+                                }
+                            }
                         }
+                        else if(candidates instanceof Runnable) {
+                            Runnable finisher = (Runnable) candidates;
+                            finishers = Collections.singletonList(finisher);
+                        } else {
+                            logger.error("Collector not recognized: " + candidates.getClass().getName());
+                            return;
+                        }
+                        finishers.forEach(finisher -> addFinisher(finisher, runOnExit));
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         return;
@@ -150,6 +182,18 @@ public class VisualSPLReasoner {
 
         this.start();
         this.finish(false);
+    }
+
+    private void setEnvironment(BenchmarkEnvironmentDecoration env) {
+        if(env.getDecoration(BookkeeperEnv.class) == null) {
+            logger.warn("Benchmark environment doesn't have a book keeper. Decorating it with a new BookkeeperEnv");
+            env = new BookkeeperEnv(env);
+        }
+        if(env.getDecoration(ConfiguredEnv.class) == null) {
+            logger.warn("Benchmark environment doesn't have configuration decoration. Decorating it with a new ConfiguredEnv");
+            env = new ConfiguredEnv(env);
+        }
+        this.env = env;
     }
 
     private void dumpSetting() {
@@ -212,7 +256,7 @@ public class VisualSPLReasoner {
         Stream<SPLReasoner> splReasonerStream = parallelExecution ? reasoners.parallelStream() : reasoners.stream();
         BookkeeperEnv bookkeeper = bookkeeper();
         splReasonerStream.forEach(reasoner -> {
-            BenchmarkEnvironment billedEnv =  bookkeeper.billedEnvironment(reasoner.name());
+            BenchmarkEnvironment billedEnv =  bookkeeper.billedEnvironment(env(), reasoner.name());
             SPLReasonerAlgorithm alg = reasoner.algorithm(billedEnv);
             if(guiEnabled) {
                 alg.registerListener(eventRecorder);
@@ -263,7 +307,7 @@ public class VisualSPLReasoner {
     }
 
     public BenchmarkAgent agent() {
-        return agent;
+        return agent.get();
     }
 
     public BenchmarkEnvironment env() {

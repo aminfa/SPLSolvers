@@ -21,15 +21,15 @@ public class BenchmarkBill implements Iterable<BenchmarkEntry> {
     }
 
     public void logEvaluation(FeatureSelection selection, JobReport report) {
-        BenchmarkEntry log = new BenchmarkEntry(selection, report);
-        boolean newLogEntry;
+        boolean newLogEntry = false;
         synchronized (evalCache) {
-            newLogEntry = evalCache.containsKey(selection);
-            if(!newLogEntry) {
+            newLogEntry = !evalCache.containsKey(selection);
+            if(newLogEntry) {
                 evalCache.put(selection, report);
             }
         }
-        if(!newLogEntry) {
+        if(newLogEntry) {
+            BenchmarkEntry log = new BenchmarkEntry(selection, report);
             evalLogs.add(log);
         }
     }

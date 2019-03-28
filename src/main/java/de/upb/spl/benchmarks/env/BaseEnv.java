@@ -6,6 +6,7 @@ import de.upb.spl.benchmarks.BenchmarkBill;
 import de.upb.spl.benchmarks.ReportInterpreter;
 import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.hasco.FM2CM;
+import de.upb.spl.reasoner.SPLReasonerConfiguration;
 import fm.FeatureModel;
 import org.sat4j.core.VecInt;
 
@@ -50,8 +51,14 @@ public class BaseEnv implements BenchmarkEnvironment {
         throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
     }
 
+
     @Override
     public ReportInterpreter interpreter(JobReport jobReport) {
+        throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
+    }
+
+    @Override
+    public SPLReasonerConfiguration configuration() {
         throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
     }
 

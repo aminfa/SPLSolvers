@@ -8,6 +8,7 @@ public class CMUtil {
 
     private final static DefaultMap<FM2CM, ComponentModelCache> cache = new DefaultMap<FM2CM, ComponentModelCache>(ComponentModelCache::new);
 
+    @Deprecated
     public static FeatureSelectionPerformance getBestPerformance(BenchmarkEnvironment env) {
         return cache.get(env.componentModel()).bestPerformance(env.objectives().size());
     }

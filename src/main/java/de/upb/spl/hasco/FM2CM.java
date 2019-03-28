@@ -21,9 +21,11 @@ public abstract class FM2CM {
     private final FeatureModel fm;
 
     private Component dumdum = new Component(HASCOSPLReasoner.DUMMY_COMPONENT);
+    private List<Component> dumdums = new ArrayList<>();
 
     public FM2CM(FeatureModel fm) {
         this.fm = fm;
+        addDummy(dumdum);
     }
 
     public Component get(FeatureTreeNode feature) {
@@ -36,12 +38,16 @@ public abstract class FM2CM {
 
     public Collection<Component> getComponents() {
         List<Component> components = new ArrayList<>(this.components.values());
-        components.add(dumdum);
+        components.addAll(dumdums);
         return components;
     }
 
     public String createParentChildInterfaceName(FeatureTreeNode feature, FeatureTreeNode child) {
         return "i" + id(feature) + "_" + id(child);
+    }
+
+    public void addDummy(Component dummy) {
+        dumdums.add(dummy);
     }
 
     public Component getDummy() {

@@ -5,7 +5,10 @@ import de.upb.spl.benchmarks.drupal.DrupalFilteredObjectives;
 import de.upb.spl.benchmarks.drupal.DrupalModel;
 import de.upb.spl.benchmarks.drupal.DrupalWeightedFaults;
 import de.upb.spl.benchmarks.env.*;
+import de.upb.spl.finish.Finisher;
+import de.upb.spl.finish.NBestSolutions;
 import de.upb.spl.finish.ReasonerRecorder;
+import de.upb.spl.finish.ReasonerSolutionContribution;
 import de.upb.spl.guo11.Guo11;
 import de.upb.spl.hasco.HASCOSPLReasoner;
 import de.upb.spl.henard.Henard;
@@ -24,16 +27,17 @@ import jaicore.search.model.travesaltree.JaicoreNodeInfoGenerator;
 
 import java.util.concurrent.ExecutionException;
 
-@GUI(enabled = false)
+//@GUI(enabled = false)
 public class RunDrupal extends VisualSPLReasoner{
 
 
-    @Env()
+    @Env(parallel = false)
     public BenchmarkEnvironment setupAttributeEnvironment() {
         BenchmarkEnvironment env = new DrupalFilteredObjectives(new DrupalBlackBox());
 //        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.Size);
 //        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.CC);
 //        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.Changes);
+        env = new DrupalWeightedFaults(env);
         return env;
     }
 
@@ -78,10 +82,25 @@ public class RunDrupal extends VisualSPLReasoner{
     }
 
 
-    @Finish
+    @Finish(runOnExit = false)
     public ReasonerRecorder record() {
-        return new ReasonerRecorder(bookkeeper());
+        return new ReasonerRecorder((BenchmarkEnvironmentDecoration) env());
     }
+
+    @Finish(runOnExit = false)
+    public Finisher[] calculateBestN() {
+        NBestSolutions solutions = new NBestSolutions(new DrupalWeightedFaults(env()));
+        ReasonerSolutionContribution contribution =
+                new ReasonerSolutionContribution(
+                        bookkeeper(),
+                        solutions);
+        Finisher[] finishers = {
+                solutions,
+                contribution
+        };
+        return finishers;
+    }
+
 
     @GUI(order = -1)
     public IGUIPlugin timeline() {
@@ -89,11 +108,6 @@ public class RunDrupal extends VisualSPLReasoner{
     }
 
     @GUI(main = true)
-    public IGUIPlugin timelineFaults() {
-        return new ReasonerPerformanceTimeline(new DrupalWeightedFaults(env()));
-    }
-
-    @GUI(main = false, order = 0)
     public IGUIPlugin graph() {
         return new GraphViewPlugin();
     }
@@ -103,15 +117,11 @@ public class RunDrupal extends VisualSPLReasoner{
         return new NodeInfoGUIPlugin<>(new JaicoreNodeInfoGenerator<>(new TFDNodeInfoGenerator()));
     }
 
-    @GUI
+//    @GUI
     public IGUIPlugin paretoFront() {
         return new ParetoFront(env());
     }
 
-    @GUI(enabled = false)
-    public IGUIPlugin hascoStatics() {
-        return new HASCOModelStatisticsPlugin();
-    }
 
     public static void main(String... args) {
         new RunDrupal().setup(RunDrupal.class);

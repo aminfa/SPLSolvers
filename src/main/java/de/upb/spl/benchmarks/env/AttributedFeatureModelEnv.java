@@ -101,6 +101,11 @@ public class AttributedFeatureModelEnv extends BenchmarkEnvironmentDecoration {
             }
         }
 
+        @Override
+        public String group() {
+            return "attributes";
+        }
+
     }
 
 }

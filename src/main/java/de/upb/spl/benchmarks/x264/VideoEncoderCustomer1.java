@@ -56,6 +56,11 @@ public class VideoEncoderCustomer1 extends BenchmarkEnvironmentDecoration {
                 }
 
             }
+
+            @Override
+            public String group() {
+                return VideoEncoderBlackBox.GROUP;
+            }
         };
     }
 

@@ -25,8 +25,8 @@ public class BookkeeperEnv extends BenchmarkEnvironmentDecoration {
         offBooksTab = new BenchmarkBill(null);
     }
 
-    public BookkeeperEnv(BookkeeperEnv bookkeeperEnv, BenchmarkBill bill) {
-        super(bookkeeperEnv);
+    public BookkeeperEnv(BenchmarkEnvironment env, BenchmarkBill bill) {
+        super(env);
         offBooksTab = bill;
     }
 
@@ -99,23 +99,16 @@ public class BookkeeperEnv extends BenchmarkEnvironmentDecoration {
         });
     }
 
-    public BenchmarkEnvironment billedEnvironment(String reasonerName) {
-        return new BookkeeperEnv(this, bill(reasonerName));
+    public synchronized void logEvaluation(FeatureSelection selection, JobReport report) {
+        currentTab().logEvaluation(selection, report);
+        BookkeeperEnv innerBook = ((BenchmarkEnvironmentDecoration)getBaseEnv()).getDecoration(BookkeeperEnv.class);
+        if(innerBook != null) {
+            innerBook.logEvaluation(selection, report);
+        }
     }
 
-    public static class Bill extends BenchmarkEnvironmentDecoration {
-
-        private final BenchmarkBill bill;
-
-        public Bill(BenchmarkEnvironment env, BenchmarkBill bill) {
-            super(env);
-            this.bill = bill;
-        }
-
-        public BenchmarkBill currentTab() {
-            return bill;
-        }
-
+    public BenchmarkEnvironment billedEnvironment(BenchmarkEnvironment base, String reasonerName) {
+        return new BookkeeperEnv(base, bill(reasonerName));
     }
 
 }
