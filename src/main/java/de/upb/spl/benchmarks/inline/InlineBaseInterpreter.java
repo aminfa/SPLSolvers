@@ -2,10 +2,7 @@ package de.upb.spl.benchmarks.inline;
 
 import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.benchmarks.ReportInterpreter;
-import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
-import de.upb.spl.benchmarks.env.FMAttributes;
-import de.upb.spl.benchmarks.env.FMXML;
+import de.upb.spl.benchmarks.env.*;
 import de.upb.spl.util.FileUtil;
 
 import java.io.File;
@@ -20,11 +17,11 @@ public class InlineBaseInterpreter extends BenchmarkEnvironmentDecoration {
 
     public InlineBaseInterpreter() {
         this(
-                new FMAttributes(
+                new ConfiguredEnv(new FMAttributes(
                         new FMXML(FileUtil.getPathOfResource("java-inline/feature-model.xml")),
                         new File(FileUtil.getPathOfResource("java-inline/feature-model.xml"))
                                 .getParent(),
-                        InlineBlackBox.SPL_NAME));
+                        InlineBlackBox.SPL_NAME)));
     }
 
     public InlineBaseInterpreter(BenchmarkEnvironment env) {

@@ -1,5 +1,6 @@
 package de.upb.spl.jumpstarter;
 
+import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
 import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.benchmarks.inline.InlineBenchmarkExecutor;
 import de.upb.spl.benchmarks.inline.InlineBlackBox;
@@ -20,6 +21,7 @@ import jaicore.graphvisualizer.plugin.nodeinfo.NodeInfoGUIPlugin;
 import jaicore.planning.hierarchical.algorithms.forwarddecomposition.graphgenerators.tfd.TFDNodeInfoGenerator;
 import jaicore.search.model.travesaltree.JaicoreNodeInfoGenerator;
 
+@GUI(enabled = false)
 public class RunJavaInline extends VisualSPLReasoner{
 
     @Env(parallel = false)
@@ -69,12 +71,12 @@ public class RunJavaInline extends VisualSPLReasoner{
     }
 
 
-    @Finish
+    @Finish(runOnExit = false)
     public ReasonerRecorder record() {
-        return new ReasonerRecorder(bookkeeper());
+        return new ReasonerRecorder((BenchmarkEnvironmentDecoration) env());
     }
 
-    @Finish(order = 1000, runOnExit = false)
+    // @Finish(order = 1000, runOnExit = false)
     public Shutdown shutdownHook() {
         return new Shutdown();
     }

@@ -2,10 +2,7 @@ package de.upb.spl.benchmarks.x264;
 
 import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.benchmarks.ReportInterpreter;
-import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
-import de.upb.spl.benchmarks.env.FMAttributes;
-import de.upb.spl.benchmarks.env.FMXML;
+import de.upb.spl.benchmarks.env.*;
 import de.upb.spl.util.FileUtil;
 
 import java.io.File;
@@ -16,10 +13,10 @@ public class VideoEncoderBaseInterpreter extends BenchmarkEnvironmentDecoration 
 
 
     public VideoEncoderBaseInterpreter() {
-            this(new FMAttributes(
+            this(new ConfiguredEnv(new FMAttributes(
                             new FMXML(FileUtil.getPathOfResource("x264/feature-model.xml")),
                             new File(FileUtil.getPathOfResource("x264/feature-model.xml")).getParent(),
-                            VideoEncoderBlackBox.SPL_NAME));
+                            VideoEncoderBlackBox.SPL_NAME)));
     }
 
     public VideoEncoderBaseInterpreter(BenchmarkEnvironment env) {

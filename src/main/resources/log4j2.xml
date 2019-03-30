@@ -43,9 +43,15 @@
 		<Logger name="de.upb.spl.guo11" level="warn" additivity="false">
 			<AppenderRef ref="Console" />
 		</Logger>
-		<Logger name="de.upb.spl.benchmarks" level="warn" additivity="false">
-			<AppenderRef ref="Console" />
-			<AppenderRef ref="BenchmarkFile"/>
-		</Logger>
+        <Logger name="de.upb.spl.benchmarks" level="warn" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="BenchmarkFile"/>
+        </Logger>
+        <Logger name="de.upb.spl.benchmarks.inline" level="debug" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="BenchmarkFile"/>
+        </Logger>
+
+
     </Loggers>
 </Configuration>

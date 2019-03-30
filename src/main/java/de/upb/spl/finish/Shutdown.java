@@ -20,10 +20,10 @@ public class Shutdown implements Runnable {
         String operatingSystem = System.getProperty("os.name");
 
         if ("Linux".equals(operatingSystem) || "Mac OS X".equals(operatingSystem)) {
-            shutdownCommand = "sudo shutdown +3";
+            shutdownCommand = "sudo shutdown +10";
         }
         else if ("Windows".equals(operatingSystem)) {
-            shutdownCommand = "shutdown.exe -s -t 5";
+            shutdownCommand = "shutdown.exe -s -t 10";
         }
         else {
             throw new RuntimeException("Unsupported operating system.");

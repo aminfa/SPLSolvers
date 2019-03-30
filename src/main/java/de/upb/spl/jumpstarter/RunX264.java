@@ -1,7 +1,9 @@
 package de.upb.spl.jumpstarter;
 
 import de.upb.spl.benchmarks.VideoEncoderExecutor;
-import de.upb.spl.benchmarks.env.BookkeeperEnv;
+import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
+import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
+import de.upb.spl.benchmarks.env.ConfiguredEnv;
 import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
 import de.upb.spl.finish.ReasonerRecorder;
 import de.upb.spl.finish.Shutdown;
@@ -21,15 +23,20 @@ import jaicore.graphvisualizer.plugin.nodeinfo.NodeInfoGUIPlugin;
 import jaicore.planning.hierarchical.algorithms.forwarddecomposition.graphgenerators.tfd.TFDNodeInfoGenerator;
 import jaicore.search.model.travesaltree.JaicoreNodeInfoGenerator;
 
+@GUI(enabled = false)
 public class RunX264 extends VisualSPLReasoner{
 
-    @Env()
-    public BookkeeperEnv videoEncodingEnv() {
+    @Env(parallel = false)
+    public BenchmarkEnvironmentDecoration videoEncodingEnv() {
         VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(),  System.getProperty("user.home") + "/Documents/BA/x264_1");
-        return new BookkeeperEnv(new VideoEncoderBlackBox(agent()));
+        BenchmarkEnvironmentDecoration env =  new VideoEncoderBlackBox(agent());
+        env.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "100");
+        env.configuration().setProperty("de.upb.spl.benchmark.videoEncoding.RAWSourceFile", "touchdown_pass");
+
+        return env;
     }
 
-    @Reasoner(order = 1)
+    //@Reasoner(order = 1)
     public SPLReasoner guo() {
         Guo11 guo11 = new Guo11();
         return guo11;
@@ -42,7 +49,7 @@ public class RunX264 extends VisualSPLReasoner{
 
 
 
-    @Reasoner(order = 2)
+    //@Reasoner(order = 2)
     public SPLReasoner sayyad() {
         Sayyad sayyad = new Sayyad();
         return sayyad;
@@ -50,7 +57,7 @@ public class RunX264 extends VisualSPLReasoner{
 
 
 
-    @Reasoner(order = 3)
+    //@Reasoner(order = 3)
     public SPLReasoner henard()  {
         Henard henard = new Henard();
         return henard;
@@ -58,7 +65,7 @@ public class RunX264 extends VisualSPLReasoner{
 
 
 
-    @Reasoner(order = 4)
+    //@Reasoner(order = 4)
     public SPLReasoner hierons() {
         Hierons hierons = new Hierons();
         return hierons;
@@ -72,14 +79,14 @@ public class RunX264 extends VisualSPLReasoner{
     }
 
 
-    @Finish(order = 1000)
+    @Finish(order = 1000, runOnExit = false)
     public Shutdown shutdownHook() {
         return new Shutdown();
     }
 
     @Finish
     public ReasonerRecorder record() {
-        return new ReasonerRecorder(bookkeeper());
+        return new ReasonerRecorder((BenchmarkEnvironmentDecoration) env());
     }
 
     @GUI(order = -1)
