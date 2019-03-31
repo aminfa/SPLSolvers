@@ -1,21 +1,16 @@
 package de.upb.spl.finish;
 
-import de.upb.spl.ailibsintegration.ParetoPerformance;
+import de.upb.spl.ailibsintegration.ParetoDominanceOrdering;
 import de.upb.spl.benchmarks.BenchmarkBill;
 import de.upb.spl.benchmarks.BenchmarkEntry;
 import de.upb.spl.benchmarks.BenchmarkHelper;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
-import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.util.DefaultMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.function.Function;
+import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -58,45 +53,53 @@ public class NBestSolutions extends Finisher {
             return;
         }
 
-        DefaultMap<BenchmarkEntry, ParetoPerformance> performanceCache = new DefaultMap<BenchmarkEntry, ParetoPerformance>(
+        Set<BenchmarkEntry> solutionSet = new HashSet<>();
+        DefaultMap<BenchmarkEntry, ParetoDominanceOrdering> performanceCache = new DefaultMap<BenchmarkEntry, ParetoDominanceOrdering>(
                 entry  -> {
                     double[] objectiveValues = BenchmarkHelper.extractEvaluation(
                             env(),
                             entry.report());
-                    return new ParetoPerformance(
+                    return new ParetoDominanceOrdering(
                             0, // solutions dont have violated constraints.
                             objectiveValues);
                 }
         );
 
         Comparator<BenchmarkEntry> entryComparator = Comparator.comparing(performanceCache::get);
-        PriorityQueue<BenchmarkEntry> heap = new PriorityQueue<>(entryComparator);
-        StreamSupport
-                .stream(allSolutions.spliterator(), false)
-                .forEach(heap::add);
-
-        BenchmarkEntry lastSolution = heap.poll();
-        if(lastSolution == null) {
-            return;
-        }
-        solutions.add(lastSolution);
-        while(true) {
-            BenchmarkEntry currentSolution = heap.poll();
-            if(currentSolution == null) {
+        while(solutionSet.size() < solutionCount) {
+            List<BenchmarkEntry> paretoSet = new ArrayList<>();
+            StreamSupport
+                    .stream(allSolutions.spliterator(), false)
+                    .filter(((Predicate<BenchmarkEntry>) solutionSet::contains).negate())
+                    .forEach((newCandidate) -> {
+                        Iterator<BenchmarkEntry> it = paretoSet.iterator();
+                        boolean superiorFound = false;
+                        while (it.hasNext()) {
+                            BenchmarkEntry candidate = it.next();
+                            int comparison = entryComparator.compare(newCandidate, candidate);
+                            if (comparison > 0) {
+                                superiorFound = true;
+                                break;
+                            } else if (comparison < 0) {
+                                it.remove();
+                            }
+                        }
+                        if (!superiorFound) {
+                            paretoSet.add(newCandidate);
+                        }
+                    });
+            if(paretoSet.isEmpty()) {
                 break;
             }
-            if(solutions.size() >= solutionCount && entryComparator.compare(lastSolution, currentSolution) != 0) {
-                break;
-            }
-            solutions.add(currentSolution);
-            lastSolution = currentSolution;
+            solutionSet.addAll(paretoSet);
+            solutions.addAll(paretoSet);
         }
-        logger.info("Select a solution list with size: {}.", solutions.size());
+        logger.info("Selected a solution list with size: {}.", solutionSet.size());
 
         solutionPerformanceJSON = new StringBuilder()
                 .append("{\n\t")
                 .append(
-                solutions.stream()
+                        solutions.stream()
                         .map(performanceCache::get)
                         .map(Object::toString)
                         .collect(Collectors.joining(",\n\t")))

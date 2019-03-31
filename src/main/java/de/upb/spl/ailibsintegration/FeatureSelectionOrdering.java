@@ -2,12 +2,12 @@ package de.upb.spl.ailibsintegration;
 
 import java.util.Arrays;
 
-public class FeatureSelectionPerformance implements Comparable<FeatureSelectionPerformance> {
+public class FeatureSelectionOrdering implements Comparable<FeatureSelectionOrdering> {
 
     protected final int violatedConstraints;
     protected final double[] objectives;
 
-    public FeatureSelectionPerformance(int violatedConstrains, double[] objectives) {
+    public FeatureSelectionOrdering(int violatedConstrains, double[] objectives) {
         this.violatedConstraints = violatedConstrains;
         this.objectives = objectives;
     }
@@ -19,7 +19,7 @@ public class FeatureSelectionPerformance implements Comparable<FeatureSelectionP
      *
      * @param objectivesAndViolatedConstraints objective values and amount of violated constraints.
      */
-    public FeatureSelectionPerformance(double[] objectivesAndViolatedConstraints) {
+    public FeatureSelectionOrdering(double[] objectivesAndViolatedConstraints) {
         int objectiveSize = objectivesAndViolatedConstraints.length -1;
         this.objectives = new double[objectiveSize];
         for (int i = 0; i < objectiveSize; i++) {
@@ -52,7 +52,7 @@ public class FeatureSelectionPerformance implements Comparable<FeatureSelectionP
     a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object
      */
     @Override
-    public int compareTo(FeatureSelectionPerformance other) {
+    public int compareTo(FeatureSelectionOrdering other) {
         int c = Integer.compare(violatedConstraints, other.violatedConstraints);
         if(c == 0) {
             boolean negative = false;

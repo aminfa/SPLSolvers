@@ -87,3 +87,34 @@ task jarSeedGenerator(type: Jar, dependsOn: shadowJar) {
     FileTree zips = zipTree(shadowJar.archivePath)
     from zips
 }
+
+
+task jarX264Benchmark(type: Jar, dependsOn: shadowJar) {
+    archiveName = ("x264Benchmark.jar")
+    destinationDir = file("$rootDir")
+    manifest {
+        attributes 'Main-Class': 'de.upb.spl.jumpstarter.RunX264'
+    }
+    FileTree zips = zipTree(shadowJar.archivePath)
+    from zips
+}
+
+task jarX264HeadlessBenchmark(type: Jar, dependsOn: shadowJar) {
+    archiveName = ("x264Benchmark-Headless.jar")
+    destinationDir = file("$rootDir")
+    manifest {
+        attributes 'Main-Class': 'de.upb.spl.jumpstarter.RunX264Headless'
+    }
+    FileTree zips = zipTree(shadowJar.archivePath)
+    from zips
+}
+
+task jarJVMBenchmark(type: Jar, dependsOn: shadowJar) {
+    archiveName = ("JVMBenchmark.jar")
+    destinationDir = file("$rootDir")
+    manifest {
+        attributes 'Main-Class': 'de.upb.spl.jumpstarter.RunJavaInline'
+    }
+    FileTree zips = zipTree(shadowJar.archivePath)
+    from zips
+}

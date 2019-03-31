@@ -1,19 +1,6 @@
 <feature_model name="video encoder">
 <feature_tree>
 :r Root
-	:m Compile
-		:g [1,1]
-			: bit_depth_8
-			: bit_depth_10
-		:g [1,1]
-			: format_420
-			: format_422
-			: format_444
-		:o interlaced
-		:o asm
-		:o strip
-		:o lto
-		:o pic
 	:m Runtime
 		:g [1,1]
 			: qp
@@ -60,6 +47,19 @@
 			: pbratio_1_8
 			: pbratio_2_3
 		:o two_pass
+	:m Compile
+		:g [1,1]
+			: bit_depth_8
+			: bit_depth_10
+		:g [1,1]
+			: format_420
+			: format_422
+			: format_444
+		:o interlaced
+		:o asm
+		:o strip
+		:o lto
+		:o pic
 </feature_tree>
 <constraints>
 	c1: ~crf or ~two_pass

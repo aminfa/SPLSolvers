@@ -23,7 +23,6 @@ import jaicore.graphvisualizer.plugin.nodeinfo.NodeInfoGUIPlugin;
 import jaicore.planning.hierarchical.algorithms.forwarddecomposition.graphgenerators.tfd.TFDNodeInfoGenerator;
 import jaicore.search.model.travesaltree.JaicoreNodeInfoGenerator;
 
-@GUI(enabled = false)
 public class RunX264 extends VisualSPLReasoner{
 
     @Env(parallel = false)
@@ -31,7 +30,7 @@ public class RunX264 extends VisualSPLReasoner{
         VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(),  System.getProperty("user.home") + "/Documents/BA/x264_1");
         BenchmarkEnvironmentDecoration env =  new VideoEncoderBlackBox(agent());
         env.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "100");
-        env.configuration().setProperty("de.upb.spl.benchmark.videoEncoding.RAWSourceFile", "touchdown_pass");
+        env.configuration().setProperty("de.upb.spl.benchmark.videoEncoding.RAWSourceFile", "ducks_take_off");
 
         return env;
     }

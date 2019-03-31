@@ -1,25 +1,25 @@
 package de.upb.spl.ailibsintegration;
 
-public class CountingPerformance extends FeatureSelectionPerformance {
-    public CountingPerformance(int violatedConstrains, double[] objectives) {
+public class CountOrdering extends FeatureSelectionOrdering {
+    public CountOrdering(int violatedConstrains, double[] objectives) {
         super(violatedConstrains, objectives);
     }
 
-    public CountingPerformance(double[] objectivesAndViolatedConstraints) {
+    public CountOrdering(double[] objectivesAndViolatedConstraints) {
         super(objectivesAndViolatedConstraints);
     }
 
     @Override
-    public int compareTo(FeatureSelectionPerformance other) {
-        if (!(other instanceof CountingPerformance)) {
+    public int compareTo(FeatureSelectionOrdering other) {
+        if (!(other instanceof CountOrdering)) {
             return super.compareTo(other);
         } else {
-            return this.compareTo((CountingPerformance) other);
+            return this.compareTo((CountOrdering) other);
         }
     }
 
 //    @Override
-    public int compareTo(CountingPerformance other) {
+    public int compareTo(CountOrdering other) {
         int paretoEquality = super.compareTo(other);
         if(paretoEquality != 0) {
             return paretoEquality;

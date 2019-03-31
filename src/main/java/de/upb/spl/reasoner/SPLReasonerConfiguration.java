@@ -16,7 +16,7 @@ public interface SPLReasonerConfiguration extends Mutable {
      * Universal
      */
     @Key("de.upb.spl.SPLReasoner.evaluations")
-    @DefaultValue("100")
+    @DefaultValue("1000")
     Integer getEvaluationPermits();
 
     @Key("de.upb.spl.benchmark.videoEncoding.RAWSourceFile")
@@ -32,6 +32,10 @@ public interface SPLReasonerConfiguration extends Mutable {
     @DefaultValue("jmh.Hanoi")
     String getInlineBenchmarkTarget();
 
+    @Key("de.upb.spl.eval.solutionCount")
+    @DefaultValue("20")
+    Integer getEvalSolutionCount();
+
     /*
      * Guo
      */
@@ -40,7 +44,7 @@ public interface SPLReasonerConfiguration extends Mutable {
     Integer getGUOPopulationSize();
 
     @Key("de.upb.spl.SPLReasoner.Guo11.d")
-    @DefaultValue("0.6")
+    @DefaultValue("0.5")
     Double getGUOD();
 
 
@@ -48,14 +52,14 @@ public interface SPLReasonerConfiguration extends Mutable {
      * Basic Ibea
      */
     @Key("de.upb.spl.SPLReasoner.ibea.populationSize")
-    @DefaultValue("30")
+    @DefaultValue("300")
     Integer getBasicIbeaPopulationSize();
     @Key("de.upb.spl.SPLReasoner.ibea.indicator")
     @DefaultValue("epsilon")
     String getBasicIbeaIndicator();
 
     @Key("de.upb.spl.SPLReasoner.ibea.p.bitflip")
-    @DefaultValue("0.01")
+    @DefaultValue("0.005")
     Double getBasicIbeaBitFlipProbability();
 
     @Key("de.upb.spl.SPLReasoner.ibea.p.singlePointCO")
@@ -66,7 +70,7 @@ public interface SPLReasonerConfiguration extends Mutable {
      * Sayyad
      */
     @Key("de.upb.spl.SPLReasoner.sayyad.populationSize")
-    @DefaultValue("50")
+    @DefaultValue("300")
     Integer getSayyadPopulationSize();
 
 
@@ -78,15 +82,15 @@ public interface SPLReasonerConfiguration extends Mutable {
      * Hernard
      */
     @Key("de.upb.spl.SPLReasoner.Hernard.populationSize")
-    @DefaultValue("30")
+    @DefaultValue("300")
     Integer getHenardPopulationSize();
 
     @Key("de.upb.spl.SPLReasoner.Henard.p.smartMutation")
-    @DefaultValue("0.01")
+    @DefaultValue("0.001")
     Double getHenardSmartMutationProbability();
 
     @Key("de.upb.spl.SPLReasoner.Henard.p.smartReplacement")
-    @DefaultValue("0.01")
+    @DefaultValue("0.001")
     Double getHenardSmartReplacementProbability();
 
     @Key("de.upb.spl.SPLReasoner.Hernard.seedCount")
@@ -97,7 +101,7 @@ public interface SPLReasonerConfiguration extends Mutable {
      * Hierons
      */
     @Key("de.upb.spl.SPLReasoner.Hierons.populationSize")
-    @DefaultValue("30")
+    @DefaultValue("300")
     Integer getHieronsPopulationSize();
 
     @Key("de.upb.spl.SPLReasoner.Hierons.p.smartMutation")

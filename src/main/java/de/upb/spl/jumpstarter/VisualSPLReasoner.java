@@ -46,6 +46,7 @@ public class VisualSPLReasoner {
 
     private boolean parallelExecution = false;
     private boolean guiEnabled = true;
+    private AlgorithmVisualizationWindow gui;
 
     public final void setup(Class<? extends VisualSPLReasoner> runnerClass) {
         Optional<Method> agentCreator = Arrays.stream(runnerClass.getMethods())
@@ -184,6 +185,7 @@ public class VisualSPLReasoner {
 
         this.start();
         this.finish(false);
+//        this.gui.getStage().showAndWait();
     }
 
     private void setEnvironment(BenchmarkEnvironmentDecoration env) {
@@ -213,7 +215,7 @@ public class VisualSPLReasoner {
         {
             public void run()
             {
-                logger.info("Received shutdown signal:  {}.");
+                logger.info("Received shutdown signal.");
                 if(!finished) {
                     finish(true);
                 }
@@ -238,7 +240,8 @@ public class VisualSPLReasoner {
 
         final IGUIPlugin[] tabs = this.tabs.toArray(new IGUIPlugin[0]);
         logger.info("Creating GUI with {} many tabs.", tabs.length);
-        Platform.runLater(() -> new AlgorithmVisualizationWindow(eventRecorder.getHistory(), main, tabs).run());
+        gui = new AlgorithmVisualizationWindow(eventRecorder.getHistory(), main, tabs);
+        Platform.runLater(gui);
     }
 
 	private void addReasoner(SPLReasoner reasoner) {

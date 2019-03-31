@@ -2,7 +2,7 @@ package de.upb.spl.hasco;
 
 import com.google.common.eventbus.Subscribe;
 import de.upb.spl.FeatureSelection;
-import de.upb.spl.ailibsintegration.FeatureSelectionPerformance;
+import de.upb.spl.ailibsintegration.FeatureSelectionOrdering;
 import de.upb.spl.ailibsintegration.FeatureComponentEvaluator;
 import de.upb.spl.ailibsintegration.SPLReasonerAlgorithm;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
@@ -12,7 +12,6 @@ import hasco.core.SoftwareConfigurationProblem;
 import hasco.model.ComponentInstance;
 import hasco.variants.forwarddecomposition.HASCOViaFDAndBestFirst;
 import hasco.variants.forwarddecomposition.HASCOViaFDAndBestFirstFactory;
-import jaicore.basic.TimeOut;
 import jaicore.basic.algorithm.AlgorithmExecutionCanceledException;
 import jaicore.basic.algorithm.AlgorithmState;
 import jaicore.basic.algorithm.events.AlgorithmEvent;
@@ -21,9 +20,7 @@ import jaicore.basic.algorithm.exceptions.AlgorithmException;
 import jaicore.planning.hierarchical.algorithms.forwarddecomposition.graphgenerators.tfd.TFDNode;
 import jaicore.search.problemtransformers.GraphSearchProblemInputToGraphSearchWithSubpathEvaluationInputTransformer;
 import jaicore.search.problemtransformers.GraphSearchProblemInputToGraphSearchWithSubpathEvaluationInputTransformerViaRDFS;
-import org.moeaframework.core.Solution;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.TimeoutException;
 
@@ -41,7 +38,7 @@ public class HASCOSPLReasoner implements SPLReasoner {
         return NAME;
     }
 
-    class FeatureSelectionProblem extends SoftwareConfigurationProblem<FeatureSelectionPerformance> {
+    class FeatureSelectionProblem extends SoftwareConfigurationProblem<FeatureSelectionOrdering> {
         private final BenchmarkEnvironment env;
         public FeatureSelectionProblem(BenchmarkEnvironment env) {
             super(env.componentModel().getComponents(), env.componentModel().rootInterface(), new FeatureComponentEvaluator(env));
@@ -50,19 +47,19 @@ public class HASCOSPLReasoner implements SPLReasoner {
     }
 
     class HASCOWrap extends SPLReasonerAlgorithm {
-        private final HASCOViaFDAndBestFirst<FeatureSelectionPerformance> hasco;
+        private final HASCOViaFDAndBestFirst<FeatureSelectionOrdering> hasco;
         public HASCOWrap(BenchmarkEnvironment env) {
             super(env, name());
             /*
              * Create HASCO factory.
              */
-            HASCOViaFDAndBestFirstFactory<FeatureSelectionPerformance> hascoFactory =
+            HASCOViaFDAndBestFirstFactory<FeatureSelectionOrdering> hascoFactory =
                     new HASCOViaFDAndBestFirstFactory<>();
             if(env.configuration().getHascoRandomSearch()) {
                 /*
                  * Create random node evaluator:
                  */
-                GraphSearchProblemInputToGraphSearchWithSubpathEvaluationInputTransformerViaRDFS <TFDNode, String, FeatureSelectionPerformance>
+                GraphSearchProblemInputToGraphSearchWithSubpathEvaluationInputTransformerViaRDFS <TFDNode, String, FeatureSelectionOrdering>
                         randomNodes =
                         new GraphSearchProblemInputToGraphSearchWithSubpathEvaluationInputTransformerViaRDFS<>(
                                 null, // null safe
@@ -76,7 +73,7 @@ public class HASCOSPLReasoner implements SPLReasoner {
                 /*
                  * DFS with 0 heuristik
                  */
-                GraphSearchProblemInputToGraphSearchWithSubpathEvaluationInputTransformer <TFDNode, String, FeatureSelectionPerformance>
+                GraphSearchProblemInputToGraphSearchWithSubpathEvaluationInputTransformer <TFDNode, String, FeatureSelectionOrdering>
                         dfs =
                         new GraphSearchProblemInputToGraphSearchWithSubpathEvaluationInputTransformer<>(
                                 n -> CMUtil.getBestPerformance(env));
@@ -86,8 +83,8 @@ public class HASCOSPLReasoner implements SPLReasoner {
             /*
              * Provide the component model and an empty map for feature parameters; there are no parameters to be refined.
              */
-            RefinementConfiguredSoftwareConfigurationProblem<FeatureSelectionPerformance> problem
-                    = new RefinementConfiguredSoftwareConfigurationProblem<FeatureSelectionPerformance>(
+            RefinementConfiguredSoftwareConfigurationProblem<FeatureSelectionOrdering> problem
+                    = new RefinementConfiguredSoftwareConfigurationProblem<FeatureSelectionOrdering>(
                     new FeatureSelectionProblem(env), Collections.EMPTY_MAP);
             hascoFactory.setProblemInput(problem);
             /*

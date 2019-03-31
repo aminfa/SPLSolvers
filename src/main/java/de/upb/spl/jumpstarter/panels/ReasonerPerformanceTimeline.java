@@ -1,7 +1,7 @@
 package de.upb.spl.jumpstarter.panels;
 
 import de.upb.spl.ailibsintegration.FeatureSelectionEvaluatedEvent;
-import de.upb.spl.ailibsintegration.FeatureSelectionPerformance;
+import de.upb.spl.ailibsintegration.FeatureSelectionOrdering;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.util.FileUtil;
 import de.upb.spl.util.Iterators;
@@ -243,12 +243,12 @@ public class ReasonerPerformanceTimeline implements IGUIPlugin,  IGUIPluginContr
     }
 
     private class MarkedDataPoint {
-        FeatureSelectionPerformance dataPoint;
+        FeatureSelectionOrdering dataPoint;
         boolean marked = false;
         void clearMark() {
             marked = false;
         }
-        void setData(FeatureSelectionPerformance data) {
+        void setData(FeatureSelectionOrdering data) {
             this.dataPoint = data;
         }
         void mark() {

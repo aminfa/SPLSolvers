@@ -96,11 +96,6 @@ public class RunDrupalEval extends VisualSPLReasoner{
         return new ParetoFront(env());
     }
 
-//    @GUI
-    public IGUIPlugin timelineCustomer1() {
-        return new ReasonerPerformanceTimeline(new VideoEncoderCustomer1(env()));
-    }
-
     @GUI(main = true)
     public IGUIPlugin timelineFaults() {
         return new ReasonerPerformanceTimeline(new DrupalWeightedFaults(env()));
