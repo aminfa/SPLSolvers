@@ -20,7 +20,7 @@ public interface SPLReasonerConfiguration extends Mutable {
     Integer getEvaluationPermits();
 
     @Key("de.upb.spl.benchmark.videoEncoding.RAWSourceFile")
-    @DefaultValue("touchdown_pass")
+    @DefaultValue("ducks_take_off")
     String getVideoSourceFile();
 
 
@@ -29,7 +29,7 @@ public interface SPLReasonerConfiguration extends Mutable {
     Integer getInlineBenchmarkWarmups();
 
     @Key("de.upb.spl.benchmark.inline.target")
-    @DefaultValue("jmh.Hanoi")
+    @DefaultValue("jmh.Fibonacci")
     String getInlineBenchmarkTarget();
 
     /*
@@ -149,4 +149,6 @@ public interface SPLReasonerConfiguration extends Mutable {
     void list(PrintStream out);
     void list(PrintWriter out);
 
+    @DefaultValue("10")
+    Integer getEvalSolutionCount();
 }
