@@ -23,24 +23,24 @@ import jaicore.graphvisualizer.plugin.nodeinfo.NodeInfoGUIPlugin;
 import jaicore.planning.hierarchical.algorithms.forwarddecomposition.graphgenerators.tfd.TFDNodeInfoGenerator;
 import jaicore.search.model.travesaltree.JaicoreNodeInfoGenerator;
 
+@GUI(enabled = true)
 public class RunX264 extends VisualSPLReasoner{
 
     @Env(parallel = false)
     public BenchmarkEnvironmentDecoration videoEncodingEnv() {
         VideoEncoderExecutor executor1 = new VideoEncoderExecutor(agent(),  System.getProperty("user.home") + "/Documents/BA/x264_1");
         BenchmarkEnvironmentDecoration env =  new VideoEncoderBlackBox(agent());
-        env.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "100");
-        env.configuration().setProperty("de.upb.spl.benchmark.videoEncoding.RAWSourceFile", "ducks_take_off");
-
+        env.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "60");
+        env.configuration().setProperty("de.upb.spl.SPLReasoner.Hasco.randomSearchSamples", "1");
         return env;
     }
 
-    //@Reasoner(order = 1)
+    @Reasoner(order = 1)
     public SPLReasoner guo() {
         Guo11 guo11 = new Guo11();
         return guo11;
     }
-//    @Reasoner(order = 1, enabled = true)
+// @Reasoner(order = 1, enabled = true)
     public SPLReasoner ibea() {
         BasicIbea basicIbea = new BasicIbea();
         return basicIbea;
@@ -48,7 +48,7 @@ public class RunX264 extends VisualSPLReasoner{
 
 
 
-    //@Reasoner(order = 2)
+    @Reasoner(order = 2)
     public SPLReasoner sayyad() {
         Sayyad sayyad = new Sayyad();
         return sayyad;
@@ -56,7 +56,7 @@ public class RunX264 extends VisualSPLReasoner{
 
 
 
-    //@Reasoner(order = 3)
+    @Reasoner(order = 3)
     public SPLReasoner henard()  {
         Henard henard = new Henard();
         return henard;
@@ -64,7 +64,7 @@ public class RunX264 extends VisualSPLReasoner{
 
 
 
-    //@Reasoner(order = 4)
+    @Reasoner(order = 4)
     public SPLReasoner hierons() {
         Hierons hierons = new Hierons();
         return hierons;
