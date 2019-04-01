@@ -8,6 +8,7 @@ sourceSets {
     main {
         resources {
             srcDir 'src/main/fxml'
+            srcDir 'spl'
         }
     }
 }
@@ -80,9 +81,19 @@ task jarAttrGenerator(type: Jar, dependsOn: shadowJar) {
 
 task jarSeedGenerator(type: Jar, dependsOn: shadowJar) {
     archiveName = ("RichSeedGenerator.jar")
+    destinationDir = file("$rootDir")
+    manifest {
+        attributes 'Main-Class': 'de.upb.spl.sampler.RichSeedGenerator'
+    }
+    FileTree zips = zipTree(shadowJar.archivePath)
+    from zips
+}
+
+task jarSatSampler(type: Jar, dependsOn: shadowJar) {
+    archiveName = ("RandomSATSampler.jar")
     destinationDir = file("$rootDir/src/main/resources/attributes")
     manifest {
-        attributes 'Main-Class': 'de.upb.spl.RichSeedGenerator'
+        attributes 'Main-Class': 'de.upb.spl.sampler.RandomSATSampler'
     }
     FileTree zips = zipTree(shadowJar.archivePath)
     from zips

@@ -153,6 +153,4 @@ public interface SPLReasonerConfiguration extends Mutable {
     void list(PrintStream out);
     void list(PrintWriter out);
 
-    @DefaultValue("10")
-    Integer getEvalSolutionCount();
 }

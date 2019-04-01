@@ -42,6 +42,15 @@ public class FeatureSelectionOrdering implements Comparable<FeatureSelectionOrde
         return objectives;
     }
 
+    public boolean hasEmptyResults() {
+        for (int i = 0; i < objectives.length; i++) {
+            if(Double.isNaN(objectives[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Implements the compareTo method of Comparable.
      * This method will first sort feature selections based on the amount of constraint violations.
@@ -54,6 +63,20 @@ public class FeatureSelectionOrdering implements Comparable<FeatureSelectionOrde
     @Override
     public int compareTo(FeatureSelectionOrdering other) {
         int c = Integer.compare(violatedConstraints, other.violatedConstraints);
+
+        boolean hasEmptyResults = this.hasEmptyResults();
+        boolean otherHashEmptyResults = other.hasEmptyResults();
+
+        if(hasEmptyResults || otherHashEmptyResults)
+            if(otherHashEmptyResults)
+                if(hasEmptyResults)
+                    return 0;
+                else
+                    return -1;
+            else
+                return 1;
+
+
         if(c == 0) {
             boolean negative = false;
             boolean positive = false;

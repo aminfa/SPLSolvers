@@ -1,4 +1,4 @@
-package de.upb.spl.sayyad;
+package de.upb.spl.samplers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

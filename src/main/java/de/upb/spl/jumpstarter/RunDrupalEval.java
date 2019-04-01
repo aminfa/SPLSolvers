@@ -6,7 +6,6 @@ import de.upb.spl.benchmarks.drupal.DrupalModel;
 import de.upb.spl.benchmarks.drupal.DrupalWeightedFaults;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.ConfiguredEnv;
-import de.upb.spl.benchmarks.x264.VideoEncoderCustomer1;
 import de.upb.spl.finish.Finisher;
 import de.upb.spl.finish.NBestSolutions;
 import de.upb.spl.finish.ReasonerSolutionContribution;

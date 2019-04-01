@@ -71,6 +71,7 @@ public class NBestSolutions extends Finisher {
             StreamSupport
                     .stream(allSolutions.spliterator(), false)
                     .filter(((Predicate<BenchmarkEntry>) solutionSet::contains).negate())
+                    .filter(entry -> !performanceCache.get(entry).hasEmptyResults())
                     .forEach((newCandidate) -> {
                         Iterator<BenchmarkEntry> it = paretoSet.iterator();
                         boolean superiorFound = false;

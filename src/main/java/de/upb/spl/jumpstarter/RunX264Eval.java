@@ -28,7 +28,7 @@ public class RunX264Eval extends VisualSPLReasoner{
         BenchmarkEnvironment env =  new VideoEncoderBaseInterpreter();
         env.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "60");
         env.configuration().setProperty("de.upb.spl.eval.solutionCount", "10");
-        env.configuration().setProperty("de.upb.spl.benchmark.videoEncoding.RAWSourceFile", "touchdown_pass");
+        env.configuration().setProperty("de.upb.spl.benchmark.videoEncoding.RAWSourceFile", "ducks_take_off");
         return env;
     }
 

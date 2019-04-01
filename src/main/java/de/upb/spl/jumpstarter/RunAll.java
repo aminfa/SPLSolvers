@@ -7,7 +7,6 @@ import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
 import de.upb.spl.finish.ReasonerRecorder;
 import de.upb.spl.finish.Shutdown;
 import de.upb.spl.guo11.Guo11;
-import de.upb.spl.hasco.HASCOSPLReasoner;
 import de.upb.spl.henard.Henard;
 import de.upb.spl.hierons.Hierons;
 import de.upb.spl.ibea.BasicIbea;

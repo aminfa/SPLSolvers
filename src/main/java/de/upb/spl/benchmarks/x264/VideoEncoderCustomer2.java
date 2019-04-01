@@ -23,7 +23,7 @@ public class VideoEncoderCustomer2 extends BenchmarkEnvironmentDecoration {
         RAW_VIDEO_SIZE.put("ducks_take_off", 675008.);
     }
     private final double rawSize;
-    private final double compressionThreshold = 0.002;
+    private final double compressionThreshold = 0.005;
 
     public VideoEncoderCustomer2(BenchmarkEnvironment env) {
         super(env);

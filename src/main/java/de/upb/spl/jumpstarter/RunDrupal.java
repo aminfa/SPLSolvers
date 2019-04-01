@@ -18,7 +18,6 @@ import de.upb.spl.jumpstarter.panels.ParetoFront;
 import de.upb.spl.jumpstarter.panels.ReasonerPerformanceTimeline;
 import de.upb.spl.reasoner.SPLReasoner;
 import de.upb.spl.sayyad.Sayyad;
-import hasco.gui.statsplugin.HASCOModelStatisticsPlugin;
 import jaicore.graphvisualizer.plugin.IGUIPlugin;
 import jaicore.graphvisualizer.plugin.graphview.GraphViewPlugin;
 import jaicore.graphvisualizer.plugin.nodeinfo.NodeInfoGUIPlugin;

@@ -1,9 +1,7 @@
 package de.upb.spl.jumpstarter;
 
 import de.upb.spl.benchmarks.VideoEncoderExecutor;
-import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
-import de.upb.spl.benchmarks.env.ConfiguredEnv;
 import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
 import de.upb.spl.finish.ReasonerRecorder;
 import de.upb.spl.finish.Shutdown;
