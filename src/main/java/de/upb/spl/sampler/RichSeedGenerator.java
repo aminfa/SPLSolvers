@@ -1,4 +1,4 @@
-package de.upb.spl.samplers;
+package de.upb.spl.sampler;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

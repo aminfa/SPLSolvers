@@ -31,7 +31,7 @@ public class VisualSPLReasoner {
 
     private Cache<BenchmarkAgent> agent;
 
-    private BenchmarkEnvironmentDecoration env;
+    private BenchmarkEnvironment env;
 
     private AlgorithmEventHistoryRecorder eventRecorder;
 
@@ -71,7 +71,7 @@ public class VisualSPLReasoner {
         if(envCreator.isPresent()) {
             parallelExecution = envCreator.get().getAnnotation(Env.class).parallel();
             try {
-                BenchmarkEnvironmentDecoration env = (BenchmarkEnvironmentDecoration) envCreator.get().invoke(this);
+                BenchmarkEnvironment env = (BenchmarkEnvironment) envCreator.get().invoke(this);
                 setEnvironment(env);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -188,7 +188,7 @@ public class VisualSPLReasoner {
 //        this.gui.getStage().showAndWait();
     }
 
-    private void setEnvironment(BenchmarkEnvironmentDecoration env) {
+    private void setEnvironment(BenchmarkEnvironment env) {
         if(env.getDecoration(BookkeeperEnv.class) == null) {
             logger.warn("Benchmark environment doesn't have a book keeper. Decorating it with a new BookkeeperEnv");
             env = new BookkeeperEnv(env);
@@ -320,8 +320,7 @@ public class VisualSPLReasoner {
     }
 
     public BookkeeperEnv bookkeeper() {
-        return ((BenchmarkEnvironmentDecoration)env()).getDecoration(BookkeeperEnv.class);
+        return (env()).getDecoration(BookkeeperEnv.class);
     }
-
 
 }

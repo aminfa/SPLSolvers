@@ -75,15 +75,14 @@ public class BasicIbea extends EAReasoner {
         @Override
         public void evaluate(Solution solution) {
             solution.setObjectives(evaluateAndCountViolatedConstraints(env,
-                    assemble((BinaryVariable) solution.getVariable(0)),
-                    NAME));
+                    assemble((BinaryVariable) solution.getVariable(0))
+            ));
         }
     }
 
 
     public static double[] evaluateAndCountViolatedConstraints(BenchmarkEnvironment env,
-                                                           FeatureSelection selection,
-                                                           String clientName) {
+                                                               FeatureSelection selection) {
         double [] objectives = new double[env.objectives().size() + 1];
         int violations = env.sat().violatedConstraints(selection);
         objectives[objectives.length-1] =violations;

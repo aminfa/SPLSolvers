@@ -44,4 +44,6 @@ public interface BenchmarkEnvironment {
     default boolean isRaw() {
         return false;
     }
+
+    <I extends BenchmarkEnvironment> I getDecoration(Class<I> clazz);
 }

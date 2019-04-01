@@ -17,14 +17,14 @@ import java.util.concurrent.Future;
 public class BenchmarkEnvironmentDecoration implements BenchmarkEnvironment {
     private final BenchmarkEnvironment env;
 
-    public <I> I getDecoration(Class<? extends BenchmarkEnvironment> clazz) {
+    public <I extends BenchmarkEnvironment> I getDecoration(Class<I> clazz) {
         if(clazz.isInstance(this)) {
             return (I) this;
         }
         if(clazz.isInstance(env)) {
             return (I) env;
         } else if(env instanceof BenchmarkEnvironmentDecoration) {
-            return ((BenchmarkEnvironmentDecoration) env).getDecoration(clazz);
+            return (env).getDecoration(clazz);
         } else {
             return null;
         }

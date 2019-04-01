@@ -147,9 +147,5 @@ public abstract class EAReasoner implements SPLReasoner {
             ea.step(); // EVO ALGORITHM GENERATION STEP
         }
 
-        @Override
-        protected FeatureSelection best() {
-            return assemble(getInput(), bestPerformer(getEA().getProblem(), getEA().getPopulation()));
-        }
     }
 }

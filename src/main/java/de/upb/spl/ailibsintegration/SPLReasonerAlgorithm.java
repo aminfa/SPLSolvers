@@ -1,6 +1,7 @@
 package de.upb.spl.ailibsintegration;
 
 import de.upb.spl.FeatureSelection;
+import de.upb.spl.FeatureSet;
 import de.upb.spl.benchmarks.BenchmarkEntry;
 import de.upb.spl.benchmarks.BenchmarkHelper;
 import de.upb.spl.benchmarks.env.*;
@@ -14,6 +15,7 @@ import jaicore.basic.algorithm.exceptions.AlgorithmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 public abstract class SPLReasonerAlgorithm extends AAlgorithm<BenchmarkEnvironment, FeatureSelection> {
@@ -123,6 +125,8 @@ public abstract class SPLReasonerAlgorithm extends AAlgorithm<BenchmarkEnvironme
      *
      * @return
      */
-    protected abstract FeatureSelection best();
-
+    protected FeatureSelection best() {
+        logger.warn("SPL reasoner doesn't know which selection is the best. Returning a random solution.");
+        return getInput().getDecoration(BookkeeperEnv.class).currentTab().iterator().next().selection();
+    }
 }

@@ -81,7 +81,7 @@ public class ReasonerReplayer implements SPLReasoner {
 
         public ReplayAlgorithm(BenchmarkEnvironment env) {
             super(
-                    ((BenchmarkEnvironmentDecoration)env).getDecoration(BookkeeperEnv.class),
+                    (env).getDecoration(BookkeeperEnv.class),
                     reasonerName);
         }
 
@@ -117,12 +117,6 @@ public class ReasonerReplayer implements SPLReasoner {
             replayIndex++;
         }
 
-        @Override
-        protected FeatureSelection best() {
-//            throw new UnsupportedOperationException("Replay doesn't know which selection is the best.");
-            logger.warn("Replay doesn't know which selection is the best. Returning last record.");
-            return new FeatureSet(getInput().model(), ((List<String>) recordings.get(recordings.size() - 1).get("selection")));
-        }
     }
 
     public static List<SPLReasoner> loadReplays(BenchmarkEnvironment env, String replayHome, boolean nameToFilename) {

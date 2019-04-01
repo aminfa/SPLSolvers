@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.upb.spl.benchmarks.BenchmarkBill;
 import de.upb.spl.benchmarks.BenchmarkEntry;
+import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
 import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.util.Cache;
@@ -23,21 +24,21 @@ public class ReasonerSolutionContribution extends Finisher {
 
     private Map<String, Double> percentageContribution;
 
-    public ReasonerSolutionContribution(BenchmarkEnvironmentDecoration env,
+    public ReasonerSolutionContribution(BenchmarkEnvironment env,
                                         List<BenchmarkEntry> solutionList) {
-        super(env.getDecoration(BookkeeperEnv.class));
+        super(env);
         solutions = Cache.of(solutionList);
     }
 
-    public ReasonerSolutionContribution(BenchmarkEnvironmentDecoration env,
+    public ReasonerSolutionContribution(BenchmarkEnvironment env,
                                         final NBestSolutions nBestSolutions) {
-        super(env.getDecoration(BookkeeperEnv.class));
+        super(env);
         this.solutions = new Cache<>(
                 () -> Objects.requireNonNull(nBestSolutions.getSolutions()));
     }
 
     public BookkeeperEnv env() {
-        return (BookkeeperEnv) super.env();
+        return super.env().getDecoration(BookkeeperEnv.class);
     }
 
     public Map<String, Double> getContributions() {

@@ -1,6 +1,5 @@
 package de.upb.spl.reasoner;
 
-import jmetal.encodings.variable.Int;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Mutable;
 
@@ -20,7 +19,7 @@ public interface SPLReasonerConfiguration extends Mutable {
     Integer getEvaluationPermits();
 
     @Key("de.upb.spl.benchmark.videoEncoding.RAWSourceFile")
-    @DefaultValue("ducks_take_off")
+    @DefaultValue("flower_garden")
     String getVideoSourceFile();
 
 
@@ -152,5 +151,7 @@ public interface SPLReasonerConfiguration extends Mutable {
 
     void list(PrintStream out);
     void list(PrintWriter out);
+
+    String setProperty(String propertyName, String propertyValue);
 
 }

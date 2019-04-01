@@ -8,8 +8,6 @@ import hasco.model.ComponentInstance;
 import jaicore.basic.IObjectEvaluator;
 import jaicore.basic.algorithm.exceptions.ObjectEvaluationFailedException;
 
-import static de.upb.spl.hasco.HASCOSPLReasoner.NAME;
-
 public class FeatureComponentEvaluator implements IObjectEvaluator<ComponentInstance, FeatureSelectionOrdering> {
 
     private final FM2CM fm2CM;
@@ -24,7 +22,7 @@ public class FeatureComponentEvaluator implements IObjectEvaluator<ComponentInst
     public FeatureSelectionOrdering evaluate(ComponentInstance object) throws InterruptedException, ObjectEvaluationFailedException {
         try {
             FeatureSelection selection = fm2CM.transform(object);
-            return new ParetoDominanceOrdering(BasicIbea.evaluateAndCountViolatedConstraints(env, selection, NAME));
+            return new ParetoDominanceOrdering(BasicIbea.evaluateAndCountViolatedConstraints(env, selection));
         } catch (Exception ex) {
             throw new ObjectEvaluationFailedException(ex, "Couldn't evaluate ComponentInstance");
         }

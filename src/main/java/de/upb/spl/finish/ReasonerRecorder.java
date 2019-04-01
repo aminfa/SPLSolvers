@@ -29,7 +29,7 @@ public class ReasonerRecorder extends Finisher {
     }
 
     public BookkeeperEnv env() {
-        return ((BenchmarkEnvironmentDecoration) super.env()).getDecoration(BookkeeperEnv.class);
+        return super.env().getDecoration(BookkeeperEnv.class);
     }
 
     @Override

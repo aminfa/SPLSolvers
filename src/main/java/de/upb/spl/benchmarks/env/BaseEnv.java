@@ -66,4 +66,10 @@ public class BaseEnv implements BenchmarkEnvironment {
     public BenchmarkBill currentTab() {
         throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
     }
+
+    @Override
+    public <I extends BenchmarkEnvironment> I getDecoration(Class<I> clazz) {
+        throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
+    }
+
 }

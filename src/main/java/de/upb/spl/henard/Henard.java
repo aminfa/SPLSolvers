@@ -110,8 +110,8 @@ public class Henard extends EAReasoner {
         @Override
         public void evaluate(Solution solution) {
             solution.setObjectives(BasicIbea.evaluateAndCountViolatedConstraints(env,
-                    assemble((BinaryVariable) solution.getVariable(0)),
-                    NAME));
+                    assemble((BinaryVariable) solution.getVariable(0))
+            ));
         }
 
         FeatureSelection assemble(BinaryVariable variable) {

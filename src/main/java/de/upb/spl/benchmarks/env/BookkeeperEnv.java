@@ -101,7 +101,7 @@ public class BookkeeperEnv extends BenchmarkEnvironmentDecoration {
 
     public synchronized void logEvaluation(FeatureSelection selection, JobReport report) {
         currentTab().logEvaluation(selection, report);
-        BookkeeperEnv innerBook = ((BenchmarkEnvironmentDecoration)getBaseEnv()).getDecoration(BookkeeperEnv.class);
+        BookkeeperEnv innerBook = (getBaseEnv()).getDecoration(BookkeeperEnv.class);
         if(innerBook != null) {
             innerBook.logEvaluation(selection, report);
         }

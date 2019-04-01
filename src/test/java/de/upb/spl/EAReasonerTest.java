@@ -91,9 +91,9 @@ public class EAReasonerTest {
                 .map(s -> reevaluator.apply(s, reasoner))
                 .forEach(moPopulation::add);
 
-        Solution bestPerformer = EAReasoner.bestPerformer(alg.getProblem(), population);
-        Solution reevaluatedBestPerformer = reevaluator.apply(bestPerformer, reasoner);
-        dumpSolution(reevaluatedBestPerformer);
+//        Solution bestPerformer = EAReasoner.bestPerformer(alg.getProblem(), population);
+//        Solution reevaluatedBestPerformer = reevaluator.apply(bestPerformer, reasoner);
+//        dumpSolution(reevaluatedBestPerformer);
 
         results.put(reasoner.name(), moPopulation);
         ParetoPresentation.saveSolutionAsJson(env, reasoner, moPopulation);

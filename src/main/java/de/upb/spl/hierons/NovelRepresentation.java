@@ -90,8 +90,8 @@ public class NovelRepresentation {
         public void evaluate(Solution solution) {
             FeatureSelection selection =  assemble((BinaryVariable) solution.getVariable(0));
             solution.setObjectives(BasicIbea.evaluateAndCountViolatedConstraints(env,
-                    selection,
-                    name));
+                    selection
+            ));
         }
 
         public FeatureSelection assemble(BinaryVariable binaryVariable) {

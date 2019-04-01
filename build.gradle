@@ -71,7 +71,7 @@ shadowJar {
 
 task jarAttrGenerator(type: Jar, dependsOn: shadowJar) {
     archiveName = ("FMAttributeGenerator.jar")
-    destinationDir = file("$rootDir/src/main/resources/attributes")
+    destinationDir = file("$rootDir")
     manifest {
         attributes 'Main-Class': 'de.upb.spl.attributes.FeatureAttributeGenerator'
     }
@@ -91,7 +91,7 @@ task jarSeedGenerator(type: Jar, dependsOn: shadowJar) {
 
 task jarSatSampler(type: Jar, dependsOn: shadowJar) {
     archiveName = ("RandomSATSampler.jar")
-    destinationDir = file("$rootDir/src/main/resources/attributes")
+    destinationDir = file("$rootDir")
     manifest {
         attributes 'Main-Class': 'de.upb.spl.sampler.RandomSATSampler'
     }
