@@ -14,6 +14,7 @@ import org.sat4j.specs.TimeoutException;
 import org.sat4j.tools.ModelIterator;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 public class NovelReprTest {
@@ -61,7 +62,7 @@ public class NovelReprTest {
         FeatureModel fm = env.model();
         FMSAT fmsat = env.sat();
         NovelRepresentation representation = new NovelRepresentation(env, "");
-        ModelIterator solver = new ModelIterator(fmsat.getDiverseSolver(env.generator()));
+        ModelIterator solver = new ModelIterator(fmsat.getDiverseSolver(new Random(env.seed())));
         int modelCount = 0, successfullAugmentedCount = 0;
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < 1000 && solver.isSatisfiable(); i++) {
@@ -90,4 +91,6 @@ public class NovelReprTest {
         int[] model = env.sat().toModel(partialModel, false);
         System.out.println(Arrays.toString(model));
     }
+
+
 }

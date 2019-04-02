@@ -23,7 +23,7 @@ import jaicore.graphvisualizer.plugin.nodeinfo.NodeInfoGUIPlugin;
 import jaicore.planning.hierarchical.algorithms.forwarddecomposition.graphgenerators.tfd.TFDNodeInfoGenerator;
 import jaicore.search.model.travesaltree.JaicoreNodeInfoGenerator;
 
-@GUI(enabled = true)
+@GUI(enabled = false)
 public class RunX264Samples extends VisualSPLReasoner{
 
     @Env(parallel = false)

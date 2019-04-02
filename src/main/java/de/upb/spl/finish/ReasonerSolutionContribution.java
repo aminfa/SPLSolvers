@@ -57,8 +57,15 @@ public class ReasonerSolutionContribution extends Finisher {
             return;
         }
         percentageContribution = new HashMap<>();
+        if(solutions.get().size() == 0) {
+            logger.warn("Solution set it empty. cannot compute contributions.");
+        }
         for(BenchmarkBill bill : env().bills()) {
             String reasoner = bill.getReasonerName();
+            if(solutions.get().size() == 0) {
+                percentageContribution.put(reasoner, 0.);
+                continue;
+            }
             double members = 0.;
             for(BenchmarkEntry entry : bill) {
                 if(solutions.get().contains(entry)) {

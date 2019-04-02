@@ -22,6 +22,7 @@ import jaicore.search.problemtransformers.GraphSearchProblemInputToGraphSearchWi
 import jaicore.search.problemtransformers.GraphSearchProblemInputToGraphSearchWithSubpathEvaluationInputTransformerViaRDFS;
 
 import java.util.Collections;
+import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
 public class HASCOSPLReasoner implements SPLReasoner {
@@ -59,12 +60,30 @@ public class HASCOSPLReasoner implements SPLReasoner {
                 /*
                  * Create random node evaluator:
                  */
+                long seed = env.seed();
+                long seedUpper = seed >> 32;
+                long seedLower = seed & 0xffffffffL;
+                long compressedSeed = seedLower ^ seedUpper;
                 GraphSearchProblemInputToGraphSearchWithSubpathEvaluationInputTransformerViaRDFS <TFDNode, String, FeatureSelectionOrdering>
                         randomNodes =
                         new GraphSearchProblemInputToGraphSearchWithSubpathEvaluationInputTransformerViaRDFS<>(
                                 null, // null safe
-                                null, // null safe
-                                env.generator().nextInt(),
+                                node -> {
+                                    if(node == null) {
+                                        return false;
+                                    }
+                                     if(    node.getAppliedMethodInstance() == null ||
+                                            node.getAppliedMethodInstance().getMethod() == null ||
+                                            node.getAppliedMethodInstance().getMethod().getName() == null) {
+                                        if(node.getAppliedAction() == null) {
+                                            return false;
+                                        } else {
+                                            return (node.getAppliedAction().getOperation().getName().contains(DUMMY_COMPONENT));
+                                        }
+                                    }
+                                    return node.getAppliedMethodInstance().getMethod().getName().contains(DUMMY_COMPONENT);
+                                }, // null safe
+                                (int) compressedSeed,
                                 env.configuration().getHascoRandomSearchSamples(),
                                 env.configuration().getHascoTimeoutForEval(),
                                 env.configuration().getHascoTimeoutForNodeEval());

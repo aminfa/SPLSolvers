@@ -11,7 +11,6 @@ import fm.FeatureModel;
 import org.sat4j.core.VecInt;
 
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Future;
 
 public class BenchmarkEnvironmentDecoration implements BenchmarkEnvironment {
@@ -58,8 +57,9 @@ public class BenchmarkEnvironmentDecoration implements BenchmarkEnvironment {
         return env.run(selection);
     }
 
-    public Random generator() {
-        return env.generator();
+    @Override
+    public Long seed() {
+        return env.seed();
     }
 
     public boolean violatesConstraints(JobReport report) {

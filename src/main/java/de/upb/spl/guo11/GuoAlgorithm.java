@@ -18,6 +18,7 @@ public class GuoAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 	private final BenchmarkEnvironment env;
 	private final ParetoDominanceComparator paretoDominanceComparator = new ParetoDominanceComparator();
+	private final Random generator;
 	/**
 	 * Constructs GuoAlgorithm.
 	 *
@@ -27,6 +28,7 @@ public class GuoAlgorithm extends AbstractEvolutionaryAlgorithm {
 	public GuoAlgorithm(BenchmarkEnvironment env, Problem problem, Initialization initialization) {
 		super(problem, new Population(), new NondominatedPopulation(), initialization);
 		this.env = env;
+		this.generator = new Random(env.seed());
 	}
 
 	@Override
@@ -39,7 +41,7 @@ public class GuoAlgorithm extends AbstractEvolutionaryAlgorithm {
 		if(populationsize < 2) {
 			throw new RuntimeException("Population is too small. Size was: "  + populationsize);
 		}
-		Random generator =  env.generator();
+
 		int parentIndex1, parentIndex2;
 		parentIndex1 = generator.nextInt(populationsize);
 		/*
@@ -72,7 +74,7 @@ public class GuoAlgorithm extends AbstractEvolutionaryAlgorithm {
 		newChr.set(flipGeneIndex, ! newChr.get(flipGeneIndex));
 
 		FeatureSelection newSelection = problem.assemble(newChr);
-		FesTransform transform = new FesTransform(env.model(), newSelection, env.generator());
+		FesTransform transform = new FesTransform(env.model(), newSelection, generator);
 		newChr = problem.binarize(transform.getValidSelection());
         for(Solution members : getPopulation()) {
             if(members.getVariable(0).toString().equals(newChr.toString())) {

@@ -20,7 +20,7 @@ public final class FMAttributes extends BenchmarkEnvironmentDecoration {
     private Optional<List<VecInt>> richSeeds = Optional.empty();
     private Optional<Map> attributeValues = Optional.empty();
 
-    private Random generator;
+    private Long seed;
 
 
 
@@ -95,7 +95,7 @@ public final class FMAttributes extends BenchmarkEnvironmentDecoration {
             seed = new Random().nextLong();
             logger.warn("Generated random seed = {}.", seed);
         }
-        this.generator = new Random(seed);
+        this.seed = seed;
     }
 
     public Map attributes() {
@@ -114,13 +114,12 @@ public final class FMAttributes extends BenchmarkEnvironmentDecoration {
     }
 
 
-    @Override
-    public Random generator() {
-        return generator;
-    }
-
     public String toString() {
         return splName;
     }
 
+    @Override
+    public Long seed() {
+        return seed;
+    }
 }

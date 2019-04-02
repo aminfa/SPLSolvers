@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static de.upb.spl.benchmarks.drupal.DrupalBlackBox.GROUP;
+import static de.upb.spl.benchmarks.drupal.DrupalModel.Objective.IntegrationFaults;
 import static de.upb.spl.benchmarks.drupal.DrupalModel.Objective.ModuleCount;
 
 public class DrupalWeightedFaults extends BenchmarkEnvironmentDecoration {
@@ -19,7 +20,7 @@ public class DrupalWeightedFaults extends BenchmarkEnvironmentDecoration {
         super(env);
     }
 
-    private List<String> objectives = Arrays.asList("FaultRate");//, ModuleCount.name());
+    private List<String> objectives = Arrays.asList(DrupalBlackBox.Objective.IntegrationFaults.name(), ModuleCount.name());
 
     @Override
     public ReportInterpreter interpreter(JobReport jobReport) {
@@ -39,6 +40,8 @@ public class DrupalWeightedFaults extends BenchmarkEnvironmentDecoration {
                 return rawResult(objective);
             } else if(objective.equals(ModuleCount.name())) {
                 return rawResult(objective).map(count -> -count);
+            } else if(objective.equals(IntegrationFaults.name())) {
+                return rawResult(objective);
             } else {
                 return Optional.empty();
             }
@@ -65,6 +68,8 @@ public class DrupalWeightedFaults extends BenchmarkEnvironmentDecoration {
                 return Optional.of(faultRate);
             } else if(objective.equals(ModuleCount.name())) {
                 return base.rawResult(ModuleCount.name());
+            } else if(objective.equals(IntegrationFaults.name())) {
+                return base.rawResult(IntegrationFaults.name());
             } else {
                 return Optional.empty();
             }

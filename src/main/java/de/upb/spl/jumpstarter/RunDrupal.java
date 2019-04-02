@@ -26,7 +26,7 @@ import jaicore.search.model.travesaltree.JaicoreNodeInfoGenerator;
 
 import java.util.concurrent.ExecutionException;
 
-@GUI(enabled = false)
+@GUI(enabled = true)
 public class RunDrupal extends VisualSPLReasoner{
 
 
@@ -34,9 +34,14 @@ public class RunDrupal extends VisualSPLReasoner{
     public BenchmarkEnvironment setupAttributeEnvironment() {
         BenchmarkEnvironment env = new DrupalFilteredObjectives(new DrupalBlackBox());
 //        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.Size);
-        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.CC);
+//        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.CC);
 //        env = new DrupalFilteredObjectives(env, DrupalModel.Objective.Changes);
-//        env = new DrupalWeightedFaults(env);
+        env = new DrupalWeightedFaults(env);
+        env = new ConfiguredEnv(env);
+
+        env.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "300");
+        env.configuration().setProperty("de.upb.spl.SPLReasoner.Hasco.randomSearchSamples", "2");
+
         return env;
     }
 

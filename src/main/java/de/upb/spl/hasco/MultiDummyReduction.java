@@ -147,16 +147,16 @@ public class MultiDummyReduction extends FM2CM {
             }
         }
 
-//        for(CrossTreeConstraint ctc : FMUtil.crossTreeConstraints(getFM())) {
-//            if(ctc.implication) {
-//                String mandatoryInterface = createParentChildInterfaceName(ctc.feature1, ctc.feature2);
-//                if(FMUtil.crosstreePremises(getFM(), ctc.feature1).contains(ctc.feature2)) {
-//                    continue; // no recursive interfaces
-//                }
-//                get(ctc.feature1).addRequiredInterface(mandatoryInterface, mandatoryInterface);
-//                get(ctc.feature2).addProvidedInterface(mandatoryInterface);
-//            }
-//        }
+        for(CrossTreeConstraint ctc : FMUtil.crossTreeConstraints(getFM())) {
+            if(ctc.implication) {
+                String mandatoryInterface = createParentChildInterfaceName(ctc.feature1, ctc.feature2);
+                if(FMUtil.crosstreePremises(getFM(), ctc.feature1).contains(ctc.feature2)) {
+                    continue; // no recursive interfaces
+                }
+                get(ctc.feature1).addRequiredInterface(mandatoryInterface, mandatoryInterface);
+                get(ctc.feature2).addProvidedInterface(mandatoryInterface);
+            }
+        }
     }
 
     private Component createDummy() {

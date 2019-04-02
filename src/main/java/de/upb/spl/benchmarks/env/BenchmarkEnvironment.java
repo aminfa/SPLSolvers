@@ -29,7 +29,7 @@ public interface BenchmarkEnvironment {
 
     Future<JobReport> run(FeatureSelection selection);
 
-	Random generator();
+    Long seed();
 
 	default boolean violatesConstraints(JobReport report){
 	    return false;

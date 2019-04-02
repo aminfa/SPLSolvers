@@ -94,7 +94,7 @@ public class Guo11 extends EAReasoner {
 
         @Override
         public Solution[] initialize() {
-            Random generator = env.generator();
+            Random generator = new Random(env.seed());
             List<FeatureTreeNode> featureOrder = FMUtil.featureStream(env.model()).collect(Collectors.toList());
             List<Solution> generatedSolutions = new ArrayList<>();
             List<Future<ReportInterpreter>> reports =  new ArrayList<>();

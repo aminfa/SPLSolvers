@@ -11,7 +11,6 @@ import fm.FeatureModel;
 import org.sat4j.core.VecInt;
 
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Future;
 
 public class BaseEnv implements BenchmarkEnvironment {
@@ -46,11 +45,6 @@ public class BaseEnv implements BenchmarkEnvironment {
         throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
     }
 
-    @Override
-    public Random generator() {
-        throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
-    }
-
 
     @Override
     public ReportInterpreter interpreter(JobReport jobReport) {
@@ -72,4 +66,9 @@ public class BaseEnv implements BenchmarkEnvironment {
         throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
     }
 
+
+    @Override
+    public Long seed() {
+        throw new UnsupportedOperationException("Base Environment needs to be decorated to support this operation.");
+    }
 }
