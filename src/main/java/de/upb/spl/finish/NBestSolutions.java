@@ -26,7 +26,6 @@ public class NBestSolutions extends Finisher {
         super(env);
     }
 
-
     public List<BenchmarkEntry> getSolutions() {
         if(solutions == null) {
             logger.error("Solutions were accessed before the finisher has been executed.");
@@ -107,7 +106,7 @@ public class NBestSolutions extends Finisher {
                 .append("\n}").toString();
 
 
-        logger.debug("Solutions: {}",  getSolutionPerformanceJSON());
+        logger.debug("Solutions for {}: {}",  env().objectives(), getSolutionPerformanceJSON());
     }
 
     public String getSolutionPerformanceJSON() {

@@ -4,15 +4,16 @@ import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.benchmarks.ReportInterpreter;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
-import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
 
 import java.util.*;
 
-public class VideoEncoderCustomer1 extends BenchmarkEnvironmentDecoration {
+public class VideoEncoderQualityThreshold extends BenchmarkEnvironmentDecoration {
 
 
-    String fileSizeObjective = VideoEncoderBlackBox.Objectives.file_size.name();
-    List<String> objectives = (List<String>) Collections.singletonList(fileSizeObjective);
+    public final static String fileSizeObjective = VideoEncoderBlackBox.Objectives.file_size.name();
+    public final static String runtimeObjective = VideoEncoderBlackBox.Objectives.run_time.name();
+
+    public List<String> objectives = Arrays.asList(fileSizeObjective, runtimeObjective);
 
     public static final Map<String, Double> VIDEO_QUALITY_THRESHOLD = new HashMap<>();
 
@@ -25,15 +26,17 @@ public class VideoEncoderCustomer1 extends BenchmarkEnvironmentDecoration {
 
     private final double qualityThreshold;
 
-    public VideoEncoderCustomer1(BenchmarkEnvironment env) {
+    public VideoEncoderQualityThreshold(BenchmarkEnvironment env) {
         this(env, 0.);
     }
 
-    public VideoEncoderCustomer1(BenchmarkEnvironment env, double thresholdDelta) {
+    public VideoEncoderQualityThreshold(BenchmarkEnvironment env, double thresholdDelta) {
         super(env);
         qualityThreshold = VIDEO_QUALITY_THRESHOLD.getOrDefault(env.configuration().getVideoSourceFile(), 90.) + thresholdDelta;
-        assert env.objectives().contains(VideoEncoderBlackBox.Objectives.file_size.name());
-        assert env.objectives().contains(VideoEncoderBlackBox.Objectives.subjective_quality.name());
+        objectives.retainAll(env.objectives());
+        if(objectives.isEmpty()) {
+            throw new RuntimeException("Resulting objectives is empty. Inner objectives: " + env.objectives());
+        }
     }
 
     public List<String> objectives() {

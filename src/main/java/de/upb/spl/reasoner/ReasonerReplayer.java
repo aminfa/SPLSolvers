@@ -16,6 +16,7 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -119,27 +120,36 @@ public class ReasonerReplayer implements SPLReasoner {
 
     }
 
-    public static List<SPLReasoner> loadReplays(BenchmarkEnvironment env, String replayHome, boolean nameToFilename) {
-        List<SPLReasoner> replayers = new ArrayList<>();
+    public static List<ReasonerReplayer> loadReplays(String replayHome, boolean nameToFilename) {
+        if(!replayHome.endsWith(File.separator)) {
+            replayHome = replayHome.concat(File.separator);
+        }
+        List<ReasonerReplayer> replayers = new ArrayList<>();
         List<String> replayFiles = FileUtil.listAllFilesInDir(replayHome, ".*json$", true);
         for(String replayFile : replayFiles) {
             String replayPath = replayHome + replayFile;
             ReasonerReplayer replayer = new ReasonerReplayer(replayPath);
             if(nameToFilename)
-                replayer.setName(replayFile);
+                replayer.setName(replayFile.substring(0, replayFile.length()-".json".length()));
+            logger.info("Replayer loaded from file: {}", replayPath);
+            replayers.add(replayer);
+        }
+        return replayers;
+    }
+
+    public static void retainGroup(List<ReasonerReplayer> replayers, String groupName) {
+        Iterator<ReasonerReplayer> replayerIterator = replayers.iterator();
+        while(replayerIterator.hasNext()) {
+            ReasonerReplayer replayer = replayerIterator.next();
             Iterator<JobReport> iterator = replayer.jobReportIterator();
             if(iterator.hasNext()) {
                 JobReport report = iterator.next();
-                ReportInterpreter interpreter = env.interpreter(report);
-                if (interpreter.group().equals(report.getGroup())) {
-                    logger.info("Replayer loaded from file: {}", replayPath);
-                    replayers.add(replayer);
-                } else {
-                    logger.warn("Recording {} has reports for {} which doesn't match environment with group {}.", replayFile, report.getGroup(), interpreter.group());
+                if (!groupName.equals(report.getGroup())) {
+                    logger.warn("Removing recording with group {}.", report.getGroup());
+                    replayerIterator.remove();
                 }
             }
         }
-        return replayers;
     }
 
 }

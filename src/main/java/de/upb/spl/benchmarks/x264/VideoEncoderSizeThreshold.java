@@ -7,7 +7,7 @@ import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
 
 import java.util.*;
 
-public class VideoEncoderCustomer2 extends BenchmarkEnvironmentDecoration {
+public class VideoEncoderSizeThreshold extends BenchmarkEnvironmentDecoration {
 
 
     String qualityObjective = VideoEncoderBlackBox.Objectives.subjective_quality.name();
@@ -23,13 +23,18 @@ public class VideoEncoderCustomer2 extends BenchmarkEnvironmentDecoration {
         RAW_VIDEO_SIZE.put("ducks_take_off", 675008.);
     }
     private final double rawSize;
-    private final double compressionThreshold = 0.005;
+    private double compressionThreshold = 0.005;
 
-    public VideoEncoderCustomer2(BenchmarkEnvironment env) {
+    public VideoEncoderSizeThreshold(BenchmarkEnvironment env) {
         super(env);
         rawSize = RAW_VIDEO_SIZE.getOrDefault(env.configuration().getVideoSourceFile(), Double.MAX_VALUE);
         assert env.objectives().contains(VideoEncoderBlackBox.Objectives.file_size.name());
         assert env.objectives().contains(VideoEncoderBlackBox.Objectives.subjective_quality.name());
+    }
+
+    public VideoEncoderSizeThreshold(BenchmarkEnvironment env, double compressionThreshold) {
+        this(env);
+        this.compressionThreshold = compressionThreshold;
     }
 
     public List<String> objectives() {

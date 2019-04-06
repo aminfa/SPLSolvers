@@ -43,8 +43,11 @@ public class VideoEncoderBaseInterpreter extends BenchmarkEnvironmentDecoration 
             if(!raw.isPresent()) {
                 return raw;
             }
-            if(objective.equals("subjective_quality")) {
-                return Optional.of(-1 * raw.get());
+            if(objective.equals(VideoEncoderBlackBox.Objectives.run_time.name())) {
+                return raw.map(runtime -> (double) Math.round(runtime * 100d) / 100d);
+            }
+            if(objective.equals(VideoEncoderBlackBox.Objectives.subjective_quality.name())) {
+                return raw.map(quality -> -1. * Math.round(quality));
             }
             return raw;
         }

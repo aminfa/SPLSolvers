@@ -38,8 +38,8 @@ public class RunDrupalEval extends VisualSPLReasoner{
     }
 
     @Reasoner
-    public List<SPLReasoner> replayALL() {
-        return ReasonerReplayer.loadReplays(env(), "replays/drupal/", false);
+    public List<? extends SPLReasoner> replayALL() {
+        return ReasonerReplayer.loadReplays("replays/drupal/", false);
     }
 
     @Finish(runOnExit = false)

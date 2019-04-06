@@ -10,7 +10,7 @@ import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.benchmarks.inline.InlineBenchmarkExecutor;
 import de.upb.spl.benchmarks.inline.InlineBlackBox;
 import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
-import de.upb.spl.benchmarks.x264.VideoEncoderCustomer1;
+import de.upb.spl.benchmarks.x264.VideoEncoderQualityThreshold;
 import de.upb.spl.jumpstarter.panels.ParetoFront;
 import de.upb.spl.jumpstarter.panels.ReasonerPerformanceTimeline;
 import de.upb.spl.reasoner.ReasonerReplayer;
@@ -54,8 +54,8 @@ public class RunReplay extends VisualSPLReasoner{
 
 
     @Reasoner
-    public List<SPLReasoner> replayALL() {
-        return ReasonerReplayer.loadReplays(env(), "replays", true);
+    public List<? extends SPLReasoner> replayALL() {
+        return ReasonerReplayer.loadReplays("replays", true);
     }
 
 
@@ -71,7 +71,7 @@ public class RunReplay extends VisualSPLReasoner{
 
 //    @GUI
     public IGUIPlugin timelineCustomer1() {
-        return new ReasonerPerformanceTimeline(new VideoEncoderCustomer1(env()));
+        return new ReasonerPerformanceTimeline(new VideoEncoderQualityThreshold(env()));
     }
 
     @GUI(main = true)

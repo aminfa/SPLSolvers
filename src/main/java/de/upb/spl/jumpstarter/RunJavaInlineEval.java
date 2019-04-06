@@ -24,8 +24,8 @@ public class RunJavaInlineEval extends VisualSPLReasoner{
     }
 
     @Reasoner
-    public List<SPLReasoner> replayALL() {
-        return ReasonerReplayer.loadReplays(env(), "replays/inline/", false);
+    public List<? extends SPLReasoner> replayALL() {
+        return ReasonerReplayer.loadReplays("replays/inline/", false);
     }
 
     @Finish(runOnExit = false)
