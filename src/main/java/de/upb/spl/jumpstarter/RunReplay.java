@@ -10,7 +10,6 @@ import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.benchmarks.inline.InlineBenchmarkExecutor;
 import de.upb.spl.benchmarks.inline.InlineBlackBox;
 import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
-import de.upb.spl.benchmarks.x264.VideoEncoderQualityThreshold;
 import de.upb.spl.jumpstarter.panels.ParetoFront;
 import de.upb.spl.jumpstarter.panels.ReasonerPerformanceTimeline;
 import de.upb.spl.reasoner.ReasonerReplayer;
@@ -67,11 +66,6 @@ public class RunReplay extends VisualSPLReasoner{
     @GUI
     public IGUIPlugin paretor() {
         return new ParetoFront(env());
-    }
-
-//    @GUI
-    public IGUIPlugin timelineCustomer1() {
-        return new ReasonerPerformanceTimeline(new VideoEncoderQualityThreshold(env()));
     }
 
     @GUI(main = true)

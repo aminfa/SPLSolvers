@@ -1,13 +1,10 @@
 package de.upb.spl.benchmarks.drupal;
 
-import de.upb.spl.benchmarks.JobReport;
-import de.upb.spl.benchmarks.ReportInterpreter;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

@@ -1,11 +1,12 @@
 package de.upb.spl.benchmarks.x264;
 
 import de.upb.spl.benchmarks.JobReport;
-import de.upb.spl.benchmarks.ReportInterpreter;
+import de.upb.spl.benchmarks.env.ReportInterpreter;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class VideoEncoderPreferences {
 
@@ -57,18 +58,38 @@ public class VideoEncoderPreferences {
 
         protected final ReportInterpreter innerInterpreter;
 
-        VideoEncoderPreferenceInterpreter(ReportInterpreter interpreter) {
+        protected final boolean violatedConstraints;
+
+        protected final String constrainedVariable;
+
+        VideoEncoderPreferenceInterpreter(ReportInterpreter interpreter, String constrainedVariable, Function<Double, Boolean> violationArbiter) {
             this.innerInterpreter = interpreter;
+            this.constrainedVariable = constrainedVariable;
+            this.violatedConstraints = innerInterpreter
+                    .rawResult(constrainedVariable)
+                    .map(violationArbiter)
+                    .orElse(true);
         }
+
+        @Override
+        public Optional<Double> readResult(String objective) {
+            if(violatedConstraints) {
+                return innerInterpreter.readResult(objective).map(result -> result + 1000000. + penalty());
+            } else {
+                return innerInterpreter.readResult(objective);
+            }
+        }
+
+        @Override
+        public boolean violatedConstraints() {
+            return violatedConstraints || innerInterpreter.violatedConstraints();
+        }
+
+        abstract double penalty();
 
         @Override
         public Optional<Double> rawResult(String objective) {
             return innerInterpreter.rawResult(objective);
-        }
-
-        @Override
-        public String group() {
-            return VideoEncoderBlackBox.GROUP;
         }
 
     }
@@ -108,23 +129,24 @@ public class VideoEncoderPreferences {
 
         class Interpreter extends VideoEncoderPreferenceInterpreter {
 
+            double penalty = 0.;
+
             Interpreter(JobReport jobReport) {
-                super(getBaseEnv().interpreter(jobReport));
+                super(getBaseEnv().interpreter(jobReport),
+                        RUNTIME_OBJECTIVE,
+                        runtime ->runtime > runtimeThreshold);
+
+                if(violatedConstraints) {
+                    penalty = innerInterpreter.rawResult(RUNTIME_OBJECTIVE).orElse(100.);
+                }
+
             }
 
             @Override
-            public Optional<Double> readResult(String objective) {
-                Optional<Double> runtime = innerInterpreter.readResult(RUNTIME_OBJECTIVE);
-                if(runtime.isPresent()) {
-                    if(runtime.get() > runtimeThreshold) {
-                        return Optional.empty();
-                    } else {
-                        return innerInterpreter.readResult(objective);
-                    }
-                } else {
-                    return Optional.empty();
-                }
+            double penalty() {
+                return penalty;
             }
+
         }
 
         public List<String> objectives() {
@@ -170,25 +192,26 @@ public class VideoEncoderPreferences {
 
         class Interpreter extends VideoEncoderPreferenceInterpreter {
 
+            double penalty = 0.;
+
             Interpreter(JobReport jobReport) {
-                super(getBaseEnv().interpreter(jobReport));
+                super(getBaseEnv().interpreter(jobReport),
+                        SIZE_OBJECTIVE,
+                        size -> size > sizeThreshold);
+
+                if(violatedConstraints) {
+                    penalty = innerInterpreter.rawResult(SIZE_OBJECTIVE).orElse(10000.);
+                }
+
             }
 
             @Override
-            public Optional<Double> readResult(String objective) {
-                Optional<Double> size = innerInterpreter.readResult(SIZE_OBJECTIVE);
-                if(size.isPresent()) {
-                    if(size.get() > sizeThreshold) {
-                        return Optional.empty();
-                    } else {
-                        return innerInterpreter.readResult(objective);
-                    }
-                } else {
-                    return Optional.empty();
-                }
+            double penalty() {
+                return penalty;
             }
 
         }
+
         public List<String> objectives() {
             return objectives;
         }
@@ -234,24 +257,25 @@ public class VideoEncoderPreferences {
 
         class Interpreter extends VideoEncoderPreferenceInterpreter {
 
+            double penalty = 0.;
             Interpreter(JobReport jobReport) {
-                super(getBaseEnv().interpreter(jobReport));
+                super(getBaseEnv().interpreter(jobReport),
+                        QUALITY_OBJECTIVE,
+                        quality -> quality < qualityThreshold);
+                if(violatedConstraints) {
+                    penalty = innerInterpreter.rawResult(QUALITY_OBJECTIVE).map(quality -> -quality).orElse(100.);
+                }
             }
 
             @Override
-            public Optional<Double> readResult(String objective) {
-                Optional<Double> quality = innerInterpreter.readResult(QUALITY_OBJECTIVE);
-                if(quality.isPresent()) {
-                    if(quality.get() > -qualityThreshold) {
-                        return Optional.empty();
-                    } else {
-                        return innerInterpreter.readResult(objective);
-                    }
-                } else {
-                    return Optional.empty();
-                }
+            double penalty() {
+                return penalty;
             }
         }
+
+
+
+
         public List<String> objectives() {
             return objectives;
         }

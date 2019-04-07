@@ -39,17 +39,17 @@ public class EvaluateUninformedX264 {
     protected Map<Integer, Benchmark> benchmarks = new HashMap<>();
 
     protected  List<String> reasoners = Arrays.asList(
-//            HASCOSPLReasoner.NAME
-//            , Guo11.NAME ,
+            HASCOSPLReasoner.NAME
+            , Guo11.NAME ,
             Hierons.NAME
             , Sayyad.NAME
             , Henard.NAME);
 
-    private final double[] qualityThresholdDeltas = {0., -10., -20., -30., -35.};
+    private final double[] qualityThresholdDeltas = {0., -15., -30., -45., -60};
 
-    private final double[] sizeThresholds = {0.03, 0.015, 0.0075, 0.0075, 0.005, 0.0025};
+    private final double[] sizeThresholds = {0.05, 0.04, 0.02, 0.015, 0.0075};
 
-    private final double[] runtimeThresholds = {3., 6., 9., 12., 15.};
+    private final double[] runtimeThresholds = {1., 2., 3., 6., 8.};
 
 
     private void createInterpreters() {
@@ -70,9 +70,9 @@ public class EvaluateUninformedX264 {
     public void start() {
 
         base = new VideoEncoderBaseInterpreter();
-        base.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "60");
+        base.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "20");
         base.configuration().setProperty("de.upb.spl.benchmark.videoEncoding.RAWSourceFile", "ducks_take_off");
-        base.configuration().setProperty("de.upb.spl.eval.solutionCount", "5");
+        base.configuration().setProperty("de.upb.spl.eval.solutionCount", "10");
 
         createInterpreters();
 

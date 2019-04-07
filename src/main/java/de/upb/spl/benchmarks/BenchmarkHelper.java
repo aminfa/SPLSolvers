@@ -3,12 +3,12 @@ package de.upb.spl.benchmarks;
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
+import de.upb.spl.benchmarks.env.ReportInterpreter;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -34,7 +34,7 @@ public final class BenchmarkHelper {
             report = null;
         }
 
-        if(report == null || env.violatesConstraints(report)) {
+        if(report == null) {
             return failedEvaluation(env);
         }
         return extractEvaluation(env, report);

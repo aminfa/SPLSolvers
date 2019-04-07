@@ -3,7 +3,6 @@ package de.upb.spl.benchmarks.env;
 import de.upb.spl.FMSAT;
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.BenchmarkBill;
-import de.upb.spl.benchmarks.ReportInterpreter;
 import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.hasco.FM2CM;
 import de.upb.spl.reasoner.SPLReasonerConfiguration;
@@ -61,11 +60,6 @@ public class BenchmarkEnvironmentDecoration implements BenchmarkEnvironment {
     public Long seed() {
         return env.seed();
     }
-
-    public boolean violatesConstraints(JobReport report) {
-        return env.violatesConstraints(report);
-    }
-
     @Override
     public ReportInterpreter interpreter(JobReport jobReport) {
         return env.interpreter(jobReport);

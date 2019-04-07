@@ -1,4 +1,4 @@
-package de.upb.spl.benchmarks;
+package de.upb.spl.benchmarks.env;
 
 import java.util.Optional;
 
@@ -10,5 +10,8 @@ public interface ReportInterpreter {
 	    return readResult(objective);
     }
 
-    String group();
+    default boolean violatedConstraints() {
+	    return false;
+    }
+
 }

@@ -2,7 +2,7 @@ package de.upb.spl.guo11;
 
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
-import de.upb.spl.benchmarks.ReportInterpreter;
+import de.upb.spl.benchmarks.env.ReportInterpreter;
 import de.upb.spl.benchmarks.BenchmarkHelper;
 import de.upb.spl.reasoner.*;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;

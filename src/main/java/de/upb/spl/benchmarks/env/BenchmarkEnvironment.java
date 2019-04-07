@@ -6,13 +6,10 @@ import de.upb.spl.benchmarks.BenchmarkBill;
 import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.hasco.FM2CM;
 import de.upb.spl.reasoner.SPLReasonerConfiguration;
-import de.upb.spl.benchmarks.ReportInterpreter;
 import fm.FeatureModel;
-import org.aeonbits.owner.ConfigFactory;
 import org.sat4j.core.VecInt;
 
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Future;
 
 public interface BenchmarkEnvironment {
@@ -30,10 +27,6 @@ public interface BenchmarkEnvironment {
     Future<JobReport> run(FeatureSelection selection);
 
     Long seed();
-
-	default boolean violatesConstraints(JobReport report){
-	    return false;
-    }
 
     ReportInterpreter interpreter(JobReport jobReport);
 

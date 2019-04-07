@@ -1,7 +1,7 @@
 package de.upb.spl.benchmarks.inline;
 
 import de.upb.spl.benchmarks.JobReport;
-import de.upb.spl.benchmarks.ReportInterpreter;
+import de.upb.spl.benchmarks.env.ReportInterpreter;
 import de.upb.spl.benchmarks.env.*;
 import de.upb.spl.util.FileUtil;
 
@@ -50,11 +50,6 @@ public class InlineBaseInterpreter extends BenchmarkEnvironmentDecoration {
                 }
             }
             return Optional.empty();
-        }
-
-        @Override
-        public String group() {
-            return InlineBlackBox.GROUP;
         }
 
     }

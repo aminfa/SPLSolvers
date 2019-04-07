@@ -1,16 +1,14 @@
 package de.upb.spl.benchmarks.drupal;
 
 import de.upb.spl.benchmarks.JobReport;
-import de.upb.spl.benchmarks.ReportInterpreter;
+import de.upb.spl.benchmarks.env.ReportInterpreter;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static de.upb.spl.benchmarks.drupal.DrupalBlackBox.GROUP;
 import static de.upb.spl.benchmarks.drupal.DrupalModel.Objective.IntegrationFaults;
 import static de.upb.spl.benchmarks.drupal.DrupalModel.Objective.ModuleCount;
 
@@ -75,10 +73,6 @@ public class DrupalWeightedFaults extends BenchmarkEnvironmentDecoration {
             }
         }
 
-        @Override
-        public String group() {
-            return GROUP;
-        }
     }
 
     public List<String> objectives(){

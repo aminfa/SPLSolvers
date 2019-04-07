@@ -2,9 +2,8 @@ package de.upb.spl.benchmarks.drupal;
 
 import de.upb.spl.FMUtil;
 import de.upb.spl.FeatureSelection;
-import de.upb.spl.benchmarks.BenchmarkBill;
 import de.upb.spl.benchmarks.JobReport;
-import de.upb.spl.benchmarks.ReportInterpreter;
+import de.upb.spl.benchmarks.env.ReportInterpreter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.concurrent.ConcurrentUtils;
 import org.json.simple.JSONArray;
@@ -177,11 +176,6 @@ public class DrupalBlackBox extends DrupalModel {
                 }
             }
             return Optional.empty();
-        }
-
-        @Override
-        public String group() {
-            return GROUP;
         }
 
     }

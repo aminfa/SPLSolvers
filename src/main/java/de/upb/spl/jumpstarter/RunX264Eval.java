@@ -2,16 +2,10 @@ package de.upb.spl.jumpstarter;
 
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.x264.VideoEncoderBaseInterpreter;
-import de.upb.spl.benchmarks.x264.VideoEncoderQualityThreshold;
-import de.upb.spl.benchmarks.x264.VideoEncoderSizeThreshold;
-import de.upb.spl.finish.Finisher;
 import de.upb.spl.finish.NBestSolutions;
 import de.upb.spl.finish.ReasonerSolutionContribution;
-import de.upb.spl.jumpstarter.panels.ParetoFront;
-import de.upb.spl.jumpstarter.panels.ReasonerPerformanceTimeline;
 import de.upb.spl.reasoner.ReasonerReplayer;
 import de.upb.spl.reasoner.SPLReasoner;
-import jaicore.graphvisualizer.plugin.IGUIPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,35 +49,6 @@ public class RunX264Eval extends VisualSPLReasoner{
 
         return finishers;
 
-    }
-
-    @Finish(runOnExit = false)
-    public Finisher[] calculateBestNC1() {
-        NBestSolutions solutions = new NBestSolutions(new VideoEncoderQualityThreshold(env()));
-        ReasonerSolutionContribution contribution =
-                new ReasonerSolutionContribution(
-                        bookkeeper(),
-                        solutions);
-        Finisher[] finishers = {
-                solutions,
-                contribution
-        };
-        return finishers;
-    }
-
-    @Finish(runOnExit = false)
-    public Finisher[] calculateBestNC2() {
-
-        NBestSolutions solutions = new NBestSolutions(new VideoEncoderSizeThreshold(env()));
-        ReasonerSolutionContribution contribution =
-                new ReasonerSolutionContribution(
-                        bookkeeper(),
-                        solutions);
-        Finisher[] finishers = {
-                solutions,
-                contribution
-        };
-        return finishers;
     }
 
 
