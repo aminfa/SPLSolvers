@@ -6,30 +6,25 @@ import de.upb.spl.hasco.HASCOSPLReasoner;
 import de.upb.spl.henard.Henard;
 import de.upb.spl.hierons.Hierons;
 import de.upb.spl.ibea.BasicIbea;
+import de.upb.spl.jumpstarter.Env;
 import de.upb.spl.jumpstarter.Reasoner;
 import de.upb.spl.reasoner.SPLReasoner;
 import de.upb.spl.reasoner.SampleReasoner;
 import de.upb.spl.sayyad.Sayyad;
 import de.upb.spl.util.FileUtil;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.StreamSupport;
-
+@Env(randomize =true)
 public class RunSynthetic extends SyntheticEnv {
 
-//    @Reasoner
-    public List<SPLReasoner> samples() {
-        return IntStream.range(0, 10)
-                .mapToObj(i -> String.format("/samples/random-sat-%d.json", i))
-                .map(file ->  new SampleReasoner(FileUtil.getPathOfResource(SPL_NAME) + file))
-                .collect(Collectors.toList());
+    @Reasoner(order = -1, times = 10)
+    public SPLReasoner samples(int i) {
+        return new SampleReasoner(
+                FileUtil.getPathOfResource(SPL_NAME) + String.format("/samples/random-sat-%d.json", i));
     }
 
-    @Reasoner(order = 1)
-    public SPLReasoner guo() {
-        Guo11 guo11 = new Guo11();
+    @Reasoner(order = 1, times = 10)
+    public SPLReasoner guo(int i) {
+        Guo11 guo11 = new Guo11("-" + i, true);
         return guo11;
     }
 
@@ -39,35 +34,34 @@ public class RunSynthetic extends SyntheticEnv {
         return basicIbea;
     }
 
-    @Reasoner(order = 2)
-    public SPLReasoner sayyad() {
-        Sayyad sayyad = new Sayyad();
+    @Reasoner(order = 2, times = 10)
+    public SPLReasoner sayyad(int i) {
+        Sayyad sayyad = new Sayyad("-" + i, true);
         return sayyad;
     }
 
 
 
-    @Reasoner(order = 3)
-    public SPLReasoner henard()  {
-        Henard henard = new Henard();
+    @Reasoner(order = 3, times = 10)
+    public SPLReasoner henard(int i)  {
+        Henard henard = new Henard("-" + i, true);
         return henard;
     }
 
 
 
-    @Reasoner(order = 4)
-    public SPLReasoner hierons() {
-        Hierons hierons = new Hierons();
+    @Reasoner(order = 4, times = 10)
+    public SPLReasoner hierons(int i) {
+        Hierons hierons = new Hierons("-" + i, true);
         return hierons;
     }
 
 
-    @Reasoner(order = 10)
-    public SPLReasoner hasco() {
-        HASCOSPLReasoner hasco = new HASCOSPLReasoner();
+//    @Reasoner(order = 10, times = 10)
+    public SPLReasoner hasco(int i) {
+        HASCOSPLReasoner hasco = new HASCOSPLReasoner("-" + i, true);
         return hasco;
     }
-
 
     public static void main(String... args) {
         new RunSynthetic().setup();

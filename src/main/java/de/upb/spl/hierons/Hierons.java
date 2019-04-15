@@ -30,6 +30,10 @@ public class Hierons extends EAReasoner {
         super(NAME);
     }
 
+    public Hierons(String name, boolean isSuffix) {
+        super((isSuffix ? NAME : "") + name);
+    }
+
     @Override
     public FeatureSelection assemble(BenchmarkEnvironment env, Solution solution) {
         return new NovelRepresentation(env, NAME).getProblem().assemble((BinaryVariable) solution.getVariable(0));

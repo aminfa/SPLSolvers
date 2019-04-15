@@ -2,14 +2,15 @@ package de.upb.spl.jumpstarter.randoms;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import de.upb.spl.benchmarks.BenchmarkHelper;
 import de.upb.spl.benchmarks.BenchmarkReplay;
 import de.upb.spl.benchmarks.env.*;
 import de.upb.spl.finish.HypervolumeCalculator;
+import de.upb.spl.finish.MinMaxValues;
 import de.upb.spl.guo11.Guo11;
 import de.upb.spl.hasco.HASCOSPLReasoner;
 import de.upb.spl.henard.Henard;
 import de.upb.spl.hierons.Hierons;
-import de.upb.spl.jumpstarter.panels.DeviationPlotter;
 import de.upb.spl.reasoner.ReasonerReplayer;
 import de.upb.spl.sayyad.Sayyad;
 import de.upb.spl.util.FileUtil;
@@ -25,7 +26,7 @@ import java.util.stream.StreamSupport;
 public class SyntheticEvalHV {
 
 
-    final static double[] MIN_REFERENCE = {-1, -1}, MAX_REFERENCE = {1.5, 1};
+    double[] min = {0,0}, max = {0,0};
 
     protected BenchmarkEnvironment base;
 
@@ -85,6 +86,16 @@ public class SyntheticEvalHV {
                 }
             });
         });
+
+
+        MinMaxValues minMaxValues = new MinMaxValues(books);
+        minMaxValues.run();
+        min = minMaxValues.getMin();
+        max = minMaxValues.getMax();
+
+        System.out.println("Min is " + Arrays.toString(min));
+        System.out.println("Max is " + Arrays.toString(max));
+
         /*
          * Calculate hyper volume for each 10 steps:
          */
@@ -107,7 +118,7 @@ public class SyntheticEvalHV {
                             i -> i,
                             i -> {
                             HypervolumeCalculator calculator = new HypervolumeCalculator(
-                                measurements, i, MIN_REFERENCE, MAX_REFERENCE);
+                                measurements, i, min, max);
                         calculator.run();
                         return calculator.getResult();}));
             hyperVolumeData.computeIfAbsent(replayer.getReasonerName(), name -> new ArrayList<>())

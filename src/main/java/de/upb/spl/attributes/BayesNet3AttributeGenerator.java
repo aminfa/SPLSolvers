@@ -1,11 +1,8 @@
 package de.upb.spl.attributes;
 
-import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.upb.spl.FMSAT;
 import de.upb.spl.FMUtil;
-import de.upb.spl.hierons.NovelRepresentation;
 import de.upb.spl.util.DefaultMap;
 import de.upb.spl.util.FileUtil;
 import fm.FeatureModel;
@@ -14,7 +11,6 @@ import fm.FeatureTreeNode;
 import fm.XMLFeatureModel;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -26,22 +22,62 @@ public class BayesNet3AttributeGenerator {
 
     private static class Evidence {
 
-        double E;
-        double V;
+        double E1;
+        double E2;
+        double a1;
+        double a2;
 
         final static int evidenceCount = 2;
 
-        public Evidence(Random random, int height, double parentE) {
-            this.E = nextGaussian(random, parentE, 1/((double) height));
-            this.V = nextGaussian(random,0, 1);
+        public Evidence(Random random, Evidence parent) {
+            this.E1 = nextGaussian(random, parent.E1 + a1, 0.5);
+            this.E2 = nextGaussian(random, parent.E2 + a2, 0.5);
+            a1 = parent.a1;
+            a2 = parent.a2;
+            if(parent.E1 - parent.E2 < 2) {
+                a1 ++;
+                a2 --;
+            } else {
+                a1 --;
+                a2 ++;
+            }
+            if(E1 < 0) {
+                a1 ++;
+            }
+            if(E2 > 0) {
+                a2 --;
+            }
         }
 
         // root evidence
         public Evidence() {
-            this.E = 0.;
-            this.V = 0.;
+            this.E1 = 1;
+            this.E2 = -1.;
+        }
+        double getE(int index) {
+            while(index >= evidenceCount || index < 0) {
+                index = index %evidenceCount ;
+                if (index<0) index += evidenceCount;
+            }
+            if(index == 0) {
+                return E1;
+            }
+            if(index == 1) {
+                return E2;
+            }
+            throw new RuntimeException("BUG: This cannot be reached: " + index);
         }
 
+        @Override
+        public String toString() {
+            return "Evidence{" +
+                    "E1= " + String.format("%.2f", E1) +
+                    ", E2= " + String.format("%.2f", E2) +
+                    ", a1= " + String.format("%.2f", a1) +
+                    ", a2= " + String.format("%.2f", a2) +
+                    '}';
+
+        }
     }
 
     private static class Question {
@@ -81,12 +117,16 @@ public class BayesNet3AttributeGenerator {
 //            return (evidence.getEValue(variableId)) /
 //                    (evidence.getEValue(variableId + 1))
 //                    + evidence.getVValue(variableId);
-            if(variableId == 1) {
-                return evidence.E + evidence.V;
+            double e = evidence.getE(variableId);
+            if(variableId % 2 == 1) {
+                e = -e;
             }
-            else {
-                return -evidence.E;
-            }
+            return e;
+//            if(e >= 0.) {
+//                return 1.;
+//            } else {
+//                return -1.;
+//            }
         }
     }
 
@@ -118,17 +158,23 @@ public class BayesNet3AttributeGenerator {
         featureModel.loadModel();
         Random random = new Random(seed);
         DefaultMap<FeatureTreeNode, Evidence> evidenceCache = new DefaultMap<>(
-                (Function) null);
-        evidenceCache.setDefaultFunc(feature -> {
+                (cache, feature) -> {
             if(FMUtil.isRoot(feature)) {
                 return new Evidence();
             } else {
+                Evidence parentEvidence = cache.get((FeatureTreeNode) feature.getParent());
                 return new Evidence(
                         random,
-                        FMUtil.calcHeight(feature),
-                        evidenceCache.get((FeatureTreeNode) feature.getParent()).E);
+                        parentEvidence);
             }
         });
+
+        for(FeatureTreeNode feature : FMUtil.listFeatures(featureModel)) {
+            for (int i = 0; i < FMUtil.depth(featureModel, feature); i++) {
+                System.out.print("  ");
+            }
+            System.out.println(feature.getName() + ": " + evidenceCache.get(feature).toString());
+        }
 
         for(String attribute : attributes) {
             Map<String, Double> attributeValues = FMUtil

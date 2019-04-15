@@ -31,6 +31,10 @@ public class Henard extends EAReasoner {
         super(NAME);
     }
 
+    public Henard(String name, boolean isSuffix) {
+        super((isSuffix ? NAME : "") + name);
+    }
+
     @Override
     public FeatureSelection assemble(BenchmarkEnvironment env, Solution solution) {
         return new Problem(env).assemble((BinaryVariable) solution.getVariable(0));

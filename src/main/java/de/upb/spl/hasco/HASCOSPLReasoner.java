@@ -28,6 +28,17 @@ public class HASCOSPLReasoner implements SPLReasoner {
     public static final String DUMMY_COMPONENT = "DUMMY";
     public static final String NAME = "HASCO";
 
+    private final String name;
+
+    public HASCOSPLReasoner() {
+        this.name = NAME;
+    }
+
+
+    public HASCOSPLReasoner(String name, boolean isSuffix) {
+        this.name = ((isSuffix ? NAME : "") + name);
+    }
+
     @Override
     public SPLReasonerAlgorithm algorithm(BenchmarkEnvironment env) {
         return new HASCOWrap(env);
@@ -35,7 +46,7 @@ public class HASCOSPLReasoner implements SPLReasoner {
 
     @Override
     public String name() {
-        return NAME;
+        return name;
     }
 
     class FeatureSelectionProblem extends SoftwareConfigurationProblem<FeatureSelectionOrdering> {

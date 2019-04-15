@@ -30,6 +30,10 @@ public class Sayyad  extends EAReasoner {
         super(NAME);
     }
 
+    public Sayyad(String name, boolean isSuffix) {
+        super((isSuffix ? NAME : "") + name);
+    }
+
     public static BinaryVariable binarizeSeed(VecInt literalOrder, VecInt seed) {
         BinaryVariable var = new BinaryVariable(literalOrder.size());
         binarizeSeed(var, literalOrder, seed);

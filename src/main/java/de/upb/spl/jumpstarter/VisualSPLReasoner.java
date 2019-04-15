@@ -5,6 +5,7 @@ import de.upb.spl.benchmarks.BenchmarkAgent;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.benchmarks.env.ConfiguredEnv;
+import de.upb.spl.benchmarks.env.SeededEnv;
 import de.upb.spl.reasoner.SPLReasoner;
 import de.upb.spl.util.Cache;
 import jaicore.graphvisualizer.events.recorder.AlgorithmEventHistoryRecorder;
@@ -45,6 +46,7 @@ public class VisualSPLReasoner {
 
     private boolean parallelExecution = false;
     private boolean guiEnabled = true;
+    private boolean randomize = false;
     private AlgorithmVisualizationWindow gui;
 
     public final void setup() {
@@ -52,7 +54,7 @@ public class VisualSPLReasoner {
         Optional<Method> agentCreator = Arrays.stream(runnerClass.getMethods())
                 .filter(m -> m.isAnnotationPresent(Agent.class))
                 .findFirst();
-
+        randomize = runnerClass.getAnnotation(Env.class).randomize();
         if(agentCreator.isPresent()) {
             try {
                 BenchmarkAgent agent = (BenchmarkAgent) agentCreator.get().invoke(this);
@@ -120,24 +122,32 @@ public class VisualSPLReasoner {
                 .sorted(Comparator.comparingInt(m->m.getAnnotation(Reasoner.class).order()))
                 .forEach(m-> {
                     try {
-                        Object candidates =  m.invoke(this);
-                        List<SPLReasoner> reasonerList;
-                        if(candidates instanceof SPLReasoner[]) {
-                            reasonerList = Arrays.stream((SPLReasoner[])candidates).collect(Collectors.toList());
-                        } else if(candidates instanceof List) {
-                            reasonerList = new ArrayList<>();
-                            for(Object obj :  (List) candidates) {
-                                if(obj instanceof SPLReasoner) {
-                                    reasonerList.add((SPLReasoner) obj);
-                                } else {
-                                    logger.warn("Type of reasoner was not recognized: {}", obj.getClass().getName());
+                        int times = m.getAnnotation(Reasoner.class).times();
+                        List<SPLReasoner> reasonerList = new ArrayList<>();
+                        if(times <= 1) {
+                            Object candidates = m.invoke(this);
+                            if (candidates instanceof SPLReasoner[]) {
+                                reasonerList = Arrays.stream((SPLReasoner[]) candidates).collect(Collectors.toList());
+                            } else if (candidates instanceof List) {
+                                reasonerList = new ArrayList<>();
+                                for (Object obj : (List) candidates) {
+                                    if (obj instanceof SPLReasoner) {
+                                        reasonerList.add((SPLReasoner) obj);
+                                    } else {
+                                        logger.warn("Type of reasoner was not recognized: {}", obj.getClass().getName());
+                                    }
                                 }
+                            } else if (candidates instanceof SPLReasoner) {
+                                reasonerList = Collections.singletonList((SPLReasoner) candidates);
+                            } else {
+                                logger.warn("Type of reasoner was not recognized: {}", candidates.getClass().getName());
+                                return;
                             }
-                        } else if(candidates instanceof SPLReasoner) {
-                            reasonerList = Collections.singletonList((SPLReasoner)candidates);
                         } else {
-                            logger.warn("Type of reasoner was not recognized: {}", candidates.getClass().getName());
-                            return;
+                            for (int i = 0; i < times; i++) {
+                                Object candidate = m.invoke(this, i);
+                                reasonerList.add((SPLReasoner) candidate);
+                            }
                         }
                         reasonerList.forEach(this::addReasoner);
                     } catch (Exception ex) {
@@ -261,8 +271,11 @@ public class VisualSPLReasoner {
         Stream<SPLReasoner> splReasonerStream = parallelExecution ? reasoners.parallelStream() : reasoners.stream();
         BookkeeperEnv bookkeeper = bookkeeper();
         splReasonerStream.forEach(reasoner -> {
-            BenchmarkEnvironment billedEnv =  bookkeeper.billedEnvironment(env(), reasoner.name());
-            SPLReasonerAlgorithm alg = reasoner.algorithm(billedEnv);
+            BenchmarkEnvironment runtimeEnv =  bookkeeper.billedEnvironment(env(), reasoner.name());
+            if(randomize) {
+                runtimeEnv = new SeededEnv(runtimeEnv, new Random().nextLong());
+            }
+            SPLReasonerAlgorithm alg = reasoner.algorithm(runtimeEnv);
             if(guiEnabled) {
                 alg.registerListener(eventRecorder);
             }

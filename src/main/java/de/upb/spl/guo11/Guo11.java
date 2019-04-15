@@ -28,6 +28,10 @@ public class Guo11 extends EAReasoner {
         super(NAME);
     }
 
+    public Guo11(String name, boolean isSuffix) {
+        super((isSuffix ? NAME : "") + name);
+    }
+
     @Override
     public AbstractEvolutionaryAlgorithm createEA(BenchmarkEnvironment env) {
         return new GuoAlgorithm(env, new Problem(env),  new Initialization(env));

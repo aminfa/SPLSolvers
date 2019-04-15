@@ -10,4 +10,6 @@ import java.lang.annotation.Target;
 public @interface Reasoner {
     int order() default 0;
     boolean enabled() default true;
+
+    int times() default 1;
 }
