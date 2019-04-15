@@ -114,6 +114,6 @@ public class RunAll extends VisualSPLReasoner{
     }
 
     public static void main(String... args) {
-        new RunAll().setup(RunAll.class);
+        new RunAll().setup();
     }
 }

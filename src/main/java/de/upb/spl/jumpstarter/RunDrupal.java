@@ -2,7 +2,6 @@ package de.upb.spl.jumpstarter;
 
 import de.upb.spl.benchmarks.drupal.DrupalBlackBox;
 import de.upb.spl.benchmarks.drupal.DrupalFilteredObjectives;
-import de.upb.spl.benchmarks.drupal.DrupalModel;
 import de.upb.spl.benchmarks.drupal.DrupalWeightedFaults;
 import de.upb.spl.benchmarks.env.*;
 import de.upb.spl.finish.Finisher;
@@ -128,6 +127,6 @@ public class RunDrupal extends VisualSPLReasoner{
 
 
     public static void main(String... args) {
-        new RunDrupal().setup(RunDrupal.class);
+        new RunDrupal().setup();
     }
 }

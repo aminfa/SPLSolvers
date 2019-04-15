@@ -34,6 +34,9 @@ public class SampleReasoner implements SPLReasoner {
 
     public SampleReasoner(String sampleFilePath) {
         this.samplesName = new File(sampleFilePath).getName();
+        if(samplesName.endsWith(".json")) {
+            samplesName = samplesName.substring(0, samplesName.length()-5);
+        }
         String jsonString = FileUtil.readFileAsString(sampleFilePath);
         JSONParser parser = new JSONParser();
         try {

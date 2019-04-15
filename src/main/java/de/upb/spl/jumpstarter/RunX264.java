@@ -112,6 +112,6 @@ public class RunX264 extends VisualSPLReasoner{
     }
 
     public static void main(String... args) {
-        new RunX264().setup(RunX264.class);
+        new RunX264().setup();
     }
 }

@@ -2,7 +2,6 @@ package de.upb.spl.finish;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.xml.internal.ws.util.StreamUtils;
 import de.upb.spl.benchmarks.BenchmarkBill;
 import de.upb.spl.benchmarks.BenchmarkEntry;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;

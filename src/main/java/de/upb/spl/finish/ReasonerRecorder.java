@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import de.upb.spl.FMUtil;
 import de.upb.spl.benchmarks.BenchmarkEntry;
 import de.upb.spl.benchmarks.BenchmarkBill;
+import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
 import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.util.FileUtil;
@@ -23,7 +24,7 @@ public class ReasonerRecorder extends Finisher {
     private final String recordHome;
     private final Date date = new Date();
 
-    public ReasonerRecorder(BenchmarkEnvironmentDecoration env) {
+    public ReasonerRecorder(BenchmarkEnvironment env) {
         super(env);
         this.recordHome = env.configuration().getRecordHome();
     }

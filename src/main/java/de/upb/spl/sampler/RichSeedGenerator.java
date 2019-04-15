@@ -21,7 +21,7 @@ import java.util.List;
 
 public class RichSeedGenerator {
 
-    private static final long iteratorTimeout = 150000;
+    private static final long iteratorTimeout = 1500000;
 
     public static void main(String[] args) throws FeatureModelException, TimeoutException {
 

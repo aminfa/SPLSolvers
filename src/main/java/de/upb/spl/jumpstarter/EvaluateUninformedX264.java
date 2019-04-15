@@ -1,9 +1,5 @@
 package de.upb.spl.jumpstarter;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Multimap;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.benchmarks.x264.VideoEncoderBaseInterpreter;
@@ -13,12 +9,15 @@ import de.upb.spl.guo11.Guo11;
 import de.upb.spl.hasco.HASCOSPLReasoner;
 import de.upb.spl.henard.Henard;
 import de.upb.spl.hierons.Hierons;
+import de.upb.spl.jumpstarter.panels.BoxAndWhiskerWindow;
 import de.upb.spl.reasoner.ReasonerReplayer;
 import de.upb.spl.benchmarks.BenchmarkReplay;
 import de.upb.spl.sayyad.Sayyad;
 import de.upb.spl.util.Iterators;
 import jaicore.basic.algorithm.AlgorithmExecutionCanceledException;
 import jaicore.basic.algorithm.exceptions.AlgorithmException;
+import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
+import org.jfree.ui.RefineryUtilities;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,16 +39,18 @@ public class EvaluateUninformedX264 {
 
     protected  List<String> reasoners = Arrays.asList(
             HASCOSPLReasoner.NAME
-            , Guo11.NAME ,
-            Hierons.NAME
+            , Guo11.NAME
+            , Hierons.NAME
             , Sayyad.NAME
-            , Henard.NAME);
+            , Henard.NAME
+            , "random-sat"
+    );
 
     private final double[] qualityThresholdDeltas = {0., -15., -30., -45., -60};
 
-    private final double[] sizeThresholds = {0.05, 0.04, 0.02, 0.015, 0.0075};
+    private final double[] sizeThresholds = {0.04, 0.02, 0.015, 0.0075, 0.005};
 
-    private final double[] runtimeThresholds = {1., 2., 3., 6., 8.};
+    private final double[] runtimeThresholds = {0.8, 1., 2., 3., 6.};
 
 
     private void createInterpreters() {
@@ -70,9 +71,9 @@ public class EvaluateUninformedX264 {
     public void start() {
 
         base = new VideoEncoderBaseInterpreter();
-        base.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "20");
+        base.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "60");
         base.configuration().setProperty("de.upb.spl.benchmark.videoEncoding.RAWSourceFile", "ducks_take_off");
-        base.configuration().setProperty("de.upb.spl.eval.solutionCount", "10");
+        base.configuration().setProperty("de.upb.spl.eval.solutionCount", "1");
 
         createInterpreters();
 
@@ -130,6 +131,7 @@ public class EvaluateUninformedX264 {
             });
         });
         Map<String, List<Double>> reasonerContributions = new HashMap<>();
+        Map<Integer, Map<String, Map<BenchmarkEnvironment, Double>>> contributionMap = new HashMap<>();
         solutions.keySet().forEach(interpreter -> {
             List<NBestSolutions> solutionsList = solutions.get(interpreter);
             for (int i = 0; i < solutionsList.size(); i++) {
@@ -139,18 +141,20 @@ public class EvaluateUninformedX264 {
                     System.err.println("The " + Iterators.ordinal(i) + " benchmark doesn't exist.");
                     continue;
                 }
-                for(BenchmarkReplay replay : replayers) {
-                    ReasonerSolutionContribution contributions = new ReasonerSolutionContribution(benchmark.bookkeeper, nBestSolutions);
-                    contributions.run();
-                    for(String reasoner : reasoners) {
-                        Double reasonerContrib = contributions.getContributions().get(reasoner);
-                        if(reasonerContrib == null) {
-                            System.err.println("No Contribution for reasoner " + reasoner + " was calculated.");
-                        }
-                        reasonerContributions
-                                .computeIfAbsent(reasoner, r -> new ArrayList<>())
-                                .add(reasonerContrib);
+                ReasonerSolutionContribution contributions = new ReasonerSolutionContribution(benchmark.bookkeeper, nBestSolutions);
+                contributions.run();
+                for(String reasoner : reasoners) {
+                    Double reasonerContrib = contributions.getContributions().get(reasoner);
+                    if(reasonerContrib == null) {
+                        System.err.println("No Contribution for reasoner " + reasoner + " was calculated.");
                     }
+                    reasonerContributions
+                            .computeIfAbsent(reasoner, r -> new ArrayList<>())
+                            .add(reasonerContrib);
+                    contributionMap
+                            .computeIfAbsent(i, r -> new HashMap<>())
+                            .computeIfAbsent(reasoner, r -> new HashMap<>())
+                            .put(interpreter, reasonerContrib);
                 }
             }
         });
@@ -163,6 +167,24 @@ public class EvaluateUninformedX264 {
                     System.out.println(entry.getKey() + ": " + average.orElse(0));
                 }
         );
+
+
+        final int seriesCount = benchmarks.size();
+        final int categoryCount = reasoners.size();
+
+        final DefaultBoxAndWhiskerCategoryDataset dataset
+                = new DefaultBoxAndWhiskerCategoryDataset();
+        for (int i = 0; i < seriesCount; i++) {
+            for (int j = 0; j < categoryCount; j++) {
+                final List<Double> list = new ArrayList<>(contributionMap.get(i).get(reasoners.get(j)).values());
+                dataset.add(list, "Benchmark " + i, reasoners.get(j));
+            }
+
+        }
+        BoxAndWhiskerWindow boxplot = new BoxAndWhiskerWindow("X264 contributions", dataset);
+        boxplot.pack();
+        RefineryUtilities.centerFrameOnScreen(boxplot);
+        boxplot.setVisible(true);
     }
 
     public static void main(String... args ){

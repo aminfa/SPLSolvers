@@ -91,7 +91,7 @@ public class FeatureSelectionOrdering implements Comparable<FeatureSelectionOrde
                     positive = true;
                 }
             }
-            if(positive && negative) {
+            if(positive == negative) {
                 return 0;
             } else if(negative){
                 return -1;

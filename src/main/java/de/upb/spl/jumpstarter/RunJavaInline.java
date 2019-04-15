@@ -107,6 +107,6 @@ public class RunJavaInline extends VisualSPLReasoner{
     }
 
     public static void main(String... args) {
-        new RunJavaInline().setup(RunJavaInline.class);
+        new RunJavaInline().setup();
     }
 }

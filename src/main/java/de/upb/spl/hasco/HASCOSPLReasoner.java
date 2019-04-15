@@ -22,7 +22,6 @@ import jaicore.search.problemtransformers.GraphSearchProblemInputToGraphSearchWi
 import jaicore.search.problemtransformers.GraphSearchProblemInputToGraphSearchWithSubpathEvaluationInputTransformerViaRDFS;
 
 import java.util.Collections;
-import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
 public class HASCOSPLReasoner implements SPLReasoner {

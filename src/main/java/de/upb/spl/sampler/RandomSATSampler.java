@@ -18,8 +18,10 @@ import org.sat4j.specs.ISolver;
 import org.sat4j.specs.TimeoutException;
 import org.sat4j.tools.ModelIterator;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class RandomSATSampler {
@@ -47,7 +49,18 @@ public class RandomSATSampler {
 
         FMSAT fmsat = FMSAT.transform(featureModel);
         Solver solver = (Solver) SolverFactory.newDefault();
-        solver.setOrder( new RandomWalkDecorator(new VarOrderHeap(new RandomLiteralSelectionStrategy()), 1));
+        RandomWalkDecorator randomwalker = new RandomWalkDecorator(new VarOrderHeap(new RandomLiteralSelectionStrategy()), 1);
+        try {
+            final Field random;
+            random = RandomWalkDecorator.class.getDeclaredField( "rand" );
+            random.setAccessible( true );
+            random.set( randomwalker, new Random());
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        solver.setOrder(randomwalker);
         fmsat.insertCNF(solver);
         ISolver solverIterator = new ModelIterator(solver);
         solverIterator.setTimeoutMs(iteratorTimeout);

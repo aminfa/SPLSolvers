@@ -3,7 +3,6 @@ package de.upb.spl.jumpstarter;
 import de.upb.spl.ailibsintegration.SPLReasonerAlgorithm;
 import de.upb.spl.benchmarks.BenchmarkAgent;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
-import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
 import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.benchmarks.env.ConfiguredEnv;
 import de.upb.spl.reasoner.SPLReasoner;
@@ -48,7 +47,8 @@ public class VisualSPLReasoner {
     private boolean guiEnabled = true;
     private AlgorithmVisualizationWindow gui;
 
-    public final void setup(Class<? extends VisualSPLReasoner> runnerClass) {
+    public final void setup() {
+        Class<?> runnerClass = this.getClass();
         Optional<Method> agentCreator = Arrays.stream(runnerClass.getMethods())
                 .filter(m -> m.isAnnotationPresent(Agent.class))
                 .findFirst();
@@ -256,7 +256,7 @@ public class VisualSPLReasoner {
         }
     }
 
-    public void start() {
+    public final void start() {
         logger.info("Starting spl benchmark.");
         Stream<SPLReasoner> splReasonerStream = parallelExecution ? reasoners.parallelStream() : reasoners.stream();
         BookkeeperEnv bookkeeper = bookkeeper();
@@ -280,7 +280,7 @@ public class VisualSPLReasoner {
 
     boolean finished = false;
 
-    public void finish(boolean exit) {
+    public final void finish(boolean exit) {
         logger.info("Performing finishers.");
         finished = true;
         for(Runnable finisher : (exit? exitFinishers : finishers)) {
@@ -311,15 +311,15 @@ public class VisualSPLReasoner {
         main = plugin;
     }
 
-    public BenchmarkAgent agent() {
+    public final BenchmarkAgent agent() {
         return agent.get();
     }
 
-    public BenchmarkEnvironment env() {
+    public final BenchmarkEnvironment env() {
         return env;
     }
 
-    public BookkeeperEnv bookkeeper() {
+    public final BookkeeperEnv bookkeeper() {
         return (env()).getDecoration(BookkeeperEnv.class);
     }
 

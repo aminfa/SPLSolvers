@@ -75,3 +75,5 @@ SEDE.iml
 /.metadata/
 recordings/*
 replays/*
+plots
+synthetic-hv-steps.json

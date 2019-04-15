@@ -31,9 +31,24 @@ public interface SPLReasonerConfiguration extends Mutable {
     @DefaultValue("jmh.Fibonacci")
     String getInlineBenchmarkTarget();
 
+
+    @Key("de.upb.spl.benchmark.synthetic.independentAttr")
+    @DefaultValue("independent")
+    String getSyntheticBenchmarkAttributeType();
+
     @Key("de.upb.spl.eval.solutionCount")
     @DefaultValue("20")
     Integer getEvalSolutionCount();
+
+    @Key("de.upb.spl.SATSampleIndex")
+    @DefaultValue("0")
+    Integer getSATSampleIndex();
+
+    @Key("de.upb.spl.eval.hvTimeline.samples")
+    @DefaultValue("100")
+    Integer getHVTimelinesamples();
+
+
 
     /*
      * Guo
@@ -62,7 +77,7 @@ public interface SPLReasonerConfiguration extends Mutable {
     Double getBasicIbeaBitFlipProbability();
 
     @Key("de.upb.spl.SPLReasoner.ibea.p.singlePointCO")
-    @DefaultValue("0.01")
+    @DefaultValue("0.03")
     Double getBasicIbeaSinglePointCrossoverProbability();
 
     /*
@@ -85,16 +100,16 @@ public interface SPLReasonerConfiguration extends Mutable {
     Integer getHenardPopulationSize();
 
     @Key("de.upb.spl.SPLReasoner.Henard.p.smartMutation")
-    @DefaultValue("0.001")
+    @DefaultValue("0.01")
     Double getHenardSmartMutationProbability();
 
     @Key("de.upb.spl.SPLReasoner.Henard.p.smartReplacement")
-    @DefaultValue("0.001")
+    @DefaultValue("0.01")
     Double getHenardSmartReplacementProbability();
 
     @Key("de.upb.spl.SPLReasoner.Hernard.seedCount")
     @DefaultValue("1") // seed
-    Integer getHernardSeedCount();
+    Integer getHenardSeedCount();
 
     /*
      * Hierons

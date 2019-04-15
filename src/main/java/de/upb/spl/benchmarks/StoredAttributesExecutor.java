@@ -153,6 +153,7 @@ public class StoredAttributesExecutor implements  Runnable {
 			double result =
 					features.stream()
 							.map(values::get)
+                            .filter(d -> d != 0.)
 							.collect(aggregator);
 			results.put(attributeName, result);
 		}

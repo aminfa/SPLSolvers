@@ -53,7 +53,7 @@ public class RunX264Eval extends VisualSPLReasoner{
 
 
     public static void main(String... args) {
-        new RunX264Eval().setup(RunX264Eval.class);
+        new RunX264Eval().setup();
     }
 
 }

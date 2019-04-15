@@ -101,7 +101,7 @@ public class RunDrupalEval extends VisualSPLReasoner{
     }
 
     public static void main(String... args) {
-        new RunDrupalEval().setup(RunDrupalEval.class);
+        new RunDrupalEval().setup();
     }
 
 }

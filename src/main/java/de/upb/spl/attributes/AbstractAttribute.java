@@ -50,7 +50,6 @@ public abstract class AbstractAttribute {
     public abstract double value(double rand);
 
 
-
     public static AbstractAttribute createFromConfig(AttributeConfiguration configuration) {
         return createFromConfig(configuration, configuration.getAttributeName());
     }

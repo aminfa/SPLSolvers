@@ -31,13 +31,17 @@ public class NovelRepresentation {
 
     private final String name;
 
-    private final Problem problem;
+    private Problem problem;
 
     public NovelRepresentation(BenchmarkEnvironment env, String name) {
+        this(env, name, env.model(), env.sat());
+    }
+
+    public NovelRepresentation(BenchmarkEnvironment env, String name, FeatureModel model, FMSAT sat) {
         this.env = env;
         this.name = name;
-        FeatureModel fm = env.model();
-        FMSAT fmsat = env.sat();
+        FeatureModel fm = model;
+        FMSAT fmsat = sat;
         // all features
         featureOrder = new ArrayList<>(FMUtil.listFeatures(fm));
         // core features
@@ -65,10 +69,13 @@ public class NovelRepresentation {
             literalOrder.push(literal);
         }
 
-        this.problem = new Problem(1 + env.objectives().size());
     }
 
+
     public Problem getProblem() {
+        if(problem == null) {
+            this.problem = new Problem(1 + env.objectives().size());
+        }
         return problem;
     }
 
@@ -78,6 +85,10 @@ public class NovelRepresentation {
 
     public VecInt literalOrder() {
         return literalOrder;
+    }
+
+    public boolean isRepresented(FeatureTreeNode feature) {
+        return featureOrder.contains(feature);
     }
 
     public class Problem extends BinaryStringProblem {

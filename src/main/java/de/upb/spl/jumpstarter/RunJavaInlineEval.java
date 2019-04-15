@@ -54,6 +54,6 @@ public class RunJavaInlineEval extends VisualSPLReasoner{
     }
 
     public static void main(String... args) {
-        new RunJavaInlineEval().setup(RunJavaInlineEval.class);
+        new RunJavaInlineEval().setup();
     }
 }

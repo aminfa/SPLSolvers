@@ -77,7 +77,7 @@ public class Henard extends EAReasoner {
 
             for(int i = 0; i < this.populationSize; ++i) {
                 Solution solution = this.problem.newSolution();
-                if(i<env.richSeeds().size() && i < env.configuration().getSayyadSeedCount()) {
+                if(i<env.richSeeds().size() && i < env.configuration().getHenardSeedCount()) {
                     VecInt seed = env.richSeeds().get(i);
                     VecInt literalOrder = problem.literalsOrder;
                     BinaryVariable variable = (BinaryVariable) solution.getVariable(0);

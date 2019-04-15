@@ -74,7 +74,7 @@ public class RunReplay extends VisualSPLReasoner{
     }
 
     public static void main(String... args) {
-        new RunReplay().setup(RunReplay.class);
+        new RunReplay().setup();
     }
 
 }

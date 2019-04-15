@@ -43,6 +43,10 @@ public class DefaultMap<K, V> {
 		return defaultValueSupplier;
 	}
 
+	public void setDefaultFunc(Function<K, V> func) {
+	    this.defaultValueSupplier = func;
+    }
+
 	public String toString() {
 		return innerMap.toString();
 	}

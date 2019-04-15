@@ -34,6 +34,7 @@ dependencies {
     compile group: 'org.jfree', name: 'jfreesvg', version: '3.4'
 
     compile project(":hasco")
+    compile 'org.tools4j:tools4j-meanvar:1.1'
 
 
     compile files('lib/recursion-benchmarks.jar')
@@ -46,8 +47,6 @@ dependencies {
 
 
     testImplementation 'junit:junit:4.12'
-
-
 }
 
 repositories {
@@ -78,6 +77,17 @@ task jarAttrGenerator(type: Jar, dependsOn: shadowJar) {
     FileTree zips = zipTree(shadowJar.archivePath)
     from zips
 }
+
+task jarBayesnetAttrGenerator(type: Jar, dependsOn: shadowJar) {
+    archiveName = ("BayesnetAttributeGenerator.jar")
+    destinationDir = file("$rootDir")
+    manifest {
+        attributes 'Main-Class': 'de.upb.spl.attributes.BayesNetAttributeGenerator'
+    }
+    FileTree zips = zipTree(shadowJar.archivePath)
+    from zips
+}
+
 
 task jarSeedGenerator(type: Jar, dependsOn: shadowJar) {
     archiveName = ("RichSeedGenerator.jar")
@@ -129,3 +139,4 @@ task jarJVMBenchmark(type: Jar, dependsOn: shadowJar) {
     FileTree zips = zipTree(shadowJar.archivePath)
     from zips
 }
+

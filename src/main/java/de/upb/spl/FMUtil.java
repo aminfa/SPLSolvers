@@ -12,12 +12,22 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class FMUtil {
 
 	private final static DefaultMap<FeatureModel, FeatureModelCache> cache = new DefaultMap<FeatureModel, FeatureModelCache>(FeatureModelCache::new);
 
-	private static class FeatureModelCache {
+    public static int calcHeight(FeatureTreeNode feature) {
+        return 1 +
+                StreamSupport.stream(FMUtil.children(feature).spliterator(), false)
+                        .mapToInt(FMUtil::calcHeight)
+                        .max()
+                        .orElse(0);
+    }
+
+
+    private static class FeatureModelCache {
 
 		final Cache<List<FeatureTreeNode>> features;
 		final Cache<List<FeatureTreeNode>> optionalNodes;
@@ -84,8 +94,6 @@ public class FMUtil {
 			optionalNodes = new Cache<>( () ->
                     features.get().stream().filter(this::isImpliedFeature).collect(Collectors.toList()));
 		}
-
-
 
 
 //
@@ -300,7 +308,17 @@ public class FMUtil {
     }
 
 
-	public static boolean isNonMandatoryFeature(FeatureTreeNode feature) {
+    public static int depth(FeatureModel featureModel, FeatureTreeNode feature) {
+        int depth = 1;
+        while(!FMUtil.isRoot(feature)) {
+            feature = (FeatureTreeNode) feature.getParent();
+            depth++;
+        }
+        return depth;
+    }
+
+
+    public static boolean isNonMandatoryFeature(FeatureTreeNode feature) {
 		/*
 		 * If listFeatures is optional or in a alternative/or-group it is optional.
 		 */

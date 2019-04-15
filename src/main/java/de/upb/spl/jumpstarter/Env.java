@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@interface Env {
+public @interface Env {
     boolean enabled() default true;
     boolean parallel() default true;
 }
