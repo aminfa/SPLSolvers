@@ -2,15 +2,19 @@ package de.upb.spl.jumpstarter.randoms;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.upb.spl.benchmarks.BenchmarkHelper;
+import de.upb.spl.benchmarks.BenchmarkEntry;
 import de.upb.spl.benchmarks.BenchmarkReplay;
+import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.benchmarks.env.*;
+import de.upb.spl.finish.Finisher;
 import de.upb.spl.finish.HypervolumeCalculator;
 import de.upb.spl.finish.MinMaxValues;
+import de.upb.spl.finish.RankCalculator;
 import de.upb.spl.guo11.Guo11;
 import de.upb.spl.hasco.HASCOSPLReasoner;
 import de.upb.spl.henard.Henard;
 import de.upb.spl.hierons.Hierons;
+import de.upb.spl.jumpstarter.EvaluationAnalysis;
 import de.upb.spl.reasoner.ReasonerReplayer;
 import de.upb.spl.sayyad.Sayyad;
 import de.upb.spl.util.FileUtil;
@@ -23,7 +27,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class SyntheticEvalHV {
+public class SyntheticEval {
 
 
     double[] min = {0,0}, max = {0,0};
@@ -51,7 +55,7 @@ public class SyntheticEvalHV {
         books = new BookkeeperEnv(base);
 
         List<ReasonerReplayer> benchmarkReplays =
-                ReasonerReplayer.loadReplays("replays/synthetic/hv-liftgraph", true);
+                ReasonerReplayer.loadReplays(".", true);
 
         replayers = benchmarkReplays.stream()
                 .map(BenchmarkReplay::new)
@@ -96,41 +100,65 @@ public class SyntheticEvalHV {
         System.out.println("Min is " + Arrays.toString(min));
         System.out.println("Max is " + Arrays.toString(max));
 
-        /*
-         * Calculate hyper volume for each 10 steps:
-         */
-        final Map<String, List<Map<Integer, Double>>> hyperVolumeData = new HashMap<>();
+        final Map<String, List<Map<Integer, EvaluationAnalysis>>> hyperVolumeData = new HashMap<>();
         benchmarks.values().forEach(benchmark -> benchmark.replays.forEach(replayer -> {
             BookkeeperEnv measurements = new BookkeeperEnv(base,
                     benchmark.bookkeeper.bill(replayer.getReasonerName()));
-            int hvSamples = base.configuration().getHVTimelinesamples();
+            int hvSamples = base.configuration().getTimelinesamples();
             int evaluations = base.configuration().getEvaluationPermits();
             double powerStep = (Math.log(evaluations) - Math.log(1.))/ ((double)hvSamples);
-            Map<Integer, Double> hvData =
-                    Stream.concat(
-                        IntStream.range(0, hvSamples)
+            long startTime = measurements.currentTab().checkLog(0).report().getTimestamp().orElse(0L);
+
+            List<Set<BenchmarkEntry>> paretoFrontLayers = StreamSupport
+                    .stream(Finisher.paretoLayers(
+                            measurements,
+                            Finisher.performanceCache(measurements),
+                            measurements.currentTab()).spliterator(), false)
+                    .collect(Collectors.toList());
+
+            List<Integer> evaluationSamples = Stream.concat(
+                    IntStream.range(0, hvSamples)
                             .mapToDouble(i -> Math.pow(Math.E, (i * powerStep)))
                             .filter(Double::isFinite)
                             .mapToInt(i -> (int) Math.floor(i)).boxed(),
-                        IntStream.of(evaluations).boxed())
+                    IntStream.of(evaluations).boxed())
+                    .sorted()
                     .distinct()
-                    .collect(Collectors.toMap(
-                            i -> i,
-                            i -> {
-                            HypervolumeCalculator calculator = new HypervolumeCalculator(
-                                measurements, i, min, max);
-                        calculator.run();
-                        return calculator.getResult();}));
-            hyperVolumeData.computeIfAbsent(replayer.getReasonerName(), name -> new ArrayList<>())
+                    .collect(Collectors.toList());
+
+            Map<Integer, EvaluationAnalysis> hvData = new LinkedHashMap<>();
+            int lastSample = -1;
+            for (int i = 0; i < evaluationSamples.size(); i++) {
+                int sampleIndex = evaluationSamples.get(i);
+                HypervolumeCalculator calculator = new HypervolumeCalculator(measurements, sampleIndex, min, max);
+                calculator.run();
+                double hv = calculator.getResult();
+                RankCalculator rankCalculator = new RankCalculator(measurements, paretoFrontLayers, lastSample + 1, sampleIndex + 1);
+                rankCalculator.run();
+                double rank = rankCalculator.getAverageRank();
+                JobReport report = measurements.currentTab().checkLog(sampleIndex).report();
+                int memory = report.getMemory().orElse(-1);
+                long timestamp = report.getTimestamp().orElse(-1L);
+                if(timestamp != -1L) {
+                    timestamp = timestamp - startTime;
+                }
+                EvaluationAnalysis analysis = new EvaluationAnalysis(memory, timestamp, hv, rank);
+                hvData.put(sampleIndex, analysis);
+                lastSample = sampleIndex;
+            }
+            hyperVolumeData
+                    .computeIfAbsent(
+                            replayer.getReasonerName(),
+                            name -> new ArrayList<>())
                     .add(hvData);
         }));
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        FileUtil.writeStringToFile("synthetic-hv-steps.json", gson.toJson(hyperVolumeData));
+        FileUtil.writeStringToFile("timeline/data.json", gson.toJson(hyperVolumeData));
     }
 
     public static void main(String... args ){
-        new SyntheticEvalHV().eval();
+        new SyntheticEval().eval();
     }
 
     static class Benchmark {
@@ -142,4 +170,5 @@ public class SyntheticEvalHV {
             this.index = index;
         }
     }
+
 }

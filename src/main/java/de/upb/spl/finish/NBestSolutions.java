@@ -3,8 +3,8 @@ package de.upb.spl.finish;
 import de.upb.spl.ailibsintegration.ParetoDominanceOrdering;
 import de.upb.spl.benchmarks.BenchmarkBill;
 import de.upb.spl.benchmarks.BenchmarkEntry;
-import de.upb.spl.benchmarks.BenchmarkHelper;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
+import de.upb.spl.jumpstarter.Finish;
 import de.upb.spl.util.DefaultMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,50 +52,13 @@ public class NBestSolutions extends Finisher {
             return;
         }
 
-        Set<BenchmarkEntry> solutionSet = new HashSet<>();
-        DefaultMap<BenchmarkEntry, ParetoDominanceOrdering> performanceCache = new DefaultMap<BenchmarkEntry, ParetoDominanceOrdering>(
-                entry  -> {
-                    double[] objectiveValues = BenchmarkHelper.extractEvaluation(
-                            env(),
-                            entry.report());
-                    return new ParetoDominanceOrdering(
-                            0, // solutions dont have violated constraints.
-                            objectiveValues);
-                }
-        );
-
-        Comparator<BenchmarkEntry> entryComparator = Comparator.comparing(performanceCache::get);
-        while(solutionSet.size() < solutionCount) {
-            List<BenchmarkEntry> paretoSet = new ArrayList<>();
-            StreamSupport
-                    .stream(allSolutions.spliterator(), false)
-                    .filter(((Predicate<BenchmarkEntry>) solutionSet::contains).negate())
-                    .filter(entry -> !performanceCache.get(entry).hasEmptyResults())
-                    .filter(entry -> !env().interpreter(entry.report()).violatedConstraints())
-                    .forEach((newCandidate) -> {
-                        Iterator<BenchmarkEntry> it = paretoSet.iterator();
-                        boolean superiorFound = false;
-                        while (it.hasNext()) {
-                            BenchmarkEntry candidate = it.next();
-                            int comparison = entryComparator.compare(newCandidate, candidate);
-                            if (comparison > 0) {
-                                superiorFound = true;
-                                break;
-                            } else if (comparison < 0) {
-                                it.remove();
-                            }
-                        }
-                        if (!superiorFound) {
-                            paretoSet.add(newCandidate);
-                        }
-                    });
-            if(paretoSet.isEmpty()) {
-                break;
+        DefaultMap<BenchmarkEntry, ParetoDominanceOrdering> performanceCache = Finisher.performanceCache(env());
+        while(solutions.size() < solutionCount) {
+            for(Set<BenchmarkEntry> paretoLayer : paretoLayers(env(), performanceCache, allSolutions)) {
+                solutions.addAll(paretoLayer);
             }
-            solutionSet.addAll(paretoSet);
-            solutions.addAll(paretoSet);
         }
-        logger.info("Selected a solution list with size: {}.", solutionSet.size());
+        logger.info("Selected a solution list with size: {}.", solutions.size());
 
         solutionPerformanceJSON = new StringBuilder()
                 .append("{\n\t")
@@ -113,6 +76,5 @@ public class NBestSolutions extends Finisher {
     public String getSolutionPerformanceJSON() {
         return solutionPerformanceJSON;
     }
-
 
 }

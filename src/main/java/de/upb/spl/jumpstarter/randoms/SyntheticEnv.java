@@ -33,8 +33,6 @@ public class SyntheticEnv extends VisualSPLReasoner{
         env.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "1000");
         env.configuration().setProperty("de.upb.spl.benchmark.synthetic.independentAttr", "bayes");
 
-        // add a book keeper:
-        env = new BookkeeperEnv(env);
 
         // decorate with the random1000.xml feature model:
         env = new FMXML(env, FM_PATH);
@@ -45,6 +43,10 @@ public class SyntheticEnv extends VisualSPLReasoner{
                 SPL_NAME);
         env = new AttributedFeatureModelEnv((FMAttributes) env);
 
+        // sample memory:
+        env = new MemorySamplerEnv(env);
+        // add a book keeper:
+        env = new BookkeeperEnv(env);
         return env;
     }
 

@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -123,33 +124,9 @@ public class VisualSPLReasoner {
                 .forEach(m-> {
                     try {
                         int times = m.getAnnotation(Reasoner.class).times();
-                        List<SPLReasoner> reasonerList = new ArrayList<>();
-                        if(times <= 1) {
-                            Object candidates = m.invoke(this);
-                            if (candidates instanceof SPLReasoner[]) {
-                                reasonerList = Arrays.stream((SPLReasoner[]) candidates).collect(Collectors.toList());
-                            } else if (candidates instanceof List) {
-                                reasonerList = new ArrayList<>();
-                                for (Object obj : (List) candidates) {
-                                    if (obj instanceof SPLReasoner) {
-                                        reasonerList.add((SPLReasoner) obj);
-                                    } else {
-                                        logger.warn("Type of reasoner was not recognized: {}", obj.getClass().getName());
-                                    }
-                                }
-                            } else if (candidates instanceof SPLReasoner) {
-                                reasonerList = Collections.singletonList((SPLReasoner) candidates);
-                            } else {
-                                logger.warn("Type of reasoner was not recognized: {}", candidates.getClass().getName());
-                                return;
-                            }
-                        } else {
-                            for (int i = 0; i < times; i++) {
-                                Object candidate = m.invoke(this, i);
-                                reasonerList.add((SPLReasoner) candidate);
-                            }
+                        for (int i = 0; i < times; i++) {
+                            createReasoner(m, i);
                         }
-                        reasonerList.forEach(this::addReasoner);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         return;
@@ -210,6 +187,37 @@ public class VisualSPLReasoner {
         this.env = env;
     }
 
+    private void createReasoner(Method m, int i) throws InvocationTargetException, IllegalAccessException {
+        List<SPLReasoner> reasonerList = new ArrayList<>();
+        Object candidates;
+        if(m.getParameterCount() == 0)
+            candidates = m.invoke(this);
+        else if(m.getParameterCount() == 1)
+            candidates = m.invoke(this, i);
+        else {
+            System.err.println("Cannot envoke reasoner method: " + m
+                    + ". Too many parameters: " + m.getParameterCount());
+            return;
+        }
+        if (candidates instanceof SPLReasoner[]) {
+            reasonerList = Arrays.stream((SPLReasoner[]) candidates).collect(Collectors.toList());
+        } else if (candidates instanceof List) {
+            reasonerList = new ArrayList<>();
+            for (Object obj : (List) candidates) {
+                if (obj instanceof SPLReasoner) {
+                    reasonerList.add((SPLReasoner) obj);
+                } else {
+                    logger.warn("Type of reasoner was not recognized: {}", obj.getClass().getName());
+                }
+            }
+        } else if (candidates instanceof SPLReasoner) {
+            reasonerList = Collections.singletonList((SPLReasoner) candidates);
+        } else {
+            logger.warn("Type of reasoner was not recognized: {}", candidates.getClass().getName());
+            return;
+        }
+        reasonerList.forEach(this::addReasoner);
+    }
     private void dumpSetting() {
         ByteArrayOutputStream config = new ByteArrayOutputStream();
         PrintStream out = new PrintStream(config);

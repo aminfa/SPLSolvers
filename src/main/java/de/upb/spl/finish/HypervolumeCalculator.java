@@ -12,15 +12,22 @@ import java.util.stream.StreamSupport;
 
 public class HypervolumeCalculator extends Finisher {
 
+    private int start;
     private int limit;
     private double[] min, max;
     private int objectiveCount;
     private DummyProblem problem;
 
     private double result;
+
     public HypervolumeCalculator(BenchmarkEnvironment env, int limit, double[] min, double[] max) {
+        this(env, 0, limit, min, max);
+    }
+
+    public HypervolumeCalculator(BenchmarkEnvironment env, int start, int end, double[] min, double[] max) {
         super(env);
-        this.limit = limit;
+        this.start = start;
+        this.limit = end - start;
         this.min = min;
         this.max = max;
         objectiveCount = Math.min(min.length, max.length);
@@ -32,6 +39,7 @@ public class HypervolumeCalculator extends Finisher {
         Hypervolume helper = new Hypervolume(problem, min, max);
         NondominatedPopulation population = new NondominatedPopulation();
         StreamSupport.stream(env().currentTab().spliterator(), false)
+                .skip(start)
                 .limit(this.limit)
                 .forEach(entry -> {
                     double[] objectives = BenchmarkHelper.extractEvaluation(
@@ -63,4 +71,6 @@ public class HypervolumeCalculator extends Finisher {
             throw new RuntimeException();
         }
     }
+
+
 }

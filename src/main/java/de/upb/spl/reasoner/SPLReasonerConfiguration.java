@@ -46,7 +46,7 @@ public interface SPLReasonerConfiguration extends Mutable {
 
     @Key("de.upb.spl.eval.hvTimeline.samples")
     @DefaultValue("100")
-    Integer getHVTimelinesamples();
+    Integer getTimelinesamples();
 
 
 

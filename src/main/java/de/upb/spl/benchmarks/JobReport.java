@@ -93,7 +93,22 @@ public class JobReport {
 
 	public void setResults(Map results) {
 		report.put("results", results);
+		if(!report.containsKey("timestamp"))
+		    report.put("timestamp", System.currentTimeMillis());
 	}
+
+	public void setMemory(int currentMemory) {
+        if(!report.containsKey("memory"))
+	        report.put("memory", currentMemory);
+    }
+
+    public Optional<Long> getTimestamp() {
+	    return Optional.ofNullable((Number)report.get("timestamp")).map(Number::longValue);
+    }
+    
+    public Optional<Integer> getMemory() {
+        return Optional.ofNullable((Number)report.get("memory")).map(Number::intValue);
+    }
 
 	public String toString() {
 		return getGroup() + ":" + getJobId() + ":" + getWorkerId().orElse("InQueue");

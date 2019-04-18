@@ -2,13 +2,11 @@ package de.upb.spl.jumpstarter.panels;
 
 import org.tools4j.meanvar.MeanVarianceSampler;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public class DeviationPlotter {
 
-    private Map<Double, MeanVarianceSampler> samplers = new LinkedHashMap<>();
+    private Map<Integer, Sample> samplers = new LinkedHashMap<>();
 
     private Optional<Double> yMin = Optional.empty(),
             yMax= Optional.empty(),
@@ -17,17 +15,31 @@ public class DeviationPlotter {
 
     private Optional<String> xLabel = Optional.empty(), yLabel = Optional.empty();
 
+    private boolean xLogAxis, yLogAxis;
+    private boolean shade = true;
+
     public DeviationPlotter() {
 
     }
 
-    public void addSample(int x, double y) {
-        samplers.computeIfAbsent((double)x, i -> new MeanVarianceSampler()).add(y);
+    public void addSample(int evalIndex, double x, double y) {
+        samplers.computeIfAbsent(evalIndex, i -> new Sample()).add(x, y);
     }
+
 
     public String pgfPlot(){
         StringBuilder plot = new StringBuilder();
-        plot    .append("\\begin{semilogxaxis}[\n")
+
+        String axisType = "axis";
+        if(xLogAxis && yLogAxis) {
+            axisType = "loglogaxis";
+        } else if(xLogAxis) {
+            axisType = "semilogxaxis";
+        } else if(yLogAxis) {
+            axisType = "semilogyaxis";
+        }
+
+        plot    .append("\\begin{").append(axisType).append("}[\n")
                 .append("  ymajorgrids=true,\n")
                 .append("  grid style=dashed,\n")
                 .append(yMax.map(y -> String.format("  ymax=%.2f,\n", y)).orElse(""))
@@ -45,23 +57,31 @@ public class DeviationPlotter {
         StringBuilder varianceDownCoordinates = new StringBuilder();
 
         samplers.keySet().stream().sorted().forEach(i -> {
-            MeanVarianceSampler sampler = samplers.get(i);
-            if(sampler == null) {
+            Sample sample = samplers.get(i);
+            if(sample == null) {
                 return;
             }
-            double mean = sampler.getMean();
-            double variance = sampler.getVariance();
-            double varianceTop = mean + variance;
-            double varianceDown = mean - variance;
-            meanCoordinates        .append("(").append(i).append(",").append(mean)         .append(")");
-            varianceTopCoordinates .append("(").append(i).append(",").append(varianceTop)  .append(")");
-            varianceDownCoordinates.append("(").append(i).append(",").append(varianceDown) .append(")");
+            double mean = sample.getMeanY();
+            double variance = sample.getVarianceY();
+//            double varianceTop = mean + variance;
+//            double varianceDown = mean - variance;
+            double x = sample.getMeanX();
+
+            meanCoordinates        .append("(").append(x).append(",").append(mean)         .append(")");
+            if(shade) {
+                double varianceTop = sample.getMaxY();
+                double varianceDown = sample.getMinY();
+                varianceTopCoordinates .append("(").append(x).append(",").append(varianceTop)  .append(")");
+                varianceDownCoordinates.append("(").append(x).append(",").append(varianceDown) .append(")");
+            }
         });
         plot.append("    \\addplot[mark=none] coordinates {").append(meanCoordinates).append("};\n");
-        plot.append("    \\addplot[mark=none, name path=top, opacity=0.] coordinates {").append(varianceTopCoordinates).append("};\n");
-        plot.append("    \\addplot[mark=none, name path=down, opacity=0.] coordinates {").append(varianceDownCoordinates).append("};\n");
-        plot.append("    \\addplot[fill opacity=0.35] fill between[of=top and down];\n");
-        plot.append("\\end{semilogxaxis}");
+        if(shade) {
+            plot.append("    \\addplot[mark=none, name path=top, opacity=0.] coordinates {").append(varianceTopCoordinates).append("};\n");
+            plot.append("    \\addplot[mark=none, name path=down, opacity=0.] coordinates {").append(varianceDownCoordinates).append("};\n");
+            plot.append("    \\addplot[fill opacity=0.35] fill between[of=top and down];\n");
+        }
+        plot.append("\\end{").append(axisType).append("}");
         return plot.toString();
     }
 
@@ -128,9 +148,12 @@ public class DeviationPlotter {
     public void setxMax(double xMax) {
         this.xMax = Optional.of(xMax);
     }
+
+
     public void setxMax(Optional<Double> xMax) {
         this.xMax = xMax;
     }
+
 
     public Optional<String> getxLabel() {
         return xLabel;
@@ -156,7 +179,72 @@ public class DeviationPlotter {
         this.setyLabel(Optional.of(label));
     }
 
-    public void addSample(String x, Number y) {
-        this.addSample(Integer.parseInt(x), y.doubleValue());
+
+    public void setxLogAxis(boolean xLogAxis) {
+        this.xLogAxis = xLogAxis;
+    }
+
+    public void setyLogAxis(boolean yLogAxis) {
+        this.yLogAxis = yLogAxis;
+    }
+
+    public void shade(boolean b) {
+        this.shade = b;
+    }
+
+    static class Sample {
+        MeanVarianceSampler samplerX = new MeanVarianceSampler();
+        MeanVarianceSampler samplerY = new MeanVarianceSampler();
+        double minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
+        double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE;
+
+        void add(double x, double y) {
+            samplerX.add(x);
+            if(x < minX) {
+                minX = x;
+            }
+            if(x > maxX) {
+                maxX = x;
+            }
+            samplerY.add(y);
+            if(y < minY) {
+                minY = y;
+            }
+            if(y > maxY) {
+                maxY = y;
+            }
+        }
+
+        double getMeanY() {
+            return samplerY.getMean();
+        }
+
+        double getMeanX() {
+            return samplerX.getMean();
+        }
+
+        double getVariancX() {
+            return samplerX.getVariance();
+        }
+
+        double getVarianceY() {
+            return samplerY.getVariance();
+        }
+
+        public double getMinY() {
+            return minY;
+        }
+
+        public double getMaxY() {
+            return maxY;
+        }
+
+        public double getMinX() {
+            return minX;
+        }
+
+        public double getMaxX() {
+            return maxX;
+        }
     }
 }
