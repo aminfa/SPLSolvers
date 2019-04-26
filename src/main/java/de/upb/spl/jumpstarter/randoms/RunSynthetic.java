@@ -18,13 +18,13 @@ import de.upb.spl.util.FileUtil;
 @GUI(enabled = false)
 public class RunSynthetic extends SyntheticEnv {
 
-//    @Reasoner(order = -1, times = 10)
+//    @Reasoner(order = -1, times = 100)
     public SPLReasoner samples(int i) {
         return new SampleReasoner(
                 FileUtil.getPathOfResource(SPL_NAME) + String.format("/samples/random-sat-%d.json", i));
     }
 
-//    @Reasoner(order = 1, times = 10)
+//    @Reasoner(order = 1, times = 100)
     public SPLReasoner guo(int i) {
         Guo11 guo11 = new Guo11("-" + i, true);
         return guo11;
@@ -36,15 +36,14 @@ public class RunSynthetic extends SyntheticEnv {
         return basicIbea;
     }
 
-//    @Reasoner(order = 2, times = 10)
+//    @Reasoner(order = 2, times = 100)
     public SPLReasoner sayyad(int i) {
         Sayyad sayyad = new Sayyad("-" + i, true);
         return sayyad;
     }
 
 
-
-//    @Reasoner(order = 3, times = 10)
+//  @Reasoner(order = 3, times = 100)
     public SPLReasoner henard(int i)  {
         Henard henard = new Henard("-" + i, true);
         return henard;
@@ -52,14 +51,14 @@ public class RunSynthetic extends SyntheticEnv {
 
 
 
-//    @Reasoner(order = 4, times = 10)
+//    @Reasoner(order = 4, times = 100)
     public SPLReasoner hierons(int i) {
         Hierons hierons = new Hierons("-" + i, true);
         return hierons;
     }
 
 
-    @Reasoner(order = 10, times = 1)
+    @Reasoner(order = 10, times = 50)
     public SPLReasoner hasco(int i) {
         HASCOSPLReasoner hasco = new HASCOSPLReasoner("-" + i, true);
         return hasco;
