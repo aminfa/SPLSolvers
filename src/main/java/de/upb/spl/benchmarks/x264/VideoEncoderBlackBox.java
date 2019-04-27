@@ -23,6 +23,8 @@ public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
 	final static String SPL_NAME = "video_encoder";
 	final static String GROUP = "x264";
 
+	private Optional<Double> runtimeThreshold = Optional.empty(), sizeThreshold = Optional.empty();
+
 	public enum Objectives {
         subjective_quality, run_time, file_size;
     }
@@ -258,7 +260,21 @@ public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
         String runtimeHash = DigestUtils.sha1Hex(compileHash + config.toJSONString());
 		rootConfiguration.put("runtime_hash", runtimeHash);
 
+        if(runtimeThreshold.isPresent()) {
+            rootConfiguration.put("runtime_threshold", runtimeThreshold.get());
+        }
+        if(sizeThreshold.isPresent()) {
+            rootConfiguration.put("size_threshold", sizeThreshold.get());
+        }
+
 		return rootConfiguration;
 	}
 
+    public void setRuntimeThreshold(Optional<Double> runtimeThreshold) {
+        this.runtimeThreshold = runtimeThreshold;
+    }
+
+    public void setSizeThreshold(Optional<Double> sizeThreshold) {
+        this.sizeThreshold = sizeThreshold;
+    }
 }

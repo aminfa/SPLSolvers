@@ -4,12 +4,15 @@ import de.upb.spl.benchmarks.JobReport;
 import de.upb.spl.benchmarks.env.ReportInterpreter;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.function.Function;
 
 public class VideoEncoderPreferences {
 
+    private final static Logger logger = LoggerFactory.getLogger(VideoEncoderPreferences.class);
     /**
      * Video length in seconds
      */
@@ -116,6 +119,11 @@ public class VideoEncoderPreferences {
             }
             double videoLength = VIDEO_LENGTH.get(env.configuration().getVideoSourceFile());
             this.runtimeThreshold = threshold * videoLength;
+            VideoEncoderBlackBox blackBox = env.getDecoration(VideoEncoderBlackBox.class);
+            if(blackBox != null) {
+                logger.info("Setting runtime threshold to: " + runtimeThreshold);
+                blackBox.setRuntimeThreshold(Optional.of(runtimeThreshold));
+            }
         }
 
         @Override
@@ -179,6 +187,11 @@ public class VideoEncoderPreferences {
             }
             double rawSize = RAW_VIDEO_SIZE.get(env.configuration().getVideoSourceFile());
             this.sizeThreshold = threshold * rawSize;
+            VideoEncoderBlackBox blackBox = env.getDecoration(VideoEncoderBlackBox.class);
+            if(blackBox != null) {
+                logger.info("Setting size threshold to: " + sizeThreshold);
+                blackBox.setRuntimeThreshold(Optional.of(sizeThreshold));
+            }
         }
 
         public String toString() {
