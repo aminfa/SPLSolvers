@@ -48,9 +48,9 @@ public class EvaluateUninformedX264 {
 
     private final double[] qualityThresholdDeltas = {0., -15., -30., -45., -60};
 
-    private final double[] sizeThresholds = {0.04, 0.02, 0.015, 0.0075, 0.005};
+    private final double[] sizeThresholds = {0.005, 0.0055, 0.006, 0.007, 0.0065};
 
-    private final double[] runtimeThresholds = {0.8, 1., 2., 3., 6.};
+    private final double[] runtimeThresholds = {0.4, 0.5, 0.6, 0.7, .8};
 
 
     private void createInterpreters() {
@@ -60,8 +60,8 @@ public class EvaluateUninformedX264 {
                 QualityThreshold quality = new QualityThreshold(base, qualityThresholdDeltas[i]);
                 SizeThreshold size = new SizeThreshold(base, sizeThresholds[i]);
 
-                interpreters.add(new SizeThreshold(quality, sizeThresholds[j]));
-                interpreters.add(new RuntimeThreshold(quality, runtimeThresholds[j]));
+//                interpreters.add(new SizeThreshold(quality, sizeThresholds[j]));
+//                interpreters.add(new RuntimeThreshold(quality, runtimeThresholds[j]));
 
                 interpreters.add(new RuntimeThreshold(size, runtimeThresholds[j]));
             }
@@ -73,7 +73,7 @@ public class EvaluateUninformedX264 {
         base = new VideoEncoderBaseInterpreter();
         base.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "60");
         base.configuration().setProperty("de.upb.spl.benchmark.videoEncoding.RAWSourceFile", "ducks_take_off");
-        base.configuration().setProperty("de.upb.spl.eval.solutionCount", "1");
+        base.configuration().setProperty("de.upb.spl.eval.solutionCount", "50");
 
         createInterpreters();
 

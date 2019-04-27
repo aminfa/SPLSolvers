@@ -53,9 +53,10 @@ public class NBestSolutions extends Finisher {
         }
 
         DefaultMap<BenchmarkEntry, ParetoDominanceOrdering> performanceCache = Finisher.performanceCache(env());
-        while(solutions.size() < solutionCount) {
-            for(Set<BenchmarkEntry> paretoLayer : paretoLayers(env(), performanceCache, allSolutions)) {
-                solutions.addAll(paretoLayer);
+        for(Set<BenchmarkEntry> paretoLayer : paretoLayers(env(), performanceCache, allSolutions)) {
+            solutions.addAll(paretoLayer);
+            if(solutions.size() >= solutionCount) {
+                break;
             }
         }
         logger.info("Selected a solution list with size: {}.", solutions.size());

@@ -2,15 +2,13 @@ package de.upb.spl.benchmarks.env;
 
 import de.upb.spl.FeatureSelection;
 import de.upb.spl.benchmarks.BenchmarkBill;
+import de.upb.spl.benchmarks.BenchmarkHelper;
 import de.upb.spl.benchmarks.JobReport;
 import org.apache.commons.lang3.concurrent.ConcurrentUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class BookkeeperEnv extends BenchmarkEnvironmentDecoration {
@@ -76,6 +74,8 @@ public class BookkeeperEnv extends BenchmarkEnvironmentDecoration {
                         return;
                     }
                     currentTab().logEvaluation(selection, report);
+                    logger.info("New report has been billed: " +
+                            Arrays.toString(BenchmarkHelper.extractEvaluation(BookkeeperEnv.this, report)));
                     billed = true;
                 }
 

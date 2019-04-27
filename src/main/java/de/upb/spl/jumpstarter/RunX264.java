@@ -3,6 +3,7 @@ package de.upb.spl.jumpstarter;
 import de.upb.spl.benchmarks.VideoEncoderExecutor;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
 import de.upb.spl.benchmarks.x264.VideoEncoderBlackBox;
+import de.upb.spl.benchmarks.x264.VideoEncoderPreferences;
 import de.upb.spl.finish.ReasonerRecorder;
 import de.upb.spl.finish.Shutdown;
 import de.upb.spl.guo11.Guo11;
@@ -31,6 +32,9 @@ public class RunX264 extends VisualSPLReasoner{
         BenchmarkEnvironmentDecoration env =  new VideoEncoderBlackBox(agent());
         env.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "60");
         env.configuration().setProperty("de.upb.spl.SPLReasoner.Hasco.randomSearchSamples", "1");
+
+        VideoEncoderPreferences.SizeThreshold size = new VideoEncoderPreferences.SizeThreshold(env, 0.006);
+        env = new VideoEncoderPreferences.RuntimeThreshold(size, 0.7);
         return env;
     }
 
