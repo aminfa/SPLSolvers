@@ -21,7 +21,8 @@ import jaicore.graphvisualizer.plugin.nodeinfo.NodeInfoGUIPlugin;
 import jaicore.planning.hierarchical.algorithms.forwarddecomposition.graphgenerators.tfd.TFDNodeInfoGenerator;
 import jaicore.search.model.travesaltree.JaicoreNodeInfoGenerator;
 
-@GUI(enabled = true)
+@GUI(enabled = false)
+@Env(randomize = false)
 public class RunX264 extends VisualSPLReasoner{
 
     @Env(parallel = false)
@@ -69,14 +70,14 @@ public class RunX264 extends VisualSPLReasoner{
     }
 
 
-    @Reasoner(order = 0)
+    @Reasoner(order = 5)
     public SPLReasoner hasco() {
         HASCOSPLReasoner hasco = new HASCOSPLReasoner();
         return hasco;
     }
 
 
-    @Finish(order = 1000, runOnExit = false)
+//    @Finish(order = 1000, runOnExit = false)
     public Shutdown shutdownHook() {
         return new Shutdown();
     }

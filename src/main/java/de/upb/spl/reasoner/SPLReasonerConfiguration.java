@@ -19,7 +19,7 @@ public interface SPLReasonerConfiguration extends Mutable {
     Integer getEvaluationPermits();
 
     @Key("de.upb.spl.benchmark.videoEncoding.RAWSourceFile")
-    @DefaultValue("flower_garden")
+    @DefaultValue("ducks_take_off")
     String getVideoSourceFile();
 
 
