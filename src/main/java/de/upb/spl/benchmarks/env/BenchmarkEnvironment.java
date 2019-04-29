@@ -38,5 +38,9 @@ public interface BenchmarkEnvironment {
         return false;
     }
 
+    default boolean violatesDemand() {
+        return false;
+    }
+
     <I extends BenchmarkEnvironment> I getDecoration(Class<I> clazz);
 }

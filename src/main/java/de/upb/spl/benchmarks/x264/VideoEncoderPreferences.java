@@ -216,6 +216,8 @@ public class VideoEncoderPreferences {
                     penalty = innerInterpreter.rawResult(SIZE_OBJECTIVE).orElse(10000.);
                 }
 
+
+
             }
 
             @Override

@@ -26,7 +26,7 @@ public class InlineConfigurationSample {
             () ->
             new OptionsBuilder()
                 .warmupTime(TimeValue.seconds(1))
-                .measurementTime(TimeValue.seconds(1))
+                .measurementTime(TimeValue.milliseconds(500))
                 .measurementIterations(3)
                 .timeUnit(TimeUnit.MICROSECONDS)
                 .mode(Mode.AverageTime)
@@ -53,7 +53,7 @@ public class InlineConfigurationSample {
     // Minimum invocation count a method needs to have to be inlined
     int minInliningThreshold = 250;
 
-    int warmups = 4;
+    int warmups = 2;
 
     String target = "jmh.Hanoi";
 

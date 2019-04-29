@@ -55,7 +55,8 @@ public class VisualSPLReasoner {
         Optional<Method> agentCreator = Arrays.stream(runnerClass.getMethods())
                 .filter(m -> m.isAnnotationPresent(Agent.class))
                 .findFirst();
-        randomize = runnerClass.getAnnotation(Env.class).randomize();
+        if(runnerClass.getAnnotation(Env.class) != null)
+            randomize = runnerClass.getAnnotation(Env.class).randomize();
         if(agentCreator != null && agentCreator.isPresent()) {
             try {
                 BenchmarkAgent agent = (BenchmarkAgent) agentCreator.get().invoke(this);

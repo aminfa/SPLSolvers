@@ -44,7 +44,7 @@ public class VideoEncoderBlackBox extends BenchmarkEnvironmentDecoration {
     public VideoEncoderBlackBox(BenchmarkEnvironment env, BenchmarkAgent agent) {
 	    super(env);
         this.testVideo = this.configuration().getVideoSourceFile();
-        this.agent = Objects.requireNonNull(agent);
+        this.agent = agent;
     }
 
 

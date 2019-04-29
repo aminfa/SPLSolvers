@@ -1,5 +1,6 @@
 package de.upb.spl.jumpstarter;
 
+import de.upb.spl.benchmarks.env.BenchmarkEnvironment;
 import de.upb.spl.benchmarks.env.BenchmarkEnvironmentDecoration;
 import de.upb.spl.benchmarks.env.BookkeeperEnv;
 import de.upb.spl.benchmarks.inline.InlineBenchmarkExecutor;
@@ -22,12 +23,19 @@ import jaicore.planning.hierarchical.algorithms.forwarddecomposition.graphgenera
 import jaicore.search.model.travesaltree.JaicoreNodeInfoGenerator;
 
 @GUI(enabled = false)
+@Env(randomize = false)
 public class RunJavaInline extends VisualSPLReasoner{
 
     @Env(parallel = false)
-    public BookkeeperEnv videoEncodingEnv() {
+    public BenchmarkEnvironment videoEncodingEnv() {
         InlineBenchmarkExecutor executor1 = new InlineBenchmarkExecutor(agent());
-        return new BookkeeperEnv(new InlineBlackBox(agent()));
+        BenchmarkEnvironment env = new BookkeeperEnv(new InlineBlackBox(agent()));
+        env.configuration().setProperty("de.upb.spl.SPLReasoner.evaluations", "100");
+        env.configuration().setProperty("de.upb.spl.benchmark.inline.target", "Hanoi");
+        env.configuration().setProperty("de.upb.spl.benchmark.inline.warumups", "3");
+        env.configuration().setProperty("de.upb.spl.SPLReasoner.Hasco.randomSearchSamples", "2");
+
+        return env;
     }
 
     @Reasoner(order = 1)

@@ -48,6 +48,10 @@ public interface SPLReasonerConfiguration extends Mutable {
     @DefaultValue("100")
     Integer getTimelinesamples();
 
+    @Key("de.upb.spl.eval.hvTimeline.logarithmic")
+    @DefaultValue("false")
+    Boolean getLogarithmicEval();
+
 
 
     /*

@@ -82,6 +82,11 @@ public class BenchmarkEnvironmentDecoration implements BenchmarkEnvironment {
     }
 
     @Override
+    public boolean violatesDemand() {
+        return env.violatesDemand();
+    }
+
+    @Override
     public String toString() {
         return this.getClass().getSimpleName() + " - " +getBaseEnv().toString();
     }
