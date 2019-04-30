@@ -23,10 +23,16 @@ public class ReasonerRecorder extends Finisher {
     private final static Logger logger = LoggerFactory.getLogger(ReasonerRecorder.class);
     private final String recordHome;
     private final Date date = new Date();
+    private int index = -1;
 
     public ReasonerRecorder(BenchmarkEnvironment env) {
         super(env);
         this.recordHome = env.configuration().getRecordHome();
+    }
+
+    public ReasonerRecorder(BookkeeperEnv env, int i) {
+        this(env);
+        index = i;
     }
 
     public BookkeeperEnv env() {
@@ -49,7 +55,12 @@ public class ReasonerRecorder extends Finisher {
                 logObj.put("report", log.report().getJsonObj());
                 logs.add(logObj);
             }
-            String recordFile = String.format("%1$s/%2$tY-%2$tm-%2$td--%2$tH.%2$tM--%3$s.json", recordHome, date, bill.getReasonerName());
+
+            String recordFile = String.format("%2$tY-%2$tm-%2$td--%2$tH.%2$tM--%3$s.json", null, date, bill.getReasonerName());
+            if(index >= 0) {
+                recordFile = index + "--" + recordFile;
+            }
+            recordFile = recordHome + "/" + recordFile;
             FileUtil.writeStringToFile(recordFile, gson.toJson(record));
             logger.info("Recorded replay for {} in {}.", bill.getReasonerName(), recordFile);
         }

@@ -39,6 +39,7 @@ public class HypervolumeCalculator extends Finisher {
         Hypervolume helper = new Hypervolume(problem, min, max);
         NondominatedPopulation population = new NondominatedPopulation();
         StreamSupport.stream(env().currentTab().spliterator(), false)
+                .filter(entry -> !env().interpreter(entry.report()).violatedConstraints())
                 .skip(start)
                 .limit(this.limit)
                 .forEach(entry -> {

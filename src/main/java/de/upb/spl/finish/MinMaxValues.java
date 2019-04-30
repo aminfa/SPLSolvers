@@ -23,12 +23,13 @@ public class MinMaxValues extends Finisher {
         max = new double[objectiveSize];
         for (int i = 0; i < objectiveSize; i++) {
             min[i] = Double.MAX_VALUE;
-            max[i] = Double.MIN_VALUE;
+            max[i] = -Double.MAX_VALUE;
         }
         StreamSupport
                 .stream(env().currentTab().spliterator(), false)
-                .map(entry -> BenchmarkHelper.extractEvaluation(env(), entry.report()))
-                .forEach(eval -> {
+                .filter(entry -> !env().interpreter(entry.report()).violatedConstraints())
+                .forEach(entry -> {
+                    double[] eval = BenchmarkHelper.extractEvaluation(env(), entry.report());
                     if (eval == null || eval.length < objectiveSize) {
                         throw new IllegalArgumentException("Evaluation was empty.");
                     }
@@ -47,7 +48,7 @@ public class MinMaxValues extends Finisher {
             if(min[i] == Double.MAX_VALUE) {
                 throw new IllegalArgumentException("Couldn't create determine the i'th min value.");
             }
-            if(max[i] == Double.MIN_VALUE) {
+            if(max[i] == -Double.MAX_VALUE) {
                 throw new IllegalArgumentException("Couldn't create determine the i'th max value.");
             }
         }
